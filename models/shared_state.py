@@ -14,7 +14,7 @@ def create_shared_state(station: str, start_date: str, end_date: str) -> dict:
         "validation_result": None,
 
         # Inference Agent
-        "climate features": None,
+        "climate_features": None,
 
         # Prediction Agent
         "prediction": None,
