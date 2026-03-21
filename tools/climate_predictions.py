@@ -42,17 +42,6 @@ def predict_future_water_stress(shared_state: dict) -> str:
     else:
         return "Bajo"
     
-test_shared_state = {
-    "weather_data": {
-        "precipitation": 1.0
-    },
-    "soil_multiplier": 0.8,
-    "climate_features": {
-        "dha": 4.5,
-        "etc": 4.2,
-        "heat_stress": "Moderado"
-    }
-}
 
 #print(predict_future_water_stress(test_shared_state))
 
@@ -71,7 +60,7 @@ def predict_irrigation_need(shared_state: dict) -> str | None:
     precipitation = weather_data.get("precipitation")
 
     if future_water_stress is None or dha is None or etc is None or precipitation is None:
-        return None
+        return 100
 
     score = 0
 

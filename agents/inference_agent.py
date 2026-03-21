@@ -15,5 +15,5 @@ class InferenceAgent:
             "strong_wind_risk": strong_wind_risk(weather)
         }
 
-        shared_state["climate features"] = features
+        shared_state["climate_features"] = features
         return shared_state
