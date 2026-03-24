@@ -1,31 +1,64 @@
-def create_shared_state(station: str, start_date: str, end_date: str) -> dict:
-    return {
-        # Inputs del usuario
-        "station": station,
-        "start_date": start_date,
-        "end_date": end_date,
+from dataclasses import dataclass, field
+from datetime import date
+from typing import Optional
 
-        # Observation Agent
-        "weather_data": None,
-        "soil_multiplier": None,
-        "crop_data": None,
 
-        # Validation Agent
-        "validation_result": None,
+@dataclass
+class WeatherData:
+    temperature_max: float
+    temperature_min: float
+    temperature_mean: float
+    precipitation: float
+    humidity: Optional[float]
+    wind: Optional[float]
+    pressure: Optional[float]
+    days_count: int
 
-        # Inference Agent
-        "climate_features": None,
 
-        # Prediction Agent
-        "prediction": None,
-        "risk_prediction": None,
+@dataclass
+class CropData:
+    variety: str
+    color: str
+    water_need: str
+    frost_sensitivity: str
+    heat_tolerance: str
+    humidity_sensitivity: str
+    optimal_temp_min: float
+    optimal_temp_max: float
+    optimal_humidity_max: float
+    optimal_precip_mm: float
 
-        # Planification Agent
-        "options": None,
-        "final_plan": None,
 
-        # Explanation Agent
-        "explanation": None
+@dataclass
+class ClimateFeatures:
+    etc: float
+    dha: float
+    frost_risk: str
+    heat_stress: str
+    mildiu_risk: str
+    strong_wind_risk: str
 
-    }
-    
+
+@dataclass
+class Predictions:
+    future_water_stress: str
+    irrigation_need: str
+
+
+@dataclass
+class SharedState:
+    station: str
+    start_date: date
+    end_date: date
+    ccaa: str = ""
+
+    weather_data: Optional[WeatherData] = None
+    soil_multiplier: Optional[float] = None
+    crop_data: Optional[CropData] = None
+
+    climate_features: Optional[ClimateFeatures] = None
+    predictions: Optional[Predictions] = None
+
+    alerts: list = field(default_factory=list)
+    scenarios: list = field(default_factory=list)
+    explanation: Optional[dict] = None

@@ -1,16 +1,19 @@
+import pandas as pd
 from smolagents import tool
 from tools.aemet_stations import station_to_ccaa
-import pandas as pd
+
 
 @tool
 def get_crop_data(station: str) -> dict:
-    '''
-    Obtiene información sobre un tipo de cultivo específico.
+    """
+    Obtiene información del cultivo asociado a una estación meteorológica.
+
     Args:
-        station (str): La estación para la cual se desea obtener información.
+        station: ID de la estación meteorológica.
+
     Returns:
-        dict: Un diccionario que contiene información relevante sobre el cultivo, como sus necesidades de agua, temperatura óptima, etc.
-    '''
+        Un diccionario con la variedad de cultivo y sus características agronómicas.
+    """
     crops = {
         "Andalucía": "Pedro Ximenez",
         "Aragón": "Garnacha",
@@ -28,20 +31,36 @@ def get_crop_data(station: str) -> dict:
         "Madrid": "Garnacha",
         "Murcia": "Monastrell",
         "Navarra": "Tempranillo",
-        "País Vasco": "Tempranillo"
+        "País Vasco": "Tempranillo",
     }
-    
+
     ccaa = station_to_ccaa(station)
-    crop_type = crops[ccaa]
+    crop_type = crops.get(ccaa)
+
+    if crop_type is None:
+        raise ValueError(f"No hay cultivo asociado a la CCAA de la estación {station}")
 
     crop_df = pd.read_csv("data/grape_profiles.csv", index_col="grape_variety")
-    
+
     if crop_type not in crop_df.index:
-        raise ValueError(f"No encuentro información sobre el cultivo asociado a la estación {station} (CCAA: {ccaa})")
-    else:
-        crop_info = crop_df.loc[crop_type].to_dict()
-        return crop_info
+        raise ValueError(
+            f"No encuentro información sobre el cultivo asociado a la estación {station} "
+            f"(CCAA: {ccaa}, cultivo: {crop_type})"
+        )
 
+    row = crop_df.loc[crop_type]
 
+    crop_info = {
+        "variety": crop_type,
+        "color": row["color"],
+        "water_need": row["water_need"],
+        "frost_sensitivity": row["frost_sensitivity"],
+        "heat_tolerance": row["heat_tolerance"],
+        "humidity_sensitivity": row["humidity_sensitivity"],
+        "optimal_temp_min": float(row["optimal_temp_min"]),
+        "optimal_temp_max": float(row["optimal_temp_max"]),
+        "optimal_humidity_max": float(row["optimal_humidity_max"]),
+        "optimal_precip_mm": float(row["optimal_precip_mm"]),
+    }
 
-
+    return crop_info

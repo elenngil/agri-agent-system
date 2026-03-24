@@ -1,13 +1,5 @@
-from tools.aemet_api import aemet_get
-import pandas as pd
-import numpy as np
+from datetime import date
+from tools.weather_data import get_climate_summary
 
-if __name__ == "__main__":
-    data = aemet_get("valores/climatologicos/inventarioestaciones/todasestaciones")
-
-    # suele ser una lista de estaciones (dicts)
-    print(type(data))
-    print(data)
-    print("n =", len(data) if hasattr(data, "__len__") else "¿?")
-    print("primera fila:", data[0] if isinstance(data, list) and data else data[:200])
-    print("última fila:", data[-1] if isinstance(data, list) and data else data[-200:])
+weather_data = get_climate_summary("B013X", date(2024, 1, 21), date(2024, 1, 31))
+print(weather_data)

@@ -1,39 +1,52 @@
-from smolagents import CodeAgent, InferenceClientModel
+from models.shared_state import SharedState, WeatherData, CropData
 from tools.weather_data import get_climate_summary
 from tools.soil_data import get_soil_multiplier
 from tools.crop_data import get_crop_data
-from models.shared_state import create_shared_state
+
 
 class ObservationAgent:
-    def __init__(self):
-        model = InferenceClientModel()
+    """Recopila datos de clima, suelo y cultivo y los guarda en el shared state."""
 
-        self.agent = CodeAgent(
-            model=model, 
-            name="ObservationAgent", 
-            description="Agente encargado de recopilar y procesar datos climáticos, del suelo y del cultivo para proporcionar información relevante a los demás agentes del sistema.",
-            tools = [get_climate_summary, get_soil_multiplier, get_crop_data]
+    def run(self, shared_state: SharedState) -> SharedState:
+        weather_raw = get_climate_summary(
+            shared_state.station,
+            shared_state.start_date,
+            shared_state.end_date
+        )
+        crop_raw = get_crop_data(shared_state.station)
+
+        shared_state.weather_data = (
+            WeatherData(
+                temperature_max=weather_raw["temperature_max"],
+                temperature_min=weather_raw["temperature_min"],
+                temperature_mean=weather_raw["temperature_mean"],
+                precipitation=weather_raw["precipitation"],
+                humidity=weather_raw["humidity"],
+                wind=weather_raw["wind"],
+                pressure=weather_raw["pressure"],
+                days_count=weather_raw["days_count"],
             )
-        
-    def run(self, shared_state: dict) -> dict:
-        station = shared_state["station"]
-        start_date = shared_state["start_date"]
-        end_date = shared_state["end_date"]
+            if weather_raw
+            else None
+        )
 
-        prompt = f"""
-        Usa las tools que he proporcionado para obtener:
-        - datos climáticos de la estación {station} entre las fechas {start_date} y {end_date}
-        - el multiplicador de riego basado en el tipo de suelo de la estación {station}
-        - información relevante sobre el tipo de cultivo de la estación {station}
+        shared_state.soil_multiplier = get_soil_multiplier(shared_state.station)
 
-        Devuelve un diccionario con las siguientes claves: "weather_data", "soil_multiplier" y "crop_data", con la información obtenida de cada tool.
-        """
-
-        result = self.agent.run(prompt)
-
-        shared_state["weather_data"] = result.get("weather_data")
-        shared_state["soil_multiplier"] = result.get("soil_multiplier")
-        shared_state["crop_data"] = result.get("crop_data")
+        shared_state.crop_data = (
+            CropData(
+                variety=crop_raw["variety"],
+                color=crop_raw["color"],
+                water_need=crop_raw["water_need"],
+                frost_sensitivity=crop_raw["frost_sensitivity"],
+                heat_tolerance=crop_raw["heat_tolerance"],
+                humidity_sensitivity=crop_raw["humidity_sensitivity"],
+                optimal_temp_min=crop_raw["optimal_temp_min"],
+                optimal_temp_max=crop_raw["optimal_temp_max"],
+                optimal_humidity_max=crop_raw["optimal_humidity_max"],
+                optimal_precip_mm=crop_raw["optimal_precip_mm"],
+            )
+            if crop_raw
+            else None
+        )
 
         return shared_state
-

@@ -1,122 +1,137 @@
-test_data = {
-    "temperature_min": 15.0,
-    "temperature_max": 30.0,
-    "temperature_mean": 22.5,
-    "precipitation": 5.0,
-    "wind": 20.0
-}
+from models.shared_state import WeatherData, CropData
 
-crop_td = {
-    "optimal_temp_min": 18.0,
-    "optimal_temp_max": 28.0
-}
 
-def calculate_etc(weather_data: dict) -> float:
-    '''
-    Calcula la evapotranspiración (ETc) para un cultivo específico utilizando datos climáticos y características del cultivo.
-    Args:
-        weather_data (dict): Un diccionario que contiene datos climáticos relevantes, como temperatura, humedad, velocidad del viento, etc.
-        crop_data (dict): Un diccionario que contiene información sobre el cultivo, como su coeficiente de cultivo (Kc), etc.
-    '''
-    tmin = weather_data.get("temperature_min")
-    tmax = weather_data.get("temperature_max")
-    tmed = weather_data.get("temperature_mean")
-    kc = 0.7  # Coeficiente de cultivo para la fase media del cultivo (se podría hacer por fase fenológica)
+def calculate_etc(weather_data: WeatherData) -> float:
+    tmin = weather_data.temperature_min
+    tmax = weather_data.temperature_max
+    tmed = weather_data.temperature_mean
+    days = weather_data.days_count
 
-    et0 = 0.0023 * (tmax - tmin)**0.5 * (tmed + 17.8)  # Fórmula de Hargreaves para calcular ET0
-    etc = et0 * kc  # ETc = ET0 * Kc
-    return etc
+    if tmin is None or tmax is None or tmed is None:
+        return 0.0
 
-#print(calculate_etc(test_data))
+    kc = 0.7
 
-def calculate_dha(weather_data: dict) -> float:
-    '''
-    Calcula las horas de riego necesarias para un cultivo específico utilizando datos climáticos.
-    Args:
-        weather_data (dict): Un diccionario que contiene datos climáticos relevantes.
-    '''
+    et0 = 0.0023 * (tmax - tmin) ** 0.5 * (tmed + 17.8)
+    etc_daily = et0 * kc
+
+    etc_total = etc_daily * days  
+
+    return etc_total
+
+def calculate_dha(weather_data: WeatherData) -> float:
+    """
+    Calcula el déficit hídrico aparente a partir de la ETc y la precipitación.
+    """
     etc = calculate_etc(weather_data)
-    precipitation = weather_data.get("precipitation")
+    precipitation = weather_data.precipitation
 
-    dha = etc - precipitation  # Horas de riego necesarias = ETc - precipitación
-    return max(dha, 0) 
+    dha = etc - precipitation
+    return max(dha, 0)
 
-#print(calculate_dha(test_data))
 
-def calculate_frost_risk(weather_data: dict, crop_data: dict) -> str:
-    '''
-    Evalúa el riesgo de heladas para un cultivo específico utilizando datos climáticos.
-    Args:
-        weather_data (dict): Un diccionario que contiene datos climáticos relevantes.
-        crop_data (dict): Un diccionario que contiene información sobre el cultivo.
-    Returns:
-        str: Una evaluación del riesgo de heladas ("Alto", "Moderado", "Bajo").
-    '''
-    tmin = weather_data.get("temperature_min")
-    optimal_tmin = crop_data.get("optimal_temp_min")
+def calculate_frost_risk(weather_data: WeatherData, crop_data: CropData) -> dict:
+    """
+    Evalúa el riesgo de heladas para un cultivo.
+    """
+    tmin = weather_data.temperature_min
+    optimal_tmin = crop_data.optimal_temp_min
 
-    if tmin < optimal_tmin:
-        return "Alto"
-    elif tmin <= optimal_tmin + 3:
-        return "Moderado"
+    diff = optimal_tmin - tmin
+
+    if diff > 5:
+        level, score = "Alto", 0.9
+    elif diff > 2:
+        level, score = "Moderado", 0.5
+    elif diff > 0:
+        level, score = "Bajo", 0.2
     else:
-        return "Bajo"
-    
-def calculate_mildiu_risk(weather_data: dict) -> str:
-    '''
-    Evalúa el riesgo de mildiu para un cultivo específico utilizando datos climáticos.
-    Args:
-        weather_data (dict): Un diccionario que contiene datos climáticos relevantes.
-    Returns:
-        str: Una evaluación del riesgo de mildiu ("Alto", "Moderado", "Bajo").
-    '''
-    humidity = weather_data.get("humidity")
-    precipitation = weather_data.get("precipitation")
+        level, score = "Nulo", 0.0
+
+    return {
+        "level": level,
+        "score": score,
+        "value": tmin,
+        "threshold": optimal_tmin,
+    }
+
+
+def calculate_mildiu_risk(weather_data: WeatherData) -> dict:
+    """
+    Evalúa el riesgo de mildiu a partir de humedad y precipitación.
+    """
+    humidity = weather_data.humidity
+    precipitation = weather_data.precipitation
+
+    if humidity is None:
+        return {
+            "level": "Desconocido",
+            "score": 0.0,
+            "value": None,
+            "threshold": 85,
+        }
 
     if humidity >= 85:
-        return "Alto"
+        level, score = "Alto", 0.9
     elif humidity > 60 and 10 <= precipitation <= 30:
-        return "Moderado"
+        level, score = "Moderado", 0.5
     else:
-        return "Bajo"
+        level, score = "Bajo", 0.2
 
-def calculate_heat_stress(weather_data: dict, crop_data: dict) -> str:
-    '''
-    Evalúa el riesgo de estrés térmico para un cultivo específico utilizando datos climáticos.
-    Args:
-        weather_data (dict): Un diccionario que contiene datos climáticos relevantes.
-        crop_data (dict): Un diccionario que contiene información sobre el cultivo.
-    Returns:
-        str: Una evaluación del riesgo de estrés térmico ("Alto", "Moderado", "Bajo").
-    '''
-    tmax = weather_data.get("temperature_max")
-    optimal_temp_max = crop_data.get("optimal_temp_max")
+    return {
+        "level": level,
+        "score": score,
+        "value": humidity,
+        "threshold": 85,
+    }
+
+
+def calculate_heat_stress(weather_data: WeatherData, crop_data: CropData) -> dict:
+    """
+    Evalúa el riesgo de estrés térmico para un cultivo.
+    """
+    tmax = weather_data.temperature_max
+    optimal_temp_max = crop_data.optimal_temp_max
 
     if tmax <= optimal_temp_max:
-        heat_stress = "Bajo"
+        level, score = "Bajo", 0.2
     elif tmax <= optimal_temp_max + 3:
-        heat_stress = "Moderado"
+        level, score = "Moderado", 0.5
     else:
-        heat_stress = "Alto"
+        level, score = "Alto", 0.9
 
-    return heat_stress
+    return {
+        "level": level,
+        "score": score,
+        "value": tmax,
+        "threshold": optimal_temp_max + 3,
+    }
 
-#print(calculate_heat_stress(test_data, crop_td))
 
-def strong_wind_risk(weather_data: dict) -> str:
-    '''
-    Evalúa el riesgo de viento fuerte para un cultivo específico utilizando datos climáticos.
-    Args:
-        weather_data (dict): Un diccionario que contiene datos climáticos relevantes.
-    Returns:
-        str: Una evaluación del riesgo de viento fuerte ("Alto", "Moderado", "Bajo").
-    '''
-    wind_speed = weather_data.get("wind")
+def strong_wind_risk(weather_data: WeatherData) -> dict:
+    """
+    Evalúa el riesgo de viento fuerte para el cultivo.
+    """
+    wind_speed = weather_data.wind
+
+    if wind_speed is None:
+        return {
+            "level": "Desconocido",
+            "score": 0.0,
+            "value": None,
+            "threshold": 50,
+        }
 
     if wind_speed >= 50:
-        return "Alto"
+        level, score = "Alto", 0.9
     elif wind_speed >= 30:
-        return "Moderado"
+        level, score = "Moderado", 0.5
     else:
-        return "Bajo"
-    
+        level, score = "Bajo", 0.2
+
+    return {
+        "level": level,
+        "score": score,
+        "value": wind_speed,
+        "threshold": 50,
+    }
