@@ -3,6 +3,7 @@ from agents.observation_agent import ObservationAgent
 from agents.inference_agent import InferenceAgent
 from agents.prediction_agent import PredictionAgent
 from agents.risk_agent import RiskAgent
+from agents.deliberative_agent import DeliberativeAgent
 from models.shared_state import SharedState 
 from tools.aemet_stations import station_to_ccaa
 from tools.aemet_api import AemetError
@@ -29,6 +30,7 @@ def main():
     inference_agent = InferenceAgent()
     prediction_agent = PredictionAgent()
     risk_agent = RiskAgent()
+    deliberative_agent = DeliberativeAgent()
 
     try:
         # Pipeline
@@ -45,6 +47,10 @@ def main():
 
         shared_state = risk_agent.run(shared_state)
         print("✓ Evaluación de riesgos completada")
+
+        shared_state = deliberative_agent.run(shared_state)
+        print("✓ Deliberación completada")
+
         
         # TODO: Añadir cuando estén implementados
         # shared_state = risk_agent.run(shared_state)

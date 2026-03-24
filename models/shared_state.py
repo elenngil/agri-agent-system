@@ -62,6 +62,19 @@ class Alert:
     valid_until: str
     message: str
 
+@dataclass
+class Action:
+    type: str
+    intensity: str
+    cost: float
+
+
+@dataclass
+class Scenario:
+    actions: list[Action]
+    utility: float
+    breakdown: dict
+
 
 @dataclass
 class SharedState:
@@ -78,5 +91,7 @@ class SharedState:
     predictions: Optional[Predictions] = None
 
     alerts: list[Alert] = field(default_factory=list)
-    scenarios: list = field(default_factory=list)
+    scenarios: list[Scenario] = field(default_factory=list)
     explanation: Optional[dict] = None
+
+
