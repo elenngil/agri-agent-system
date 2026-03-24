@@ -2,6 +2,7 @@
 from agents.observation_agent import ObservationAgent
 from agents.inference_agent import InferenceAgent
 from agents.prediction_agent import PredictionAgent
+from agents.risk_agent import RiskAgent
 from models.shared_state import SharedState 
 from tools.aemet_stations import station_to_ccaa
 from tools.aemet_api import AemetError
@@ -24,17 +25,11 @@ def main():
         ccaa=ccaa
     )
     
-    # Si sigues con dict:
-    # shared_state = create_shared_state(
-    #     station=station,
-    #     start_date=date(2024, 1, 21),
-    #     end_date=date(2024, 1, 25)
-    # )
-    # shared_state["ccaa"] = ccaa
-    # Inicializar agentes
     observation_agent = ObservationAgent()
     inference_agent = InferenceAgent()
     prediction_agent = PredictionAgent()
+    risk_agent = RiskAgent()
+
     try:
         # Pipeline
         print(f"Ejecutando para {ccaa} (estación {station})...\n")
@@ -47,6 +42,9 @@ def main():
         
         shared_state = prediction_agent.run(shared_state)
         print("✓ Predicción completada")
+
+        shared_state = risk_agent.run(shared_state)
+        print("✓ Evaluación de riesgos completada")
         
         # TODO: Añadir cuando estén implementados
         # shared_state = risk_agent.run(shared_state)

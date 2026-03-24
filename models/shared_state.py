@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import date
 from typing import Optional
+from enum import Enum
 
 
 @dataclass
@@ -44,6 +45,23 @@ class Predictions:
     future_water_stress: str
     irrigation_need: str
 
+class RiskLevel(Enum):
+    LOW = "bajo"
+    MEDIUM = "medio"
+    HIGH = "alto"
+    CRITICAL = "crítico"
+
+@dataclass
+class Alert:
+    risk_type: str
+    level: str
+    value: float | str | None
+    threshold: float | str | None
+    penalty: float
+    ccaa: str
+    valid_until: str
+    message: str
+
 
 @dataclass
 class SharedState:
@@ -59,6 +77,6 @@ class SharedState:
     climate_features: Optional[ClimateFeatures] = None
     predictions: Optional[Predictions] = None
 
-    alerts: list = field(default_factory=list)
+    alerts: list[Alert] = field(default_factory=list)
     scenarios: list = field(default_factory=list)
     explanation: Optional[dict] = None
