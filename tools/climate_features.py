@@ -31,28 +31,36 @@ def calculate_dha(weather_data: WeatherData) -> float:
 
 
 def calculate_frost_risk(weather_data: WeatherData, crop_data: CropData) -> dict:
-    """
-    Evalúa el riesgo de heladas para un cultivo.
-    """
     tmin = weather_data.temperature_min
     optimal_tmin = crop_data.optimal_temp_min
 
-    diff = optimal_tmin - tmin
+    if tmin is None:
+        return {
+            "level": "Desconocido",
+            "score": 0.0,
+            "value": None,
+            "threshold": 0.0,
+        }
 
-    if diff > 5:
+    # Riesgo meteorológico real de helada
+    if tmin <= 0:
         level, score = "Alto", 0.9
-    elif diff > 2:
+        threshold = 0.0
+    elif tmin <= 2:
         level, score = "Moderado", 0.5
-    elif diff > 0:
+        threshold = 2.0
+    elif tmin <= 5:
         level, score = "Bajo", 0.2
+        threshold = 5.0
     else:
         level, score = "Nulo", 0.0
+        threshold = 5.0
 
     return {
         "level": level,
         "score": score,
         "value": tmin,
-        "threshold": optimal_tmin,
+        "threshold": threshold,
     }
 
 

@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field
 from datetime import date
-from typing import Optional
+from typing import Optional, List
 from enum import Enum
+from models.daily_plan import DailyPlan
 
 
 @dataclass
@@ -22,7 +23,7 @@ class CropData:
     color: str
     water_need: str
     frost_sensitivity: str
-    heat_tolerance: str
+    heat_sensitivity: str
     humidity_sensitivity: str
     optimal_temp_min: float
     optimal_temp_max: float
@@ -77,6 +78,15 @@ class Scenario:
 
 
 @dataclass
+class DailyPlan:
+    irrigation: dict
+    climate: dict
+    crop_status: dict
+    prevention: List[str]
+    explanation: str
+
+
+@dataclass
 class SharedState:
     station: str
     start_date: date
@@ -93,5 +103,8 @@ class SharedState:
     alerts: list[Alert] = field(default_factory=list)
     scenarios: list[Scenario] = field(default_factory=list)
     explanation: Optional[dict] = None
+
+    daily_plan: Optional[DailyPlan] = None
+
 
 

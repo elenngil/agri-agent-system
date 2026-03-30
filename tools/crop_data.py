@@ -55,7 +55,7 @@ def get_crop_data(station: str) -> dict:
         "color": row["color"],
         "water_need": row["water_need"],
         "frost_sensitivity": row["frost_sensitivity"],
-        "heat_tolerance": row["heat_tolerance"],
+        "heat_sensitivity": row["heat_sensitivity"],
         "humidity_sensitivity": row["humidity_sensitivity"],
         "optimal_temp_min": float(row["optimal_temp_min"]),
         "optimal_temp_max": float(row["optimal_temp_max"]),

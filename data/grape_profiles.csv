@@ -1,4 +1,4 @@
-grape_variety,color,water_need,frost_sensitivity,heat_tolerance,humidity_sensitivity,optimal_temp_min,optimal_temp_max,optimal_humidity_max,optimal_precip_mm
+grape_variety,color,water_need,frost_sensitivity,heat_sensitivity,humidity_sensitivity,optimal_temp_min,optimal_temp_max,optimal_humidity_max,optimal_precip_mm
 Tempranillo,red,medium,high,medium,high,15,28,75,500
 Airen,white,low,medium,very_high,low,18,32,60,350
 Albariño,white,medium_high,medium,low,high,16,25,85,800

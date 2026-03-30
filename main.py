@@ -5,7 +5,9 @@ from agents.prediction_agent import PredictionAgent
 from agents.risk_agent import RiskAgent
 from agents.deliberative_agent import DeliberativeAgent
 from agents.explanation_agent import ExplanationAgent
+from agents.daily_plan_agent import DailyPlanAgent
 from smolagents import InferenceClientModel
+from models import shared_state
 from models.shared_state import SharedState 
 from tools.aemet_stations import station_to_ccaa
 from tools.aemet_api import AemetError
@@ -14,7 +16,7 @@ from pprint import pprint
 
 
 def main():
-    station = "B013X"
+    station = "9995Y"
 
     try:
         ccaa = station_to_ccaa(station)
@@ -25,8 +27,8 @@ def main():
     # Si usas dataclass:
     shared_state = SharedState(
         station=station,
-        start_date=date(2024, 1, 21),
-        end_date=date(2024, 1, 25),  # Rango de 5 días para probar agregación
+        start_date=date(2024, 7, 22),
+        end_date=date(2024, 7, 26),  # Rango de 5 días para probar agregación
         ccaa=ccaa
     )
     
@@ -36,6 +38,7 @@ def main():
     risk_agent = RiskAgent()
     deliberative_agent = DeliberativeAgent()
     explanation_agent = ExplanationAgent(model=InferenceClientModel("gpt-3.5-turbo"))
+    daily_plan_agent = DailyPlanAgent()
 
     try:
         # Pipeline
@@ -58,6 +61,9 @@ def main():
 
         shared_state = explanation_agent.run(shared_state)
         print("✓ Explicación generada")
+
+        shared_state = daily_plan_agent.run(shared_state)
+        print("✓ Plan diario generado")
 
 
         print("\n" + "="*50)
@@ -91,6 +97,17 @@ def main():
             print("=" * 50)
             print(shared_state.explanation["sms_text"])
 
+            print("\n" + "=" * 50)
+            print("PLAN DIARIO")
+            print("=" * 50)
+            print("\nSMS:")
+            print(shared_state.daily_plan.sms)
+
+            print("\nExplicación:")
+            print(shared_state.daily_plan.explanation)
+            
+
+
         else:
             #pprint(shared_state, sort_dicts=False)
             print("\n" + "=" * 50)
@@ -102,6 +119,7 @@ def main():
             print("MOTIVO DE LA DECISIÓN")
             print("=" * 50)
             print(shared_state.explanation["decision_why"]["short_reason"])
+
 
             print("\n" + "=" * 50)
             print("CONFIANZA")
@@ -115,6 +133,15 @@ def main():
             print("SMS")
             print("=" * 50)
             print(shared_state.explanation["sms_text"])
+
+            print("\n" + "=" * 50)
+            print("PLAN DIARIO")
+            print("=" * 50)
+            print("\nSMS:")
+            print(shared_state.daily_plan.sms)
+
+            print("\nExplicación:")
+            print(shared_state.daily_plan.explanation)
             
     except AemetError as e:
         print(f"Error de AEMET: {e}")

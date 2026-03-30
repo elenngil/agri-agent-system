@@ -38,7 +38,7 @@ class ObservationAgent:
                 color=crop_raw["color"],
                 water_need=crop_raw["water_need"],
                 frost_sensitivity=crop_raw["frost_sensitivity"],
-                heat_tolerance=crop_raw["heat_tolerance"],
+                heat_sensitivity=crop_raw["heat_sensitivity"],
                 humidity_sensitivity=crop_raw["humidity_sensitivity"],
                 optimal_temp_min=crop_raw["optimal_temp_min"],
                 optimal_temp_max=crop_raw["optimal_temp_max"],

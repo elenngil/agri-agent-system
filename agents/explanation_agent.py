@@ -26,7 +26,7 @@ class ExplanationAgent:
             "risk_explanation": self._explain_risks(alerts[:3]),
             "recommendation_reasoning": self._explain_recommendation(best_scenario, climate, predictions, crop),
             "alternatives": self._explain_alternatives(state.scenarios[1:]),
-            "sms_text": self._generate_sms(best_scenario, alerts[:2], state.ccaa),
+            "sms_text": self._generate_sms(best_scenario, alerts[:2], state.ccaa, state),
         }
 
         state.explanation = explanation
@@ -298,17 +298,36 @@ Reglas:
 
         return f"Escenario alternativo con utilidad {scenario.utility:.2f}, basado en {actions_text}."
 
-    def _generate_sms(self, best_scenario, top_alerts, ccaa) -> str:
-        if top_alerts:
-            risk_text = ", ".join(
-                [f"{self._risk_emoji(a.risk_type)} {self._pretty_risk_name(a.risk_type)} {a.level}" for a in top_alerts]
-            )
-        else:
-            risk_text = "sin alertas relevantes"
+    def _generate_sms(self, best_scenario, top_alerts, ccaa, state=None) -> str:
+        # Periodo
+        period = ""
+        if state and state.start_date and state.end_date:
+            period = f" · {state.start_date} a {state.end_date}"
 
+        # Alertas
+        if top_alerts:
+            alert = top_alerts[0]  # Solo la principal para no saturar
+            level_emoji = {"high": "🔴", "medium": "🟡", "low": "🟢"}.get(alert.level, "⚠️")
+            risk_text = f"{level_emoji} {self._pretty_risk_name(alert.risk_type)} (nivel {alert.level})"
+        else:
+            risk_text = "🟢 Condiciones estables"
+
+        # Acción principal
         main_action = self._get_main_action(best_scenario)
-        sms = f"🍇 {ccaa}\n⚠️ {risk_text}\n✅ {main_action}"
+        action_text = main_action.capitalize()
+
+        # Coste aproximado
+        total_cost = sum(a.cost for a in best_scenario.actions)
+        if total_cost < 50:
+            cost_label = "bajo"
+        elif total_cost < 150:
+            cost_label = "medio"
+        else:
+            cost_label = "alto"
+
+        sms = f"🍇 {ccaa}{period}\n{risk_text}\n✅ {action_text}\n💰 Coste estimado: {cost_label}"
         return sms[:160]
+
 
     def _risk_emoji(self, risk_type: str) -> str:
         emojis = {
