@@ -1,9 +1,10 @@
+from datetime import date
+
 from orchestrator import Orchestrator
 from smolagents import InferenceClientModel
 from models.shared_state import SharedState
 from tools.aemet_stations import station_to_ccaa
 from tools.aemet_api import AemetError
-from datetime import date
 
 
 def main():

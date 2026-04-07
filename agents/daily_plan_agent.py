@@ -349,33 +349,28 @@ class DailyPlanAgent:
 
         return explanation.strip()
     
-    def _build_sms(
-            self,
-            irr: IrrigationPlan,
-            climate: ClimateSummary,
-            prev: list[PreventionItem],
-            state: SharedState,
-        ) -> str:
-            region = getattr(state, "ccaa", "—")
-            # Icono de clima
-            climate_icon = {
-                "óptimo":          "🟢",
-                "estrés térmico":  "🌡️",
-                "riesgo de helada": "🥶",
-                "frío":            "❄️",
-                "húmedo":          "💧",
-            }.get(climate.condition, "🌤️")
-            # Alerta más relevante
-            top_prev = next((p for p in prev if p.priority == "alta"), None) or prev[0]
-            warn_text = (
-                f"⚠️ {top_prev.label}"
-                if top_prev.risk != "none"
-                else "✅ Sin alertas"
-            )
-            sms = (
-                f"🍇 {region} | "
-                f"💧 {irr.adjusted_liters} L/m² | "
-                f"{climate_icon} {climate.condition} | "
-                f"{warn_text}"
-            )
-            return sms[:160]
+    def _build_sms(self, irr, climate, prev, state) -> str:
+        region = getattr(state, "ccaa", "—")
+
+        climate_icon = {
+            "óptimo": "🟢",
+            "estrés térmico": "🌡️",
+            "riesgo de helada": "🥶",
+            "frío": "❄️",
+            "húmedo": "🌫️",
+        }.get(climate.condition, "🌤️")
+
+        top_prev = next((p for p in prev if p.priority == "alta"), None) or prev[0]
+        warn_text = f"⚠️ {top_prev.label}" if top_prev.risk != "none" else "✅ Sin alertas"
+
+        sms = (
+            f"🍇 {region} | "
+            f"💧 {irr.adjusted_liters} L/m² | "
+            f"{climate_icon} {climate.condition} | "
+            f"{warn_text}"
+        )
+
+        dashboard_url = "http://localhost:8501"
+        candidate = f"{sms} | 📊 {dashboard_url}"
+
+        return candidate if len(candidate) <= 160 else sms[:160]
