@@ -1,4 +1,5 @@
 from models.shared_state import SharedState
+from rag.retriever import get_retriever
 
 
 class ExplanationAgent:
@@ -48,52 +49,46 @@ class ExplanationAgent:
             ]
         ) or "- Mantener manejo actual"
 
+        rag_context = self._enrich_with_rag(state)
+        rag_block = f"\nDocumentación técnica de referencia:\n{rag_context}\n" if rag_context else ""
         prompt = f"""
-Eres un asistente agrícola que explica recomendaciones a un viticultor.
-
-Contexto:
-- Región: {state.ccaa}
-- Estación: {state.station}
-- Periodo analizado: {state.start_date} a {state.end_date}
-- Variedad: {state.crop_data.variety if state.crop_data else "desconocida"}
-
-Datos relevantes:
-- Temperatura mínima: {state.weather_data.temperature_min if state.weather_data else "N/D"} °C
-- Temperatura máxima: {state.weather_data.temperature_max if state.weather_data else "N/D"} °C
-- Precipitación acumulada: {state.weather_data.precipitation if state.weather_data else "N/D"} mm
-- ETc: {state.climate_features.etc if state.climate_features else "N/D"}
-- DHA: {state.climate_features.dha if state.climate_features else "N/D"}
-
-Riesgos detectados:
-{alerts_text}
-
-Predicciones:
-- Estrés hídrico futuro: {state.predictions.future_water_stress if state.predictions else "N/D"}
-- Necesidad de riego: {state.predictions.irrigation_need if state.predictions else "N/D"}
-
-Mejor escenario:
-- Utilidad: {best_scenario.utility:.2f}
-- Confianza estimada: {confidence["score"]:.2f}
-Acciones recomendadas:
-{actions_text}
-
-Escribe una explicación en español con ESTE FORMATO EXACTO:
-
-Resumen:
-<2 o 3 frases claras y prácticas>
-
-Motivo principal:
-<1 o 2 frases explicando por qué se eligió esta recomendación>
-
-Confianza:
-<1 frase breve explicando el nivel de confianza>
-
-Reglas:
-- Usa lenguaje natural
-- No uses nombres técnicos como frost_risk o irrigation_need
-- Usa saltos de línea entre bloques
-- Sé claro, directo y útil para un viticultor
-"""
+        Eres un asistente agrícola que explica recomendaciones a un viticultor.
+        Contexto:
+        - Región: {state.ccaa}
+        - Estación: {state.station}
+        - Periodo analizado: {state.start_date} a {state.end_date}
+        - Variedad: {state.crop_data.variety if state.crop_data else "desconocida"}
+        Datos relevantes:
+        - Temperatura mínima: {state.weather_data.temperature_min if state.weather_data else "N/D"} °C
+        - Temperatura máxima: {state.weather_data.temperature_max if state.weather_data else "N/D"} °C
+        - Precipitación acumulada: {state.weather_data.precipitation if state.weather_data else "N/D"} mm
+        - ETc: {state.climate_features.etc if state.climate_features else "N/D"}
+        - DHA: {state.climate_features.dha if state.climate_features else "N/D"}
+        Riesgos detectados:
+        {alerts_text}
+        Predicciones:
+        - Estrés hídrico futuro: {state.predictions.future_water_stress if state.predictions else "N/D"}
+        - Necesidad de riego: {state.predictions.irrigation_need if state.predictions else "N/D"}
+        Mejor escenario:
+        - Utilidad: {best_scenario.utility:.2f}
+        - Confianza estimada: {confidence["score"]:.2f}
+        Acciones recomendadas:
+        {actions_text}
+        {rag_block}
+        Escribe una explicación en español con ESTE FORMATO EXACTO:
+        Resumen:
+        <2 o 3 frases claras y prácticas>
+        Motivo principal:
+        <1 o 2 frases explicando por qué se eligió esta recomendación>
+        Confianza:
+        <1 frase breve explicando el nivel de confianza>
+        Reglas:
+        - Usa lenguaje natural
+        - No uses nombres técnicos como frost_risk o irrigation_need
+        - Usa saltos de línea entre bloques
+        - Sé claro, directo y útil para un viticultor
+        - Si hay documentación técnica de referencia, úsala para fundamentar las recomendaciones
+        """
 
         try:
             response = self.model.generate(
@@ -399,3 +394,22 @@ Reglas:
             "heavy_defoliation": "defoliación intensa",
         }
         return mapping.get(intensity, intensity)
+    
+    def _enrich_with_rag(self, state: SharedState) -> str:
+        """
+        Consulta la base vectorial para obtener contexto agronómico
+        relevante para los riesgos detectados y la variedad del cultivo.
+        Devuelve un string con el contexto, o vacío si no hay nada útil.
+        """
+        if not state.alerts:
+            return ""
+        retriever = get_retriever()
+        variety   = getattr(state.crop_data, "variety", "vid") if state.crop_data else "vid"
+        # Construir query a partir de las alertas reales
+        top_risks = [a.risk_type for a in state.alerts[:2]]
+        query = f"manejo de {', '.join(top_risks)} en {variety}"
+        # Filtros por cultivo (fases las dejamos abiertas para no limitar demasiado)
+        chunks = retriever.retrieve(query, top_k=3, filters={"crop": "vid"})
+        if not chunks:
+            return ""
+        return retriever.format_context(chunks)

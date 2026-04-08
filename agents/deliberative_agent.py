@@ -20,27 +20,24 @@ class DeliberativeAgent:
             "sustainability": 0.10,
         }
 
-    def run(self, state: SharedState, top_n: int = 3) -> SharedState:
+    def run(self, state: SharedState, top_n: int = 3, excluded_actions: list[str] | None = None) -> SharedState:
         if state.climate_features is None:
             raise ValueError("climate_features no está disponible en shared_state")
         if state.predictions is None:
             raise ValueError("predictions no está disponible en shared_state")
         if state.crop_data is None:
             raise ValueError("crop_data no está disponible en shared_state")
-
         candidate_scenarios = self._generate_relevant_scenarios(state)
-
+        # Filtrar acciones problemáticas si el crítico las señaló
+        if excluded_actions:
+            candidate_scenarios = [
+                actions for actions in candidate_scenarios
+                if not any(a.type in excluded_actions and a.intensity != "none" for a in actions)
+            ]
         scored_scenarios = []
         for actions in candidate_scenarios:
             utility, breakdown = self._calculate_utility(actions, state)
-            scored_scenarios.append(
-                Scenario(
-                    actions=actions,
-                    utility=utility,
-                    breakdown=breakdown,
-                )
-            )
-
+            scored_scenarios.append(Scenario(actions=actions, utility=utility, breakdown=breakdown))
         scored_scenarios.sort(key=lambda s: s.utility, reverse=True)
         state.scenarios = scored_scenarios[:top_n]
         return state

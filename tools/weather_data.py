@@ -1,5 +1,4 @@
 from datetime import date
-from smolagents import tool
 from tools.aemet_api import aemet_get
 
 
@@ -17,7 +16,6 @@ def to_float(x):
     return None
 
 
-@tool
 def get_climate_summary(station: str, start_date: date, end_date: date) -> dict:
     """
     Obtiene un resumen climático para una estación meteorológica en un rango de fechas.

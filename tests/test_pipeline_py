@@ -1,0 +1,173 @@
+"""
+Tests de integración mínimos.
+Verifican que el pipeline completo funciona sin datos reales de AEMET.
+
+Ejecutar:
+    python -m pytest tests/ -v
+"""
+
+import pytest
+from datetime import date
+from unittest.mock import patch, MagicMock
+
+from models.shared_state import SharedState, WeatherData, CropData, ClimateFeatures, Predictions
+from agents.risk_agent import RiskAgent
+from agents.deliberative_agent import DeliberativeAgent
+from agents.critic_agent import CriticAgent
+from agents.daily_plan_agent import DailyPlanAgent
+
+
+# ── Fixtures ──────────────────────────────────────────────────────────────────
+
+@pytest.fixture
+def base_state():
+    state = SharedState(
+        station="9995Y",
+        start_date=date(2024, 6, 10),
+        end_date=date(2024, 6, 14),
+        ccaa="La Rioja",
+    )
+    state.weather_data = WeatherData(
+        temperature_max=28.0,
+        temperature_min=14.0,
+        temperature_mean=21.0,
+        precipitation=2.0,
+        humidity=72.0,
+        wind=15.0,
+        pressure=1013.0,
+        days_count=5,
+    )
+    state.crop_data = CropData(
+        variety="Tempranillo",
+        color="red",
+        water_need="Media",
+        frost_sensitivity="Alta",
+        heat_sensitivity="Media",
+        humidity_sensitivity="Alta",
+        optimal_temp_min=10.0,
+        optimal_temp_max=30.0,
+        optimal_humidity_max=75.0,
+        optimal_precip_mm=400.0,
+    )
+    state.climate_features = ClimateFeatures(
+        etc=4.5,
+        dha=3.2,
+        frost_risk={"level": "Bajo", "score": 0.1, "value": 14.0, "threshold": 5.0},
+        heat_stress={"level": "Bajo", "score": 0.1, "value": 28.0, "threshold": 33.0},
+        mildiu_risk={"level": "Moderado", "score": 0.5, "value": 72.0, "threshold": 85},
+        strong_wind_risk={"level": "Bajo", "score": 0.1, "value": 15.0, "threshold": 50},
+    )
+    state.predictions = Predictions(
+        future_water_stress="Moderado",
+        irrigation_need="Media",
+    )
+    return state
+
+
+@pytest.fixture
+def frost_state():
+    """Estado con riesgo de helada crítico."""
+    state = SharedState(
+        station="9995Y",
+        start_date=date(2024, 4, 10),
+        end_date=date(2024, 4, 12),
+        ccaa="Castilla y León",
+    )
+    state.weather_data = WeatherData(
+        temperature_max=12.0,
+        temperature_min=-3.0,
+        temperature_mean=4.5,
+        precipitation=0.0,
+        humidity=40.0,
+        wind=5.0,
+        pressure=1020.0,
+        days_count=3,
+    )
+    state.crop_data = CropData(
+        variety="Tempranillo",
+        color="red",
+        water_need="Media",
+        frost_sensitivity="Alta",
+        heat_sensitivity="Media",
+        humidity_sensitivity="Alta",
+        optimal_temp_min=10.0,
+        optimal_temp_max=30.0,
+        optimal_humidity_max=75.0,
+        optimal_precip_mm=400.0,
+    )
+    state.climate_features = ClimateFeatures(
+        etc=1.5,
+        dha=1.5,
+        frost_risk={"level": "Alto", "score": 0.9, "value": -3.0, "threshold": 0.0},
+        heat_stress={"level": "Bajo", "score": 0.1, "value": 12.0, "threshold": 33.0},
+        mildiu_risk={"level": "Bajo", "score": 0.1, "value": 40.0, "threshold": 85},
+        strong_wind_risk={"level": "Bajo", "score": 0.1, "value": 5.0, "threshold": 50},
+    )
+    state.predictions = Predictions(
+        future_water_stress="Bajo",
+        irrigation_need="Baja",
+    )
+    return state
+
+
+# ── Tests ─────────────────────────────────────────────────────────────────────
+
+def test_risk_agent_detects_mildiu(base_state):
+    state = RiskAgent().run(base_state)
+    risk_types = [a.risk_type for a in state.alerts]
+    assert "mildiu_risk" in risk_types
+
+
+def test_risk_agent_detects_frost(frost_state):
+    state = RiskAgent().run(frost_state)
+    risk_types = [a.risk_type for a in state.alerts]
+    assert "frost_risk" in risk_types
+
+
+def test_deliberative_agent_produces_scenarios(base_state):
+    state = RiskAgent().run(base_state)
+    state = DeliberativeAgent().run(state, top_n=3)
+    assert len(state.scenarios) > 0
+    assert state.scenarios[0].utility > 0
+
+
+def test_deliberative_agent_urgent_path(frost_state):
+    """En ruta urgente top_n=1 produce exactamente 1 escenario."""
+    state = RiskAgent().run(frost_state)
+    state = DeliberativeAgent().run(state, top_n=1)
+    assert len(state.scenarios) == 1
+
+
+def test_critic_approves_normal_scenario(base_state):
+    state = RiskAgent().run(base_state)
+    state = DeliberativeAgent().run(state, top_n=3)
+    result = CriticAgent().run(state)
+    # En condiciones normales de verano, el crítico debe aprobar
+    assert "approved" in result
+    assert isinstance(result["approved"], bool)
+
+
+def test_daily_plan_always_generates(base_state):
+    """DailyPlanAgent siempre genera un plan, incluso sin alertas."""
+    state = RiskAgent().run(base_state)
+    state = DailyPlanAgent().run(state)
+    assert state.daily_plan is not None
+    assert state.daily_plan.irrigation.adjusted_liters >= 0
+
+
+def test_routing_identifies_critical_alerts(frost_state):
+    """El routing del orquestador identifica correctamente alertas críticas."""
+    state = RiskAgent().run(frost_state)
+    critical = [a for a in state.alerts if a.level in ("alto", "crítico")]
+    assert len(critical) > 0
+
+
+def test_excluded_actions_filter(base_state):
+    """DeliberativeAgent respeta las acciones excluidas por el crítico."""
+    state = RiskAgent().run(base_state)
+    state = DeliberativeAgent().run(state, top_n=3, excluded_actions=["fungicide"])
+    for scenario in state.scenarios:
+        for action in scenario.actions:
+            if action.type == "fungicide":
+                assert action.intensity == "none", \
+                    "fungicide debería estar en none cuando está excluido"

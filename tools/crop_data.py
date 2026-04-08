@@ -1,9 +1,7 @@
 import pandas as pd
-from smolagents import tool
 from tools.aemet_stations import station_to_ccaa
 
 
-@tool
 def get_crop_data(station: str) -> dict:
     """
     Obtiene información del cultivo asociado a una estación meteorológica.

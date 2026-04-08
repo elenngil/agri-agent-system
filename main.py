@@ -1,10 +1,13 @@
 from datetime import date
 
 from orchestrator import Orchestrator
-from smolagents import InferenceClientModel
 from models.shared_state import SharedState
 from tools.aemet_stations import station_to_ccaa
 from tools.aemet_api import AemetError
+
+import os
+from dotenv import load_dotenv
+from smolagents import HfApiModel
 
 
 def main():
@@ -23,9 +26,12 @@ def main():
         ccaa=ccaa
     )
 
-    orchestrator = Orchestrator(
-        model=InferenceClientModel("gpt-3.5-turbo")
+    load_dotenv()
+    model = HfApiModel(
+        model_id="Qwen/Qwen2.5-72B-Instruct",
+        token=os.environ["HF_TOKEN"],
     )
+    orchestrator = Orchestrator(model=model)
 
     try:
         print(f"Ejecutando para {ccaa} (estación {station})...\n")

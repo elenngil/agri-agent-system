@@ -1,7 +1,6 @@
 import pandas as pd
 from tools.aemet_stations import get_stations
 from tools.aemet_stations import station_to_ccaa
-from smolagents import tool
 
 data = {
     "ccaa": ["Andalucía", "Aragón", "Asturias", "Baleares", "Canarias", "Cantabria", "Castilla-La Mancha", "Castilla y León", "Cataluña", "Comunidad Valenciana", "Extremadura", "Galicia", "La Rioja", "Madrid", "Murcia", "Navarra", "País Vasco"],
@@ -14,8 +13,6 @@ Para saber que tipo de suelo es, se podría usar la ubicación del usuario que p
 '''
 
 
-
-@tool
 def get_soil_multiplier(station: str) -> float:
     """
     Get an irrigation multiplier based on the predominant soil type in the region

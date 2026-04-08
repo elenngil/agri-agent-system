@@ -1,3 +1,5 @@
+# orchestrator.py — reemplazar completamente
+
 import json
 from pathlib import Path
 
@@ -9,50 +11,93 @@ from agents.risk_agent import RiskAgent
 from agents.deliberative_agent import DeliberativeAgent
 from agents.explanation_agent import ExplanationAgent
 from agents.daily_plan_agent import DailyPlanAgent
+from agents.critic_agent import CriticAgent
 
 
 class Orchestrator:
     """
-    Ejecuta el pipeline completo de agentes en orden.
-    Cada agente recibe el estado compartido, lo enriquece y lo devuelve.
-    Además, guarda la salida final para que pueda ser consumida por el dashboard.
+    Supervisor que decide qué agentes ejecutar y en qué orden
+    según el estado del sistema. No es un pipeline fijo.
     """
 
     def __init__(self, model):
-        self.observation_agent = ObservationAgent()
-        self.inference_agent = InferenceAgent()
-        self.prediction_agent = PredictionAgent()
-        self.risk_agent = RiskAgent()
-        self.deliberative_agent = DeliberativeAgent()
-        self.explanation_agent = ExplanationAgent(model=model)
-        self.daily_plan_agent = DailyPlanAgent()
+        self.observation   = ObservationAgent()
+        self.inference     = InferenceAgent()
+        self.prediction    = PredictionAgent()
+        self.risk          = RiskAgent()
+        self.deliberative  = DeliberativeAgent()
+        self.explanation   = ExplanationAgent(model=model)
+        self.daily_plan    = DailyPlanAgent()
+        self.critic        = CriticAgent()
 
     def run(self, state: SharedState) -> SharedState:
-        state = self.observation_agent.run(state)
+        # ── Fase 1: siempre se ejecuta ──────────────────────────
+        state = self.observation.run(state)
         print("✓ Observación completada")
 
-        state = self.inference_agent.run(state)
+        if state.weather_data is None:
+            print("⚠ Sin datos meteorológicos — abortando pipeline")
+            return state
+
+        state = self.inference.run(state)
         print("✓ Inferencia completada")
 
-        state = self.prediction_agent.run(state)
+        state = self.prediction.run(state)
         print("✓ Predicción completada")
 
-        state = self.risk_agent.run(state)
-        print("✓ Evaluación de riesgos completada")
+        state = self.risk.run(state)
+        print("✓ Riesgos evaluados")
 
-        state = self.deliberative_agent.run(state)
-        print("✓ Deliberación completada")
+        # ── Fase 2: routing según nivel de riesgo ───────────────
+        critical_alerts = [a for a in state.alerts if a.level in ("alto", "crítico")]
 
-        # Explicación global del sistema
-        state = self.explanation_agent.run(state)
-        print("✓ Explicación generada")
+        if critical_alerts:
+            print(f"⚡ {len(critical_alerts)} alerta(s) crítica(s) — activando ruta urgente")
+            state = self._run_urgent_path(state)
+        else:
+            print("🟢 Sin alertas críticas — ruta estándar")
+            state = self._run_standard_path(state)
 
-        # Plan diario operativo final
-        state = self.daily_plan_agent.run(state)
+        # ── Fase 3: plan diario siempre ─────────────────────────
+        state = self.daily_plan.run(state)
         print("✓ Plan diario generado")
 
-        # Guardar salida para el dashboard
         self._save_output(state)
+        return state
+
+    def _run_urgent_path(self, state: SharedState) -> SharedState:
+        """
+        Ruta cuando hay alertas críticas.
+        Prioriza explicación inmediata sin deliberación completa.
+        """
+        # Deliberación rápida con top_n reducido
+        state = self.deliberative.run(state, top_n=1)
+        print("✓ Deliberación rápida completada")
+
+        # Explicación directa sin pasar por crítico
+        # (en alertas críticas queremos velocidad)
+        state = self.explanation.run(state)
+        print("✓ Explicación urgente generada")
+
+        return state
+
+    def _run_standard_path(self, state: SharedState) -> SharedState:
+        """
+        Ruta estándar: deliberación completa + crítico + explicación.
+        """
+        state = self.deliberative.run(state, top_n=3)
+        print("✓ Deliberación completa")
+
+        # El crítico verifica que la recomendación tiene sentido
+        critique = self.critic.run(state)
+        if not critique["approved"]:
+            print(f"⚠ Crítico rechazó recomendación: {critique['reason']}")
+            # Reintentar deliberación con restricción adicional
+            state = self.deliberative.run(state, top_n=3, excluded_actions=critique.get("problematic_actions", []))
+            print("✓ Deliberación corregida")
+
+        state = self.explanation.run(state)
+        print("✓ Explicación generada")
 
         return state
 
@@ -69,9 +114,8 @@ class Orchestrator:
                 "start_date": str(getattr(state, "start_date", "")),
                 "end_date": str(getattr(state, "end_date", "")),
                 "variety": getattr(state.crop_data, "variety", "desconocida")
-                if getattr(state, "crop_data", None)
-                else "desconocida",
-                "dashboard_url": "http://localhost:8501",
+                if getattr(state, "crop_data", None) else "desconocida",
+                "dashboard_url": "[localhost](http://localhost:8501)",
             },
             "sms": plan.sms if plan else "—",
             "daily_plan": {
@@ -96,12 +140,7 @@ class Orchestrator:
                     "assumed": plan.crop_status.assumed,
                 },
                 "prevention": [
-                    {
-                        "risk": p.risk,
-                        "label": p.label,
-                        "priority": p.priority,
-                        "action": p.action,
-                    }
+                    {"risk": p.risk, "label": p.label, "priority": p.priority, "action": p.action}
                     for p in plan.prevention
                 ],
                 "explanation": plan.explanation,

@@ -1,0 +1,44 @@
+"""
+Tests del sistema RAG.
+Requieren que la base vectorial esté indexada:
+    python -m rag.ingest
+"""
+
+import pytest
+from pathlib import Path
+
+
+def test_chroma_db_exists():
+    """La base vectorial debe existir antes de hacer retrieval."""
+    chroma_path = Path("chroma_db")
+    assert chroma_path.exists(), (
+        "ChromaDB no existe. Ejecuta: python -m rag.ingest"
+    )
+
+
+def test_retriever_returns_results():
+    from rag.retriever import get_retriever
+    retriever = get_retriever()
+    assert retriever.count > 0, "La base vectorial está vacía"
+
+    chunks = retriever.retrieve("riesgo de helada en brotación", top_k=3)
+    assert len(chunks) > 0
+    assert all(hasattr(c, "content") for c in chunks)
+    assert all(hasattr(c, "score") for c in chunks)
+
+
+def test_retriever_filter_by_crop():
+    from rag.retriever import get_retriever
+    retriever = get_retriever()
+    chunks = retriever.retrieve("mildiu tratamiento", top_k=3, filters={"crop": "vid"})
+    for chunk in chunks:
+        assert chunk.metadata.get("crop") == "vid"
+
+
+def test_retriever_format_context():
+    from rag.retriever import get_retriever
+    retriever = get_retriever()
+    chunks = retriever.retrieve("estrés hídrico riego", top_k=2)
+    context = retriever.format_context(chunks)
+    assert isinstance(context, str)
+    assert len(context) > 0
