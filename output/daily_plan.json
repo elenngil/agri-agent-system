@@ -46,7 +46,7 @@
     "explanation": "Plan de manejo para Navarra — 2024-07-22 a 2024-07-26.\n\nClima: Humedad relativa del 81.8 % favorece el desarrollo de mildiu y botrytis. Revisar cobertura fungicida.\n\nRiego: se recomiendan 1.1 L/m² (base ajustada por ETc (1.1 L/m²)).\n\nCultivo en fase de maduración. [Tempranillo] Reducir aporte nitrogenado. Mantener riego equilibrado.\n\nPrevención: Atención prioritaria: Estrés hídrico futuro. Vigilar también: Riesgo de mildiu."
   },
   "explanation_agent": {
-    "summary": "Resumen:\nEn Navarra no se han detectado alertas relevantes en el periodo analizado.\n\nMotivo principal:\nSe recomienda mantener el manejo actual porque no aparecen riesgos que justifiquen una intervención.\n\nConfianza:\nEl nivel de confianza estimado es alta (1.00).",
+    "summary": "Resumen:\nDurante el periodo del 22 al 26 de julio de 2024, las condiciones climáticas en Navarra han sido favorables para la variedad Tempranillo, con temperaturas moderadas y una precipitación adecuada. Se recomienda aplicar un riego ligero para mantener el estrés hídrico bajo.\n\nMotivo principal:\nLas temperaturas máximas y mínimas han estado dentro de un rango favorable, y la precipitación acumulada ha sido suficiente para evitar un estrés hídrico significativo. Sin embargo, un riego ligero ayudará a mantener la humedad óptima en el suelo, asegurando un crecimiento saludable de la vid.\n\nConfianza:\nLa confianza en esta recomendación es alta, ya que los datos meteorológicos y las condiciones actuales indican un escenario muy favorable para el cultivo de Tempranillo en Navarra.",
     "confidence": {
       "score": 1.0,
       "label": "alta",

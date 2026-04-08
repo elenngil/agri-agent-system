@@ -94,7 +94,14 @@ class ExplanationAgent:
             response = self.model.generate(
                 messages=[{"role": "user", "content": prompt}]
             )
-            text = response if isinstance(response, str) else str(response)
+
+            if isinstance(response, str):
+                text = response
+            elif hasattr(response, "content"):
+                text = response.content
+            else:
+                text = str(response)
+
             return text.strip()
         except Exception:
             return self._generate_summary_fallback(state, best_scenario, confidence)

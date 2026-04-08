@@ -7,7 +7,7 @@ from tools.aemet_api import AemetError
 
 import os
 from dotenv import load_dotenv
-from smolagents import HfApiModel
+from smolagents import InferenceClientModel
 
 
 def main():
@@ -27,7 +27,8 @@ def main():
     )
 
     load_dotenv()
-    model = HfApiModel(
+    
+    model = InferenceClientModel(
         model_id="Qwen/Qwen2.5-72B-Instruct",
         token=os.environ["HF_TOKEN"],
     )

@@ -115,7 +115,7 @@ class Orchestrator:
                 "end_date": str(getattr(state, "end_date", "")),
                 "variety": getattr(state.crop_data, "variety", "desconocida")
                 if getattr(state, "crop_data", None) else "desconocida",
-                "dashboard_url": "[localhost](http://localhost:8501)",
+                "dashboard_url": "http://localhost:8501",
             },
             "sms": plan.sms if plan else "—",
             "daily_plan": {
