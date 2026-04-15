@@ -2,31 +2,31 @@
   "meta": {
     "region": "Navarra",
     "station": "9995Y",
-    "start_date": "2025-03-06",
-    "end_date": "2025-03-09",
+    "start_date": "2024-07-20",
+    "end_date": "2024-07-24",
     "variety": "Tempranillo",
     "dashboard_url": "http://localhost:8501"
   },
-  "sms": "🍇 Navarra | 💧 0.0 L/m² | 🟢 óptimo | ⚠️ Estrés hídrico futuro | 📊 http://localhost:8501",
+  "sms": "🍇 Navarra | 💧 1.1 L/m² | 🟢 óptimo | ⚠️ Estrés hídrico futuro | 📊 http://localhost:8501",
   "daily_plan": {
     "irrigation": {
       "base_liters": 6.0,
-      "adjusted_liters": 0.0,
-      "adjustment_reason": "base ajustada por ETc (0.7 L/m²); -4.0 L/m² por precipitación (21.0 mm)",
+      "adjusted_liters": 1.1,
+      "adjustment_reason": "base ajustada por ETc (1.1 L/m²)",
       "soil_multiplier": 1.0,
       "assumed_values": []
     },
     "climate": {
       "condition": "óptimo",
-      "temp_min": 7.4,
-      "temp_max": 18.9,
-      "precipitation": 21.0,
-      "humidity": 56.5,
-      "interpretation": "Condiciones térmicas (7.4–18.9 °C) y de humedad (56.5 %) dentro de rangos favorables para el viñedo."
+      "temp_min": 12.5,
+      "temp_max": 26.8,
+      "precipitation": 7.4,
+      "humidity": 79.6,
+      "interpretation": "Condiciones térmicas (12.5–26.8 °C) y de humedad (79.6 %) dentro de rangos favorables para el viñedo."
     },
     "crop_status": {
-      "phase": "brotación",
-      "recommendation": "[Tempranillo] Vigilar heladas tardías. No intervenir en suelo mojado.",
+      "phase": "maduración",
+      "recommendation": "[Tempranillo] Reducir aporte nitrogenado. Mantener riego equilibrado.",
       "assumed": false
     },
     "prevention": [
@@ -37,10 +37,10 @@
         "action": "El balance hídrico es deficitario. Aumentar frecuencia de riego preventivo."
       }
     ],
-    "explanation": "Plan de manejo para Navarra — 2025-03-06 a 2025-03-09.\n\nClima: Condiciones térmicas (7.4–18.9 °C) y de humedad (56.5 %) dentro de rangos favorables para el viñedo.\n\nRiego: se recomiendan 0.0 L/m² (base ajustada por ETc (0.7 L/m²); -4.0 L/m² por precipitación (21.0 mm)).\n\nCultivo en fase de brotación. [Tempranillo] Vigilar heladas tardías. No intervenir en suelo mojado.\n\nPrevención: Atención prioritaria: Estrés hídrico futuro."
+    "explanation": "Plan de manejo para Navarra — 2024-07-20 a 2024-07-24.\n\nClima: Condiciones térmicas (12.5–26.8 °C) y de humedad (79.6 %) dentro de rangos favorables para el viñedo.\n\nRiego: se recomiendan 1.1 L/m² (base ajustada por ETc (1.1 L/m²)).\n\nCultivo en fase de maduración. [Tempranillo] Reducir aporte nitrogenado. Mantener riego equilibrado.\n\nPrevención: Atención prioritaria: Estrés hídrico futuro."
   },
   "explanation_agent": {
-    "summary": "Resumen:\nSe recomienda aplicar un riego ligero durante este periodo. Las condiciones climáticas indican una baja necesidad de riego, pero un ligero aporte de agua puede ser beneficioso para el Tempranillo.\n\nMotivo principal:\nA pesar de la baja necesidad de riego detectada, un riego ligero puede ayudar a mantener la humedad del suelo en niveles óptimos, especialmente después de las precipitaciones recientes.\n\nConfianza:\nLa confianza en esta recomendación es alta, con una utilidad estimada del 80% y una confianza del 100%.",
+    "summary": "Resumen:\nLas condiciones climáticas actuales son favorables para el viñedo de Tempranillo en Navarra. Se recomienda aplicar un riego ligero durante este periodo.\n\nMotivo principal:\nA pesar de la precipitación acumulada de 7.4 mm y un estrés hídrico futuro bajo, un riego ligero ayudará a mantener el suelo adecuadamente húmedo, asegurando un crecimiento óptimo de la vid.\n\nConfianza:\nLa confianza en esta recomendación es muy alta, con una utilidad estimada del 80%.",
     "confidence": {
       "score": 1.0,
       "label": "alta",
@@ -53,7 +53,7 @@
         "el escenario recomendado tiene alta utilidad"
       ]
     },
-    "sms_text": "🍇 Navarra · 2025-03-06 a 2025-03-09\n🟢 Condiciones estables\n✅ Aplicar riego ligero\n💰 Coste estimado: bajo",
+    "sms_text": "🍇 Navarra · 2024-07-20 a 2024-07-24\n🟢 Condiciones estables\n✅ Aplicar riego ligero\n💰 Coste estimado: bajo",
     "risk_explanation": [],
     "alternatives": [
       {
