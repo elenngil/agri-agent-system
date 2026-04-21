@@ -12,27 +12,10 @@ def get_crop_data(station: str) -> dict:
     Returns:
         Un diccionario con la variedad de cultivo y sus características agronómicas.
     """
-    crops = {
-        "Andalucía": "Pedro Ximenez",
-        "Aragón": "Garnacha",
-        "Asturias": "Albariño",
-        "Baleares": "Mencia",
-        "Canarias": "Palomino",
-        "Cantabria": "Albariño",
-        "Castilla-La Mancha": "Airen",
-        "Castilla y León": "Tempranillo",
-        "Cataluña": "Macabeo",
-        "Comunidad Valenciana": "Bobal",
-        "Extremadura": "Pardina",
-        "Galicia": "Albariño",
-        "La Rioja": "Tempranillo",
-        "Madrid": "Garnacha",
-        "Murcia": "Monastrell",
-        "Navarra": "Tempranillo",
-        "País Vasco": "Tempranillo",
-    }
 
+    crops = pd.read_csv("data/ccaa_grape.csv", index_col="ccaa")["grape"].to_dict()
     ccaa = station_to_ccaa(station)
+
     crop_type = crops.get(ccaa)
 
     if crop_type is None:

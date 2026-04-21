@@ -12,7 +12,7 @@ def calculate_etc(weather_data: WeatherData) -> float:
 
     kc = 0.7
 
-    et0 = 0.0023 * (tmax - tmin) ** 0.5 * (tmed + 17.8)
+    et0 = 0.0023 * (tmax - tmin) ** 0.5 * (tmed + 17.8) # Fórmula simplificada de Hargreaves-Samani
     etc_daily = et0 * kc
 
     etc_total = etc_daily * days  
