@@ -1,17 +1,17 @@
-grape_variety,color,water_need,frost_sensitivity,heat_sensitivity,humidity_sensitivity,optimal_temp_min,optimal_temp_max,optimal_humidity_max,optimal_precip_mm
-Tempranillo,red,medium,high,medium,high,15,28,75,500
-Airen,white,low,medium,very_high,low,18,32,60,350
-Albariño,white,medium_high,medium,low,high,16,25,85,800
-Garnacha,red,low,medium,high,medium,18,30,65,400
-Monastrell,red,very_low,medium,very_high,low,20,34,55,300
-Bobal,red,low,medium,high,medium,18,31,65,400
-Macabeo,white,medium,medium,medium,medium,17,29,70,450
-Palomino,white,low_medium,low,high,medium,18,30,65,350
-Pardina,white,low_medium,medium,high,medium,18,30,65,350
-Verdejo,white,medium,medium,medium,medium,16,28,70,450
-Godello,white,medium,medium,medium,high,16,27,80,650
-Mencia,red,medium,medium,low,high,15,26,85,700
-Pedro Ximenez,white,low_medium,low,high,medium,18,30,65,350
-Manto Negro,red,medium,medium,high,medium,17,29,70,450
-Albarin Blanco,white,medium,medium,medium,medium,16,27,75,600
-Listan Blanco de Canarias,white,low_medium,low,high,medium,18,30,65,300
+﻿grape_variety;color;water_need;frost_sensitivity;heat_sensitivity;humidity_sensitivity;optimal_temp_min;optimal_temp_max;optimal_humidity;optimal_precip_mm
+Tempranillo;red;medium;medium;medium;medium;11;31;65;500
+Airen;white;low;low;high;low;13;37;45;350
+Albariño;white;high;medium;low;high;13;27;75;1000
+Garnacha;red;low;low;high;low;11;36;50;400
+Monastrell;red;low;medium;low;high;15;25;65;300
+Bobal;red;low;low;low;low;10;35;40;500
+Macabeo;white;medium;low;high;low;10;28;60;450
+Palomino;white;medium;medium;low;medium;20;38;75;600
+Pardina;white;low;high;low;medium;10;42;50;450
+Verdejo;white;medium;high;medium;low;9;31;55;450
+Godello;white;high;high;medium;high;8;30;65;700
+Mencia;red;medium;medium;low;high;11;27;75;850
+Pedro Ximenez;white;medium;medium;low;high;10;40;50;500
+Manto Negro;red;medium;medium;low;high;10;40;60;500
+Albarin Blanco;white;medium;high;medium;high;10;33;55;600
+Listan Blanco de Canarias;white;high;low;low;medium;10;38;65;400

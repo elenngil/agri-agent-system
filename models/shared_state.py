@@ -2,7 +2,6 @@ from dataclasses import dataclass, field
 from datetime import date
 from typing import Optional, List
 from enum import Enum
-from models.daily_plan import DailyPlan
 
 
 @dataclass

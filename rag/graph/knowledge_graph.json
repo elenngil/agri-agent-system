@@ -1,0 +1,449 @@
+{
+  "nodes": [
+    {
+      "id": "temperatura_baja",
+      "type": "variable_climatica",
+      "label": "Temperatura baja",
+      "description": "Temperatura mínima inferior al umbral óptimo del cultivo",
+      "source": "Hidalgo, L. (2002). Tratado de Viticultura General"
+    },
+    {
+      "id": "temperatura_alta",
+      "type": "variable_climatica",
+      "label": "Temperatura alta",
+      "description": "Temperatura máxima superior al umbral de estrés térmico",
+      "source": "Hidalgo, L. (2002). Tratado de Viticultura General"
+    },
+    {
+      "id": "humedad_alta",
+      "type": "variable_climatica",
+      "label": "Humedad relativa alta",
+      "description": "Humedad relativa superior al 80%",
+      "source": "Reynier, A. (2012). Manual de Viticultura"
+    },
+    {
+      "id": "precipitacion_escasa",
+      "type": "variable_climatica",
+      "label": "Precipitación escasa",
+      "description": "Precipitación acumulada inferior a las necesidades hídricas",
+      "source": "FAO. (2006). Evapotranspiración del cultivo"
+    },
+    {
+      "id": "viento_fuerte",
+      "type": "variable_climatica",
+      "label": "Viento fuerte",
+      "description": "Velocidad del viento superior a 50 km/h",
+      "source": "MAPA. Guía de gestión integrada de plagas"
+    },
+    {
+      "id": "temperatura_bajo_cero",
+      "type": "variable_climatica",
+      "label": "Temperatura bajo cero",
+      "description": "Temperatura mínima inferior a 0°C",
+      "source": "Hidalgo, L. (2002). Tratado de Viticultura General"
+    },
+    {
+      "id": "helada",
+      "type": "riesgo",
+      "label": "Riesgo de helada",
+      "description": "Daño por congelación del agua en tejidos vegetales",
+      "source": "Hidalgo, L. (2002). Tratado de Viticultura General"
+    },
+    {
+      "id": "estres_termico",
+      "type": "riesgo",
+      "label": "Estrés térmico",
+      "description": "Daño fisiológico por temperaturas extremas superiores a 35°C",
+      "source": "Keller, M. (2015). The Science of Grapevines"
+    },
+    {
+      "id": "estres_hidrico",
+      "type": "riesgo",
+      "label": "Estrés hídrico",
+      "description": "Déficit de agua que afecta funciones fisiológicas",
+      "source": "FAO. (2006). Evapotranspiración del cultivo"
+    },
+    {
+      "id": "mildiu",
+      "type": "enfermedad",
+      "label": "Mildiu",
+      "description": "Enfermedad causada por Plasmopara viticola. Requiere humedad >80% y temperatura 10-25°C",
+      "source": "MAPA. Guía de gestión integrada de plagas de la vid"
+    },
+    {
+      "id": "oidio",
+      "type": "enfermedad",
+      "label": "Oídio",
+      "description": "Enfermedad causada por Erysiphe necator. Favorecida por temperaturas 20-27°C",
+      "source": "MAPA. Guía de gestión integrada de plagas de la vid"
+    },
+    {
+      "id": "botrytis",
+      "type": "enfermedad",
+      "label": "Botrytis",
+      "description": "Podredumbre gris causada por Botrytis cinerea",
+      "source": "Reynier, A. (2012). Manual de Viticultura"
+    },
+    {
+      "id": "brotes",
+      "type": "componente_vid",
+      "label": "Brotes",
+      "description": "Tejido joven muy sensible a heladas y estrés",
+      "source": "Reynier, A. (2012). Manual de Viticultura"
+    },
+    {
+      "id": "hojas",
+      "type": "componente_vid",
+      "label": "Hojas",
+      "description": "Órganos fotosintéticos, afectados por enfermedades fúngicas",
+      "source": "Hidalgo, L. (2002). Tratado de Viticultura General"
+    },
+    {
+      "id": "racimos",
+      "type": "componente_vid",
+      "label": "Racimos",
+      "description": "Órganos reproductivos, sensibles a podredumbres",
+      "source": "Reynier, A. (2012). Manual de Viticultura"
+    },
+    {
+      "id": "vigor",
+      "type": "componente_vid",
+      "label": "Vigor vegetativo",
+      "description": "Capacidad de crecimiento de la planta",
+      "source": "Keller, M. (2015). The Science of Grapevines"
+    },
+    {
+      "id": "calidad_uva",
+      "type": "componente_vid",
+      "label": "Calidad de la uva",
+      "description": "Concentración de azúcares, acidez, compuestos fenólicos",
+      "source": "OIV. Compendium of International Methods of Wine Analysis"
+    },
+    {
+      "id": "produccion",
+      "type": "componente_vid",
+      "label": "Producción",
+      "description": "Rendimiento en kg/ha",
+      "source": "Hidalgo, L. (2002). Tratado de Viticultura General"
+    },
+    {
+      "id": "brotacion",
+      "type": "fase_fenologica",
+      "label": "Brotación",
+      "description": "Inicio del ciclo vegetativo, apertura de yemas",
+      "source": "Coombe, B.G. (1995). Growth Stages of the Grapevine"
+    },
+    {
+      "id": "floracion",
+      "type": "fase_fenologica",
+      "label": "Floración",
+      "description": "Apertura de flores, fase crítica para el cuajado",
+      "source": "Coombe, B.G. (1995). Growth Stages of the Grapevine"
+    },
+    {
+      "id": "envero",
+      "type": "fase_fenologica",
+      "label": "Envero",
+      "description": "Cambio de color de las bayas, inicio de maduración",
+      "source": "Coombe, B.G. (1995). Growth Stages of the Grapevine"
+    },
+    {
+      "id": "maduracion",
+      "type": "fase_fenologica",
+      "label": "Maduración",
+      "description": "Acumulación de azúcares y desarrollo de aromas",
+      "source": "Coombe, B.G. (1995). Growth Stages of the Grapevine"
+    },
+    {
+      "id": "riego",
+      "type": "accion",
+      "label": "Riego",
+      "description": "Aplicación de agua para compensar déficit hídrico",
+      "source": "FAO. (2006). Evapotranspiración del cultivo"
+    },
+    {
+      "id": "riego_deficitario",
+      "type": "accion",
+      "label": "Riego deficitario controlado",
+      "description": "Riego reducido estratégicamente para mejorar calidad",
+      "source": "Keller, M. (2015). The Science of Grapevines"
+    },
+    {
+      "id": "tratamiento_fungicida",
+      "type": "accion",
+      "label": "Tratamiento fungicida",
+      "description": "Aplicación de productos antifúngicos preventivos o curativos",
+      "source": "MAPA. Guía de gestión integrada de plagas de la vid"
+    },
+    {
+      "id": "deshojado",
+      "type": "accion",
+      "label": "Deshojado",
+      "description": "Eliminación de hojas para mejorar aireación y exposición",
+      "source": "Reynier, A. (2012). Manual de Viticultura"
+    },
+    {
+      "id": "proteccion_heladas",
+      "type": "accion",
+      "label": "Protección contra heladas",
+      "description": "Métodos activos o pasivos para evitar daño por frío",
+      "source": "Hidalgo, L. (2002). Tratado de Viticultura General"
+    },
+    {
+      "id": "adelantar_vendimia",
+      "type": "accion",
+      "label": "Adelantar vendimia",
+      "description": "Cosecha anticipada para evitar pérdidas",
+      "source": "Reynier, A. (2012). Manual de Viticultura"
+    },
+    {
+      "id": "aclareo_racimos",
+      "type": "accion",
+      "label": "Aclareo de racimos",
+      "description": "Reducción de carga para mejorar calidad",
+      "source": "Hidalgo, L. (2002). Tratado de Viticultura General"
+    }
+  ],
+  "relations": [
+    {
+      "source": "temperatura_bajo_cero",
+      "target": "helada",
+      "type": "provoca",
+      "weight": 0.95,
+      "condition": null,
+      "source_ref": "Hidalgo (2002)"
+    },
+    {
+      "source": "temperatura_baja",
+      "target": "helada",
+      "type": "favorece",
+      "weight": 0.7,
+      "condition": "Temperatura entre 0°C y 3°C con humedad alta",
+      "source_ref": "Hidalgo (2002)"
+    },
+    {
+      "source": "temperatura_alta",
+      "target": "estres_termico",
+      "type": "provoca",
+      "weight": 0.9,
+      "condition": "Temperatura máxima > 35°C",
+      "source_ref": "Keller (2015)"
+    },
+    {
+      "source": "precipitacion_escasa",
+      "target": "estres_hidrico",
+      "type": "favorece",
+      "weight": 0.8,
+      "condition": null,
+      "source_ref": "FAO (2006)"
+    },
+    {
+      "source": "humedad_alta",
+      "target": "mildiu",
+      "type": "favorece",
+      "weight": 0.85,
+      "condition": "Humedad > 80% con temperatura 10-25°C",
+      "source_ref": "MAPA - Guía GIP Vid"
+    },
+    {
+      "source": "humedad_alta",
+      "target": "botrytis",
+      "type": "favorece",
+      "weight": 0.8,
+      "condition": "Especialmente en maduración con lluvias",
+      "source_ref": "Reynier (2012)"
+    },
+    {
+      "source": "helada",
+      "target": "brotes",
+      "type": "daña",
+      "weight": 0.95,
+      "condition": "Especialmente en brotación",
+      "source_ref": "Hidalgo (2002)"
+    },
+    {
+      "source": "helada",
+      "target": "produccion",
+      "type": "reduce",
+      "weight": 0.8,
+      "condition": null,
+      "source_ref": "Hidalgo (2002)"
+    },
+    {
+      "source": "estres_termico",
+      "target": "hojas",
+      "type": "daña",
+      "weight": 0.7,
+      "condition": "Quemaduras foliares con T > 40°C",
+      "source_ref": "Keller (2015)"
+    },
+    {
+      "source": "estres_termico",
+      "target": "calidad_uva",
+      "type": "reduce",
+      "weight": 0.75,
+      "condition": "Pérdida de acidez y aromas",
+      "source_ref": "Keller (2015)"
+    },
+    {
+      "source": "estres_hidrico",
+      "target": "vigor",
+      "type": "reduce",
+      "weight": 0.8,
+      "condition": null,
+      "source_ref": "FAO (2006)"
+    },
+    {
+      "source": "estres_hidrico",
+      "target": "calidad_uva",
+      "type": "aumenta",
+      "weight": 0.6,
+      "condition": "Estrés moderado y controlado mejora concentración",
+      "source_ref": "Keller (2015)"
+    },
+    {
+      "source": "estres_hidrico",
+      "target": "produccion",
+      "type": "reduce",
+      "weight": 0.7,
+      "condition": "Estrés severo reduce rendimiento",
+      "source_ref": "FAO (2006)"
+    },
+    {
+      "source": "mildiu",
+      "target": "hojas",
+      "type": "daña",
+      "weight": 0.9,
+      "condition": "Manchas de aceite, necrosis",
+      "source_ref": "MAPA - Guía GIP Vid"
+    },
+    {
+      "source": "mildiu",
+      "target": "racimos",
+      "type": "daña",
+      "weight": 0.85,
+      "condition": "Mildiu larvado en bayas jóvenes",
+      "source_ref": "MAPA - Guía GIP Vid"
+    },
+    {
+      "source": "mildiu",
+      "target": "produccion",
+      "type": "reduce",
+      "weight": 0.8,
+      "condition": null,
+      "source_ref": "MAPA - Guía GIP Vid"
+    },
+    {
+      "source": "brotes",
+      "target": "brotacion",
+      "type": "vulnerable_en",
+      "weight": 0.95,
+      "condition": "Tejido joven muy sensible",
+      "source_ref": "Reynier (2012)"
+    },
+    {
+      "source": "helada",
+      "target": "brotacion",
+      "type": "vulnerable_en",
+      "weight": 0.9,
+      "condition": "Máxima sensibilidad a heladas tardías",
+      "source_ref": "Hidalgo (2002)"
+    },
+    {
+      "source": "mildiu",
+      "target": "floracion",
+      "type": "vulnerable_en",
+      "weight": 0.85,
+      "condition": "Infecciones primarias más dañinas",
+      "source_ref": "MAPA - Guía GIP Vid"
+    },
+    {
+      "source": "estres_hidrico",
+      "target": "envero",
+      "type": "vulnerable_en",
+      "weight": 0.7,
+      "condition": "Déficit moderado puede ser beneficioso para calidad",
+      "source_ref": "Keller (2015)"
+    },
+    {
+      "source": "botrytis",
+      "target": "maduracion",
+      "type": "vulnerable_en",
+      "weight": 0.9,
+      "condition": "Máxima susceptibilidad cerca de vendimia",
+      "source_ref": "Reynier (2012)"
+    },
+    {
+      "source": "proteccion_heladas",
+      "target": "helada",
+      "type": "mitiga",
+      "weight": 0.8,
+      "condition": "Aspersión, estufas, ventiladores",
+      "source_ref": "Hidalgo (2002)"
+    },
+    {
+      "source": "riego",
+      "target": "estres_hidrico",
+      "type": "mitiga",
+      "weight": 0.9,
+      "condition": null,
+      "source_ref": "FAO (2006)"
+    },
+    {
+      "source": "riego_deficitario",
+      "target": "estres_hidrico",
+      "type": "mitiga",
+      "weight": 0.6,
+      "condition": "Control parcial, mantiene estrés moderado beneficioso",
+      "source_ref": "Keller (2015)"
+    },
+    {
+      "source": "riego_deficitario",
+      "target": "calidad_uva",
+      "type": "aumenta",
+      "weight": 0.7,
+      "condition": "Mejora concentración en variedades tintas",
+      "source_ref": "Keller (2015)"
+    },
+    {
+      "source": "tratamiento_fungicida",
+      "target": "mildiu",
+      "type": "previene",
+      "weight": 0.85,
+      "condition": "Tratamiento preventivo antes de lluvia",
+      "source_ref": "MAPA - Guía GIP Vid"
+    },
+    {
+      "source": "deshojado",
+      "target": "mildiu",
+      "type": "inhibe",
+      "weight": 0.5,
+      "condition": "Mejora aireación, reduce humedad foliar",
+      "source_ref": "Reynier (2012)"
+    },
+    {
+      "source": "deshojado",
+      "target": "botrytis",
+      "type": "previene",
+      "weight": 0.7,
+      "condition": "Mejor aireación de racimos",
+      "source_ref": "Reynier (2012)"
+    },
+    {
+      "source": "adelantar_vendimia",
+      "target": "botrytis",
+      "type": "mitiga",
+      "weight": 0.75,
+      "condition": "Evita exposición prolongada a humedad",
+      "source_ref": "Reynier (2012)"
+    },
+    {
+      "source": "riego",
+      "target": "estres_termico",
+      "type": "mitiga",
+      "weight": 0.6,
+      "condition": "Riego refrescante, mantiene turgencia",
+      "source_ref": "Keller (2015)"
+    }
+  ]
+}

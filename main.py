@@ -51,15 +51,7 @@ def main():
         print("\n" + "=" * 50)
         print("MOTIVO DE LA DECISIÓN")
         print("=" * 50)
-        print(shared_state.explanation["decision_why"]["short_reason"])
-
-        print("\n" + "=" * 50)
-        print("CONFIANZA")
-        print("=" * 50)
-        print(
-            f"{shared_state.explanation['confidence']['label'].upper()} "
-            f"({shared_state.explanation['confidence']['score']})"
-        )
+        print(shared_state.explanation["recommendation_reasoning"])
 
         print("\n" + "=" * 50)
         print("SMS")

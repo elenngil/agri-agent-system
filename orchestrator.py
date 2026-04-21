@@ -26,7 +26,7 @@ class Orchestrator:
         self.prediction    = PredictionAgent()
         self.risk          = RiskAgent()
         self.deliberative  = DeliberativeAgent()
-        self.explanation   = ExplanationAgent(model=model)
+        self.explanation   = ExplanationAgent(llm_client=model)
         self.daily_plan    = DailyPlanAgent()
         self.critic        = CriticAgent()
 
