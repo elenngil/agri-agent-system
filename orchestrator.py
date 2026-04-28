@@ -2,7 +2,7 @@
 
 import json
 from pathlib import Path
-
+import logging
 from models.shared_state import SharedState
 from agents.observation_agent import ObservationAgent
 from agents.inference_agent import InferenceAgent
@@ -13,6 +13,7 @@ from agents.explanation_agent import ExplanationAgent
 from agents.daily_plan_agent import DailyPlanAgent
 from agents.critic_agent import CriticAgent
 
+logger = logging.getLogger(__name__)
 
 class Orchestrator:
     """
@@ -33,34 +34,34 @@ class Orchestrator:
     def run(self, state: SharedState) -> SharedState:
         # ── Fase 1: siempre se ejecuta ──────────────────────────
         state = self.observation.run(state)
-        print("✓ Observación completada")
+        logger.info("Observación completada")
 
         if state.weather_data is None:
-            print("⚠ Sin datos meteorológicos — abortando pipeline")
+            logger.warning("Sin datos meteorológicos — abortando pipeline")
             return state
 
         state = self.inference.run(state)
-        print("✓ Inferencia completada")
+        logger.info("Inferencia completada")
 
         state = self.prediction.run(state)
-        print("✓ Predicción completada")
+        logger.info("Predicción completada")
 
         state = self.risk.run(state)
-        print("✓ Riesgos evaluados")
+        logger.info("Riesgos evaluados")
 
         # ── Fase 2: routing según nivel de riesgo ───────────────
         critical_alerts = [a for a in state.alerts if a.level in ("alto", "crítico")]
 
         if critical_alerts:
-            print(f"⚡ {len(critical_alerts)} alerta(s) crítica(s) — activando ruta urgente")
+            logger.info(f"{len(critical_alerts)} alerta(s) crítica(s) — activando ruta urgente")
             state = self._run_urgent_path(state)
         else:
-            print("🟢 Sin alertas críticas — ruta estándar")
+            logger.info("Sin alertas críticas — ruta estándar")
             state = self._run_standard_path(state)
 
         # ── Fase 3: plan diario siempre ─────────────────────────
         state = self.daily_plan.run(state)
-        print("✓ Plan diario generado")
+        logger.info(" Plan diario generado")
 
         self._save_output(state)
         return state
@@ -72,12 +73,12 @@ class Orchestrator:
         """
         # Deliberación rápida con top_n reducido
         state = self.deliberative.run(state, top_n=1)
-        print("✓ Deliberación rápida completada")
+        logger.info("Deliberación rápida completada")
 
         # Explicación directa sin pasar por crítico
         # (en alertas críticas queremos velocidad)
         state = self.explanation.run(state)
-        print("✓ Explicación urgente generada")
+        logger.info("Explicación urgente generada")
 
         return state
 
@@ -86,18 +87,18 @@ class Orchestrator:
         Ruta estándar: deliberación completa + crítico + explicación.
         """
         state = self.deliberative.run(state, top_n=3)
-        print("✓ Deliberación completa")
+        logger.info("Deliberación completa")
 
         # El crítico verifica que la recomendación tiene sentido
         critique = self.critic.run(state)
         if not critique["approved"]:
-            print(f"⚠ Crítico rechazó recomendación: {critique['reason']}")
+            logger.warning(f"Crítico rechazó recomendación: {critique['reason']}")
             # Reintentar deliberación con restricción adicional
             state = self.deliberative.run(state, top_n=3, excluded_actions=critique.get("problematic_actions", []))
-            print("✓ Deliberación corregida")
+            logger.info("Deliberación corregida")
 
         state = self.explanation.run(state)
-        print("✓ Explicación generada")
+        logger.info("Explicación generada")
 
         return state
 
@@ -157,4 +158,4 @@ class Orchestrator:
         with open("output/daily_plan.json", "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
 
-        print("✅ Output guardado en output/daily_plan.json")
+        logger.info("Output guardado en output/daily_plan.json")

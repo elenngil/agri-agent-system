@@ -1,0 +1,35 @@
+12:10:37 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+12:10:44 [INFO] httpx — HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+12:10:44 [INFO] __main__ — Pipeline completado — región: Navarra
+12:12:29 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+12:12:31 [INFO] orchestrator — Inferencia completada
+12:12:31 [INFO] orchestrator — Predicción completada
+12:12:31 [INFO] orchestrator — Riesgos evaluados
+12:12:31 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+12:12:31 [INFO] orchestrator — Deliberación completa
+12:12:34 [INFO] httpx — HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+12:12:34 [INFO] orchestrator — Explicación generada
+12:12:34 [INFO] orchestrator — Output guardado en output/daily_plan.json
+12:12:34 [INFO] __main__ — Pipeline completado — región: Navarra
+12:13:05 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+12:13:08 [INFO] orchestrator — Inferencia completada
+12:13:08 [INFO] orchestrator — Predicción completada
+12:13:08 [INFO] orchestrator — Riesgos evaluados
+12:13:08 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+12:13:08 [INFO] orchestrator — Deliberación completa
+12:13:10 [INFO] httpx — HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+12:13:10 [INFO] orchestrator — Explicación generada
+12:13:10 [INFO] orchestrator — Output guardado en output/daily_plan.json
+12:13:10 [INFO] __main__ — Pipeline completado — región: Navarra
+12:13:56 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+12:13:59 [INFO] orchestrator — Observación completada
+12:13:59 [INFO] orchestrator — Inferencia completada
+12:13:59 [INFO] orchestrator — Predicción completada
+12:13:59 [INFO] orchestrator — Riesgos evaluados
+12:13:59 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+12:13:59 [INFO] orchestrator — Deliberación completa
+12:14:01 [INFO] httpx — HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+12:14:01 [INFO] orchestrator — Explicación generada
+12:14:01 [INFO] orchestrator —  Plan diario generado
+12:14:01 [INFO] orchestrator — Output guardado en output/daily_plan.json
+12:14:01 [INFO] __main__ — Pipeline completado — región: Navarra

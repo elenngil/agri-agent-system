@@ -13,8 +13,16 @@ from orchestrator import Orchestrator
 from models.shared_state import SharedState
 from web.db import get_connection
 
-load_dotenv()
+import os
+import logging
 
+load_dotenv()
+level =logging.DEBUG if os.getenv("ENV") == "dev" else logging.INFO
+
+logging.basicConfig(
+    level=level,
+    format="%(asctime)s [%(levelname)s] %(name)s — %(message)s"
+    )
 
 def build_model() -> InferenceClientModel:
     return InferenceClientModel("Qwen/Qwen2.5-72B-Instruct")

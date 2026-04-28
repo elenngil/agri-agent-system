@@ -1,5 +1,5 @@
 from datetime import date
-
+import logging
 from orchestrator import Orchestrator
 from models.shared_state import SharedState
 from tools.aemet_stations import station_to_ccaa
@@ -9,14 +9,29 @@ import os
 from dotenv import load_dotenv
 from smolagents import InferenceClientModel
 
+os.makedirs("logs", exist_ok=True)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s — %(message)s",
+    datefmt="%H:%M:%S",
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler("logs/agri_agent.log"),
+    ]
+)
+
+logger = logging.getLogger(__name__)
 
 def main():
     station = "9995Y"
 
+    load_dotenv()
+
     try:
         ccaa = station_to_ccaa(station)
     except ValueError as e:
-        print(f"Error: {e}")
+        logger.error("Error con la estación: %s", e)
         return
 
     shared_state = SharedState(
@@ -26,18 +41,19 @@ def main():
         ccaa=ccaa
     )
 
-    load_dotenv()
-    
     model = InferenceClientModel(
         model_id="Qwen/Qwen2.5-72B-Instruct",
         token=os.environ["HF_TOKEN"],
     )
+
     orchestrator = Orchestrator(model=model)
 
-    try:
-        print(f"Ejecutando para {ccaa} (estación {station})...\n")
+    logger.info("Iniciando pipeline para %s (estación %s)", ccaa, station)
 
+    try:
         shared_state = orchestrator.run(shared_state)
+
+        logger.info("Pipeline completado — región: %s", shared_state.ccaa)
 
         print("\n" + "=" * 50)
         print("RESULTADO FINAL")
@@ -69,9 +85,10 @@ def main():
         print(shared_state.daily_plan.explanation)
 
     except AemetError as e:
-        print(f"Error de AEMET: {e}")
-    except Exception as e:
-        print(f"Error inesperado: {e}")
+        logger.error("Error AEMET: %s", e)
+
+    except Exception:
+        logger.exception("Error inesperado")
         raise
 
 
