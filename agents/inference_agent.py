@@ -21,8 +21,8 @@ class InferenceAgent:
             raise ValueError("crop_data no está disponible en shared_state")
 
         shared_state.climate_features = ClimateFeatures(
-            etc=calculate_etc(weather),
-            dha=calculate_dha(weather),
+            etc=calculate_etc(weather, shared_state.start_date),
+            dha=calculate_dha(weather, shared_state.start_date),
             frost_risk=calculate_frost_risk(weather, crop),
             heat_stress=calculate_heat_stress(weather, crop),
             mildiu_risk=calculate_mildiu_risk(weather),
