@@ -117,3 +117,67 @@ when serializing dict item 'meta'
 12:39:50 [INFO] orchestrator — Explicación generada
 12:39:50 [INFO] orchestrator — Plan diario generado
 12:39:50 [INFO] __main__ — Pipeline completado — región: Navarra
+12:41:57 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+12:41:59 [INFO] orchestrator — Observación completada
+12:41:59 [INFO] orchestrator — Inferencia completada
+12:41:59 [INFO] orchestrator — Predicción completada
+12:41:59 [INFO] orchestrator — Riesgos evaluados
+12:41:59 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+12:41:59 [INFO] orchestrator — Deliberación aprobada (intento 1)
+12:42:02 [INFO] httpx — HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+12:42:02 [INFO] orchestrator — Explicación generada
+12:42:02 [INFO] orchestrator — Plan diario generado
+12:42:02 [INFO] __main__ — Pipeline completado — región: Navarra
+12:51:01 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+12:51:03 [INFO] orchestrator — Observación completada
+12:51:03 [INFO] orchestrator — Inferencia completada
+12:51:03 [INFO] orchestrator — Predicción completada
+12:51:03 [INFO] orchestrator — Riesgos evaluados
+12:51:03 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+12:51:03 [ERROR] __main__ — Error inesperado
+Traceback (most recent call last):
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\main.py", line 54, in main
+    shared_state = orchestrator.run(shared_state)
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\orchestrator.py", line 63, in run
+    state = self._run_standard_path(state)
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\orchestrator.py", line 97, in _run_standard_path
+    state = self.deliberative.run(state, top_n=3, excluded_actions=excluded or None)
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\agents\deliberative_agent.py", line 53, in run
+    utility, breakdown = self._calculate_utility(actions, state)
+                         ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\agents\deliberative_agent.py", line 125, in _calculate_utility
+    if self.temperature > 0:
+       ^^^^^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'NoneType' and 'int'
+12:51:36 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+12:51:38 [INFO] orchestrator — Observación completada
+12:51:38 [INFO] orchestrator — Inferencia completada
+12:51:38 [INFO] orchestrator — Predicción completada
+12:51:38 [INFO] orchestrator — Riesgos evaluados
+12:51:38 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+12:51:38 [ERROR] __main__ — Error inesperado
+Traceback (most recent call last):
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\main.py", line 54, in main
+    shared_state = orchestrator.run(shared_state)
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\orchestrator.py", line 63, in run
+    state = self._run_standard_path(state)
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\orchestrator.py", line 97, in _run_standard_path
+    state = self.deliberative.run(state, top_n=3, excluded_actions=excluded or None)
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\agents\deliberative_agent.py", line 53, in run
+    utility, breakdown = self._calculate_utility(actions, state)
+                         ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\agents\deliberative_agent.py", line 125, in _calculate_utility
+    if self.temperature > 0:
+       ^^^^^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'NoneType' and 'int'
+12:52:43 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+12:52:45 [INFO] orchestrator — Observación completada
+12:52:45 [INFO] orchestrator — Inferencia completada
+12:52:45 [INFO] orchestrator — Predicción completada
+12:52:45 [INFO] orchestrator — Riesgos evaluados
+12:52:45 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+12:52:45 [INFO] orchestrator — Deliberación aprobada (intento 1)
+12:52:48 [INFO] httpx — HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+12:52:48 [INFO] orchestrator — Explicación generada
+12:52:48 [INFO] orchestrator — Plan diario generado
+12:52:48 [INFO] __main__ — Pipeline completado — región: Navarra

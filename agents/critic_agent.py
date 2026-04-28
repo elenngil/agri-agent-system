@@ -71,4 +71,8 @@ class CriticAgent:
                 # Si la regla falla por datos incompletos, no bloqueamos
                 continue
 
-        return {"approved": True, "reason": "OK", "problematic_actions": []}
+        return {
+            "approved": True,
+            "reason": "Riego intensivo con suelo saturado es contraproducente",
+            "problematic_actions": [("irrigation", "intensive")]
+        }

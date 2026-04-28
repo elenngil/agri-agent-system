@@ -83,11 +83,11 @@
           "cost": 0.0
         }
       ],
-      "utility": 0.7989999999999999,
+      "utility": 0.7915,
       "breakdown": {
         "quality": 0.7799999999999999,
         "production": 0.75,
-        "cost": 0.95,
+        "cost": 0.9,
         "sustainability": 0.82
       }
     },
@@ -124,7 +124,7 @@
     }
   ],
   "explanation": {
-    "summary": "En tu viñedo en Navarra, actualmente no hay riesgos significativos detectados. Mantén un riego ligero y sigue con el horario normal de cosecha sin necesidad de tratamientos fungicidas ni manejo especial del dosel.",
+    "summary": "En tu viñedo en Navarra, actualmente no hay riesgos detectados importantes. Mantén un riego ligero y sigue con el calendario normal de cosecha sin necesidad de tratamientos adicionales.",
     "risk_explanation": [],
     "recommendation_reasoning": "Acciones basadas en el análisis de riesgos detectados.",
     "alternatives": [

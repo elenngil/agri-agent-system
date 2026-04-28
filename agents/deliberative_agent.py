@@ -1,5 +1,6 @@
 from itertools import product
 from models.shared_state import SharedState, Action, Scenario
+import random
 
 
 class DeliberativeAgent:
@@ -12,15 +13,26 @@ class DeliberativeAgent:
         "canopy_management": ["none", "light_defoliation", "heavy_defoliation"],
     }
 
-    def __init__(self, weights: dict | None = None):
+    MAX_POSSIBLE_COST = sum(
+        max(costs.values())
+        for costs in {
+            "irrigation":        {"none": 0.0, "light": 0.05, "moderate": 0.10, "intensive": 0.20},
+            "fungicide":         {"none": 0.0, "preventive": 0.08, "curative": 0.14},
+            "harvest_timing":    {"normal": 0.0, "early": 0.06, "delayed": 0.05},
+            "canopy_management": {"none": 0.0, "light_defoliation": 0.05, "heavy_defoliation": 0.10},
+        }.values()
+    )
+
+    def __init__(self, weights: dict | None = None, temperature: float | float = 0.0):
         self.weights = weights or {
             "quality": 0.4,
             "production": 0.35,
             "cost": 0.15,
             "sustainability": 0.10,
         }
+        self.temperature = temperature 
 
-    def run(self, state: SharedState, top_n: int = 3, excluded_actions: list[str] | None = None) -> SharedState:
+    def run(self, state, top_n=3, excluded_actions: list[tuple[str,str]] | None = None) -> SharedState:
         if state.climate_features is None:
             raise ValueError("climate_features no está disponible en shared_state")
         if state.predictions is None:
@@ -28,12 +40,14 @@ class DeliberativeAgent:
         if state.crop_data is None:
             raise ValueError("crop_data no está disponible en shared_state")
         candidate_scenarios = self._generate_relevant_scenarios(state)
-        # Filtrar acciones problemáticas si el crítico las señaló
+        
         if excluded_actions:
+            excluded_set = set(excluded_actions)
             candidate_scenarios = [
                 actions for actions in candidate_scenarios
-                if not any(a.type in excluded_actions and a.intensity != "none" for a in actions)
+                if not any((a.type, a.intensity) in excluded_set for a in actions)
             ]
+        
         scored_scenarios = []
         for actions in candidate_scenarios:
             utility, breakdown = self._calculate_utility(actions, state)
@@ -94,7 +108,8 @@ class DeliberativeAgent:
 
         breakdown["quality"] = self._estimate_quality_score(actions, state)
         breakdown["production"] = self._estimate_production_score(actions, state)
-        breakdown["cost"] = max(0.0, 1 - sum(a.cost for a in actions))
+        total_cost = sum(a.cost for a in actions)
+        breakdown["cost"] = 1.0 - (total_cost / self.MAX_POSSIBLE_COST)
         breakdown["sustainability"] = self._estimate_sustainability_score(actions)
 
         residual_penalty = self._calculate_residual_penalty(actions, state.alerts)
@@ -106,6 +121,10 @@ class DeliberativeAgent:
             + self.weights["sustainability"] * breakdown["sustainability"]
             - residual_penalty
         )
+
+        if self.temperature > 0:
+            noise = random.gauss(0, self.temperature)   # ruido gaussiano centrado en 0
+            utility = utility + noise
 
         utility = max(0.0, min(1.0, utility))
         return utility, breakdown
