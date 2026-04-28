@@ -178,6 +178,7 @@ def maybe_run_default_analysis(user: dict) -> None:
         except Exception as e:
             st.error(f"Error al calcular el análisis inicial: {e}")
 
+    
 
 def render_result(result: dict) -> None:
     meta = result["meta"]
@@ -200,9 +201,9 @@ def render_result(result: dict) -> None:
     if risks:
         for risk in risks:
             with st.container(border=True):
-                st.write(f"**{risk.get('type_label', risk.get('type', 'Riesgo'))}**")
+                st.write(f"**{risk.get('type', 'Riesgo')}**")        # ← type, no type_label
                 st.write(f"Nivel: {risk.get('level', 'N/D')}")
-                st.write(risk.get("what_it_means", ""))
+                st.write(risk.get("description", ""))                  # ← description, no what_it_means
                 if risk.get("message"):
                     st.caption(risk["message"])
     else:

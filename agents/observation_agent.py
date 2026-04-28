@@ -13,7 +13,9 @@ class ObservationAgent:
             shared_state.start_date,
             shared_state.end_date
         )
-        crop_raw = get_crop_data(shared_state.station)
+        crop_raw = get_crop_data(
+            shared_state.station,
+            shared_state.selected_variety)
 
         shared_state.weather_data = (
             WeatherData(

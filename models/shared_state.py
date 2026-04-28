@@ -123,6 +123,8 @@ class SharedState:
     end_date: date
     ccaa: str = ""
 
+    selected_variety: Optional[str] = None
+
     weather_data: Optional[WeatherData] = None
     soil_multiplier: Optional[float] = None
     crop_data: Optional[CropData] = None

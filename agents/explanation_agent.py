@@ -3,6 +3,7 @@
 from typing import List, Optional
 from models.shared_state import SharedState
 from rag.graph import get_retriever, GraphContext
+from smolagents import ChatMessage
 
 
 class ExplanationAgent:
@@ -25,6 +26,7 @@ class ExplanationAgent:
         
         explanation = {
             "summary": self._generate_summary(scenarios, alerts, graph_contexts, state.ccaa),
+            "confidence": self._calculate_confidence(state),
             "risk_explanation": self._explain_risks(alerts, graph_contexts),
             "recommendation_reasoning": self._explain_recommendations(scenarios, graph_contexts),
             "alternatives": self._explain_alternatives(scenarios[1:] if len(scenarios) > 1 else []),
@@ -34,6 +36,22 @@ class ExplanationAgent:
         
         state.explanation = explanation
         return state
+    
+    def _calculate_confidence(self, state: SharedState) -> dict:
+        score = 1.0
+        reasons = []
+
+        if state.weather_data is None:
+            score -= 0.4
+            reasons.append("sin datos meteorológicos")
+        if not state.scenarios:
+            score -= 0.3
+            reasons.append("sin escenarios deliberados")
+        if not state.alerts:
+            reasons.append("sin alertas generadas")
+
+        label = "alta" if score >= 0.8 else "media" if score >= 0.5 else "baja"
+        return {"score": round(score, 2), "label": label, "reasons": reasons}
     
     def _get_graph_contexts(self, alerts: List) -> dict[str, GraphContext]:
         """Obtiene contexto del grafo para cada tipo de riesgo en las alertas."""
@@ -67,7 +85,7 @@ CONTEXTO DEL CONOCIMIENTO VITÍCOLA:
 {graph_info}
 
 SITUACIÓN ACTUAL:
-- Riesgos detectados: {[f"{a.risk_type}: {a.level}" for a in alerts]}
+- Riesgos detectados: {[f"{a.risk_type}: {a.level.value}" for a in alerts]}
 - Escenario recomendado: {recommended_actions}
 
 INSTRUCCIONES:
@@ -77,8 +95,8 @@ INSTRUCCIONES:
 - Basa tu respuesta en el conocimiento proporcionado
 """
 
-        messages = [{"role": "user", "content": prompt}]
-        response = self.llm.generate(messages)
+        messages = [ChatMessage(role="user", content=prompt)]
+        response = self.llm(messages)
 
         if isinstance(response, str):
             return response
@@ -97,7 +115,7 @@ INSTRUCCIONES:
             
             explanation = {
                 "type": alert.risk_type,
-                "level": alert.level,
+                "level": alert.level.value,
                 "value": alert.value,
                 "threshold": alert.threshold,
             }
@@ -161,7 +179,7 @@ INSTRUCCIONES:
             "canopy_management": ["deshojado"],
         }
         
-        return mitigation_id in mappings.get(action_type, [])
+        return any(key in mitigation_id for key in mappings.get(action_type, []))
     
     def _generate_sms(self, scenarios, alerts, ccaa) -> str:
         """SMS conciso."""
@@ -169,7 +187,7 @@ INSTRUCCIONES:
             return f"🍇 {ccaa}: Sin alertas significativas hoy."
         
         risk_text = ", ".join([
-            f"{self._risk_emoji(a.risk_type)}{a.level}"
+            f"{self._risk_emoji(a.risk_type)}{a.level.value}"
             for a in alerts[:2]
         ])
         

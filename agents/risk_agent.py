@@ -1,4 +1,4 @@
-from models.shared_state import SharedState, Alert
+from models.shared_state import SharedState, Alert, RiskLevel
 
 
 class RiskAgent:
@@ -6,14 +6,10 @@ class RiskAgent:
 
     def __init__(self, penalties: dict | None = None):
         self.penalties = penalties or {
-            "Bajo": 0.2,
-            "Moderado": 0.5,
-            "Alto": 0.8,
-            "Nulo": 0.0,
-            "Desconocido": 0.0,
-            "Baja": 0.2,
-            "Media": 0.5,
-            "Alta": 0.8,
+            RiskLevel.LOW: 0.2,
+            RiskLevel.MEDIUM: 0.5,
+            RiskLevel.HIGH: 0.8,
+            RiskLevel.CRITICAL: 1.0,
         }
 
     def run(self, state: SharedState) -> SharedState:
@@ -27,68 +23,54 @@ class RiskAgent:
         climate = state.climate_features
         predictions = state.predictions
 
-        # Riesgo de helada
-        frost_alert = self._build_alert_from_risk_dict(
-            risk_type="frost_risk",
-            risk_data=climate.frost_risk,
-            ccaa=state.ccaa,
-            valid_until=str(state.end_date),
-            message_template="Riesgo de helada {level}: temperatura mínima observada {value}°C frente al umbral del cultivo {threshold}°C."
-        )
-        if frost_alert:
-            alerts.append(frost_alert)
+        for risk_type, risk_data, template in [
+            (
+                "frost_risk",
+                climate.frost_risk,
+                "Riesgo de helada {level}: temperatura mínima observada {value}°C frente al umbral del cultivo {threshold}°C.",
+            ),
+            (
+                "heat_stress",
+                climate.heat_stress,
+                "Estrés térmico {level}: temperatura máxima observada {value}°C frente al umbral del cultivo {threshold}°C.",
+            ),
+            (
+                "mildiu_risk",
+                climate.mildiu_risk,
+                "Riesgo de mildiu {level}: humedad observada {value} frente al umbral {threshold}.",
+            ),
+            (
+                "strong_wind_risk",
+                climate.strong_wind_risk,
+                "Riesgo de viento fuerte {level}: velocidad observada {value} frente al umbral {threshold}.",
+            ),
+        ]:
+            alert = self._build_alert_from_risk_dict(
+                risk_type=risk_type,
+                risk_data=risk_data,
+                ccaa=state.ccaa,
+                valid_until=str(state.end_date),
+                message_template=template,
+            )
+            if alert:
+                alerts.append(alert)
 
-        # Estrés térmico
-        heat_alert = self._build_alert_from_risk_dict(
-            risk_type="heat_stress",
-            risk_data=climate.heat_stress,
-            ccaa=state.ccaa,
-            valid_until=str(state.end_date),
-            message_template="Estrés térmico {level}: temperatura máxima observada {value}°C frente al umbral del cultivo {threshold}°C."
-        )
-        if heat_alert:
-            alerts.append(heat_alert)
-
-        # Mildiu
-        mildiu_alert = self._build_alert_from_risk_dict(
-            risk_type="mildiu_risk",
-            risk_data=climate.mildiu_risk,
-            ccaa=state.ccaa,
-            valid_until=str(state.end_date),
-            message_template="Riesgo de mildiu {level}: humedad observada {value} frente al umbral {threshold}."
-        )
-        if mildiu_alert:
-            alerts.append(mildiu_alert)
-
-        # Viento fuerte
-        wind_alert = self._build_alert_from_risk_dict(
-            risk_type="strong_wind_risk",
-            risk_data=climate.strong_wind_risk,
-            ccaa=state.ccaa,
-            valid_until=str(state.end_date),
-            message_template="Riesgo de viento fuerte {level}: velocidad observada {value} frente al umbral {threshold}."
-        )
-        if wind_alert:
-            alerts.append(wind_alert)
-
-        # Estrés hídrico futuro
         water_alert = self._build_alert_from_prediction(
             risk_type="future_water_stress",
             level=predictions.future_water_stress,
             ccaa=state.ccaa,
             valid_until=str(state.end_date),
-            message_template="Estrés hídrico futuro {level} para el periodo analizado."
+            message_template="Estrés hídrico futuro {level} para el periodo analizado.",
         )
         if water_alert:
             alerts.append(water_alert)
 
-        # Necesidad de riego
         irrigation_alert = self._build_alert_from_prediction(
             risk_type="irrigation_need",
             level=predictions.irrigation_need,
             ccaa=state.ccaa,
             valid_until=str(state.end_date),
-            message_template="Necesidad de riego {level} para el periodo analizado."
+            message_template="Necesidad de riego {level} para el periodo analizado.",
         )
         if irrigation_alert:
             alerts.append(irrigation_alert)
@@ -97,58 +79,94 @@ class RiskAgent:
         state.alerts = alerts
         return state
 
+    def _normalize_level(self, level: str | RiskLevel | None) -> RiskLevel | None:
+        if level is None:
+            return None
+
+        if isinstance(level, RiskLevel):
+            return level
+
+        text = str(level).strip().lower()
+
+        mapping = {
+            "bajo": RiskLevel.LOW,
+            "baja": RiskLevel.LOW,
+            "medio": RiskLevel.MEDIUM,
+            "media": RiskLevel.MEDIUM,
+            "moderado": RiskLevel.MEDIUM,
+            "moderada": RiskLevel.MEDIUM,
+            "alto": RiskLevel.HIGH,
+            "alta": RiskLevel.HIGH,
+            "crítico": RiskLevel.CRITICAL,
+            "critico": RiskLevel.CRITICAL,
+        }
+
+        return mapping.get(text)
+
     def _build_alert_from_risk_dict(
         self,
         risk_type: str,
-        risk_data: dict | None,
+        risk_data: dict | str | None,
         ccaa: str,
         valid_until: str,
-        message_template: str
+        message_template: str,
     ) -> Alert | None:
         if risk_data is None:
             return None
 
-        level = risk_data.get("level")
-        if level in ("Bajo", "Nulo", "Desconocido", None):
+        if isinstance(risk_data, dict):
+            raw_level = risk_data.get("level")
+            value = risk_data.get("value")
+            threshold = risk_data.get("threshold")
+        else:
+            raw_level = risk_data
+            value = None
+            threshold = None
+
+        level = self._normalize_level(raw_level)
+
+        if level is None or level == RiskLevel.LOW:
             return None
 
         penalty = self.penalties.get(level, 0.0)
 
         return Alert(
             risk_type=risk_type,
-            level=level.lower(),
-            value=risk_data.get("value"),
-            threshold=risk_data.get("threshold"),
+            level=level,
+            value=value,
+            threshold=threshold,
             penalty=penalty,
             ccaa=ccaa,
             valid_until=valid_until,
             message=message_template.format(
-                level=level.lower(),
-                value=risk_data.get("value"),
-                threshold=risk_data.get("threshold")
-            )
+                level=level.value,
+                value=value,
+                threshold=threshold,
+            ),
         )
 
     def _build_alert_from_prediction(
         self,
         risk_type: str,
-        level: str | None,
+        level: str | RiskLevel | None,
         ccaa: str,
         valid_until: str,
-        message_template: str
+        message_template: str,
     ) -> Alert | None:
-        if level in (None, "Bajo", "Baja", "Desconocido"):
+        normalized_level = self._normalize_level(level)
+
+        if normalized_level is None or normalized_level == RiskLevel.LOW:
             return None
 
-        penalty = self.penalties.get(level, 0.0)
+        penalty = self.penalties.get(normalized_level, 0.0)
 
         return Alert(
             risk_type=risk_type,
-            level=level.lower(),
-            value=level,
+            level=normalized_level,
+            value=normalized_level.value,
             threshold=None,
             penalty=penalty,
             ccaa=ccaa,
             valid_until=valid_until,
-            message=message_template.format(level=level.lower())
+            message=message_template.format(level=normalized_level.value),
         )

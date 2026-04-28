@@ -208,3 +208,25 @@ ValueError: No encuentro la estación Navarra en el inventario de AEMET
 13:11:11 [INFO] orchestrator — Explicación generada
 13:11:11 [INFO] orchestrator — Plan diario generado
 13:11:11 [INFO] __main__ — Pipeline completado — región: Navarra
+13:26:56 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+13:26:58 [INFO] orchestrator — Observación completada
+13:26:58 [INFO] orchestrator — Inferencia completada
+13:26:58 [INFO] orchestrator — Predicción completada
+13:26:58 [INFO] orchestrator — Riesgos evaluados
+13:26:58 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+13:26:58 [INFO] orchestrator — Deliberación aprobada (intento 1)
+13:27:02 [INFO] httpx — HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+13:27:02 [INFO] orchestrator — Explicación generada
+13:27:02 [INFO] orchestrator — Plan diario generado
+13:27:02 [INFO] __main__ — Pipeline completado — región: Navarra
+14:01:09 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+14:01:10 [INFO] orchestrator — Observación completada
+14:01:10 [INFO] orchestrator — Inferencia completada
+14:01:10 [INFO] orchestrator — Predicción completada
+14:01:10 [INFO] orchestrator — Riesgos evaluados
+14:01:10 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+14:01:10 [INFO] orchestrator — Deliberación aprobada (intento 1)
+14:01:14 [INFO] httpx — HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+14:01:14 [INFO] orchestrator — Explicación generada
+14:01:14 [INFO] orchestrator — Plan diario generado
+14:01:14 [INFO] __main__ — Pipeline completado — región: Navarra

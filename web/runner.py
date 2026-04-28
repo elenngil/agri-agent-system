@@ -24,8 +24,11 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(name)s — %(message)s"
     )
 
-def build_model() -> InferenceClientModel:
-    return InferenceClientModel("Qwen/Qwen2.5-72B-Instruct")
+def build_model():
+    return InferenceClientModel(
+        model_id="Qwen/Qwen2.5-72B-Instruct",
+        token=os.environ["HF_TOKEN"],
+    )
 
 
 def build_state(
@@ -47,7 +50,7 @@ def build_state(
     if getattr(state, "crop_data", None) is None:
         state.crop_data = None
 
-    state._selected_variety = variety  # útil si luego quieres leerlo
+    state.selected_variety = variety  # útil si luego quieres leerlo
     return state
 
 

@@ -1,8 +1,12 @@
-from models.shared_state import SharedState
 from datetime import date
-from models.daily_plan import (
-    DailyPlan, IrrigationPlan, ClimateSummary,
-    CropStatus, PreventionItem
+import os
+from models.shared_state import (
+    SharedState,
+    DailyPlan,
+    IrrigationPlan,
+    ClimateSummary,
+    CropStatus,
+    PreventionItem
 )
 
 
@@ -86,9 +90,7 @@ class DailyPlanAgent:
         precip,     a3 = get("precipitation",    0.0, "precipitación (asumida 0 mm)")
         humidity,   a4 = get("humidity",        55.0, "humedad (asumida 55 %)")
 
-        soil_mult = 1.0
-        if state.climate_features:
-            soil_mult = getattr(state.climate_features, "soil_multiplier", 1.0) or 1.0
+        soil_mult = state.soil_multiplier or 1.0
 
         etc = None
         dha = None
@@ -370,7 +372,7 @@ class DailyPlanAgent:
             f"{warn_text}"
         )
 
-        dashboard_url = "http://localhost:8501"
+        dashboard_url = os.getenv("DASHBOARD_URL", "http://localhost:8501")
         candidate = f"{sms} | 📊 {dashboard_url}"
 
         return candidate if len(candidate) <= 160 else sms[:160]
