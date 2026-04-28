@@ -1,49 +1,132 @@
 {
-  "meta": {
-    "region": "Navarra",
-    "station": "9995Y",
-    "start_date": "2024-04-11",
-    "end_date": "2024-04-15",
+  "station": "9995Y",
+  "start_date": "2024-07-22",
+  "end_date": "2024-07-26",
+  "ccaa": "Navarra",
+  "weather_data": {
+    "temperature_max": 26.8,
+    "temperature_min": 12.5,
+    "temperature_mean": 19.82,
+    "precipitation": 4.6,
+    "humidity": 81.8,
+    "wind": 1.9,
+    "pressure": null,
+    "days_count": 5
+  },
+  "soil_multiplier": 0.7,
+  "crop_data": {
     "variety": "Tempranillo",
-    "dashboard_url": "http://localhost:8501"
+    "color": "red",
+    "water_need": "medium",
+    "frost_sensitivity": "medium",
+    "heat_sensitivity": "medium",
+    "humidity_sensitivity": "medium",
+    "optimal_temp_min": 11.0,
+    "optimal_temp_max": 31.0,
+    "optimal_humidity_max": 65.0,
+    "optimal_precip_mm": 500.0
   },
-  "sms": "🍇 Navarra | 💧 0.7 L/m² | 🟢 óptimo | ✅ Sin alertas | 📊 http://localhost:8501",
-  "daily_plan": {
-    "irrigation": {
-      "base_liters": 6.0,
-      "adjusted_liters": 0.7,
-      "adjustment_reason": "base ajustada por ETc (0.7 L/m²)",
-      "soil_multiplier": 1.0,
-      "assumed_values": []
+  "climate_features": {
+    "etc": 1.06,
+    "dha": 0,
+    "frost_risk": {
+      "level": "Nulo",
+      "score": 0.0,
+      "value": 12.5,
+      "threshold": 5.0
     },
-    "climate": {
-      "condition": "óptimo",
-      "temp_min": 6.9,
-      "temp_max": 27.8,
-      "precipitation": 0.0,
-      "humidity": 66.4,
-      "interpretation": "Condiciones térmicas (6.9–27.8 °C) y de humedad (66.4 %) dentro de rangos favorables para el viñedo."
+    "heat_stress": {
+      "level": "Bajo",
+      "score": 0.2,
+      "value": 26.8,
+      "threshold": 34.0
     },
-    "crop_status": {
-      "phase": "brotación",
-      "recommendation": "[Tempranillo] Inicio activo de crecimiento. Monitorizar plagas tempranas.",
-      "assumed": false
+    "mildiu_risk": {
+      "level": "Bajo",
+      "score": 0.2,
+      "value": 81.8,
+      "threshold": 85
     },
-    "prevention": [
-      {
-        "risk": "none",
-        "label": "Sin riesgos detectados",
-        "priority": "baja",
-        "action": "Mantener seguimiento rutinario. Revisar estado de la planta y de la cobertura del suelo."
+    "strong_wind_risk": {
+      "level": "Bajo",
+      "score": 0.2,
+      "value": 1.9,
+      "threshold": 50
+    }
+  },
+  "predictions": {
+    "future_water_stress": "Bajo",
+    "irrigation_need": "Baja"
+  },
+  "alerts": [],
+  "scenarios": [
+    {
+      "actions": [
+        {
+          "type": "irrigation",
+          "intensity": "light",
+          "cost": 0.05
+        },
+        {
+          "type": "fungicide",
+          "intensity": "none",
+          "cost": 0.0
+        },
+        {
+          "type": "harvest_timing",
+          "intensity": "normal",
+          "cost": 0.0
+        },
+        {
+          "type": "canopy_management",
+          "intensity": "none",
+          "cost": 0.0
+        }
+      ],
+      "utility": 0.7989999999999999,
+      "breakdown": {
+        "quality": 0.7799999999999999,
+        "production": 0.75,
+        "cost": 0.95,
+        "sustainability": 0.82
       }
-    ],
-    "explanation": "Plan de manejo para Navarra — 2024-04-11 a 2024-04-15.\n\nClima: Condiciones térmicas (6.9–27.8 °C) y de humedad (66.4 %) dentro de rangos favorables para el viñedo.\n\nRiego: se recomiendan 0.7 L/m² (base ajustada por ETc (0.7 L/m²)).\n\nCultivo en fase de brotación. [Tempranillo] Inicio activo de crecimiento. Monitorizar plagas tempranas.\n\nPrevención: Sin riesgos destacados. Seguimiento rutinario."
-  },
-  "explanation_agent": {
-    "summary": "En tu viñedo en Navarra, no se han detectado riesgos significativos en este momento. Mantén un riego ligero y sigue con la poda y la cosecha según lo planeado.",
-    "confidence": {},
-    "sms_text": "🍇 Navarra: Sin alertas significativas hoy.",
+    },
+    {
+      "actions": [
+        {
+          "type": "irrigation",
+          "intensity": "none",
+          "cost": 0.0
+        },
+        {
+          "type": "fungicide",
+          "intensity": "none",
+          "cost": 0.0
+        },
+        {
+          "type": "harvest_timing",
+          "intensity": "normal",
+          "cost": 0.0
+        },
+        {
+          "type": "canopy_management",
+          "intensity": "none",
+          "cost": 0.0
+        }
+      ],
+      "utility": 0.7775,
+      "breakdown": {
+        "quality": 0.7,
+        "production": 0.75,
+        "cost": 1.0,
+        "sustainability": 0.85
+      }
+    }
+  ],
+  "explanation": {
+    "summary": "En tu viñedo en Navarra, actualmente no hay riesgos significativos detectados. Mantén un riego ligero y sigue con el horario normal de cosecha sin necesidad de tratamientos fungicidas ni manejo especial del dosel.",
     "risk_explanation": [],
+    "recommendation_reasoning": "Acciones basadas en el análisis de riesgos detectados.",
     "alternatives": [
       {
         "actions": [
@@ -55,6 +138,46 @@
         "utility": 0.7775,
         "tradeoff": "Menor coste pero posiblemente menos efectivo"
       }
-    ]
+    ],
+    "sms_text": "🍇 Navarra: Sin alertas significativas hoy.",
+    "sources": []
+  },
+  "daily_plan": {
+    "irrigation": {
+      "base_liters": 6.0,
+      "adjusted_liters": 1.1,
+      "adjustment_reason": "base ajustada por ETc (1.1 L/m²)",
+      "soil_multiplier": 1.0,
+      "assumed_values": []
+    },
+    "climate": {
+      "condition": "húmedo",
+      "temp_min": 12.5,
+      "temp_max": 26.8,
+      "precipitation": 4.6,
+      "humidity": 81.8,
+      "interpretation": "Humedad relativa del 81.8 % favorece el desarrollo de mildiu y botrytis. Revisar cobertura fungicida."
+    },
+    "crop_status": {
+      "phase": "maduración",
+      "recommendation": "[Tempranillo] Reducir aporte nitrogenado. Mantener riego equilibrado.",
+      "assumed": false
+    },
+    "prevention": [
+      {
+        "risk": "future_water_stress",
+        "label": "Estrés hídrico futuro",
+        "priority": "alta",
+        "action": "El balance hídrico es deficitario. Aumentar frecuencia de riego preventivo."
+      },
+      {
+        "risk": "mildiu_risk",
+        "label": "Riesgo de mildiu",
+        "priority": "media",
+        "action": "Condiciones óptimas para mildiu. Revisar cobertura fungicida (cobre o sistémico)."
+      }
+    ],
+    "explanation": "Plan de manejo para Navarra — 2024-07-22 a 2024-07-26.\n\nClima: Humedad relativa del 81.8 % favorece el desarrollo de mildiu y botrytis. Revisar cobertura fungicida.\n\nRiego: se recomiendan 1.1 L/m² (base ajustada por ETc (1.1 L/m²)).\n\nCultivo en fase de maduración. [Tempranillo] Reducir aporte nitrogenado. Mantener riego equilibrado.\n\nPrevención: Atención prioritaria: Estrés hídrico futuro. Vigilar también: Riesgo de mildiu.",
+    "sms": "🍇 Navarra | 💧 1.1 L/m² | 🌫️ húmedo | ⚠️ Estrés hídrico futuro | 📊 http://localhost:8501"
   }
 }

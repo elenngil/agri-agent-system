@@ -33,3 +33,87 @@
 12:14:01 [INFO] orchestrator —  Plan diario generado
 12:14:01 [INFO] orchestrator — Output guardado en output/daily_plan.json
 12:14:01 [INFO] __main__ — Pipeline completado — región: Navarra
+12:35:53 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+12:35:56 [INFO] orchestrator — Observación completada
+12:35:56 [INFO] orchestrator — Inferencia completada
+12:35:56 [INFO] orchestrator — Predicción completada
+12:35:56 [INFO] orchestrator — Riesgos evaluados
+12:35:56 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+12:35:56 [INFO] orchestrator — Deliberación completa
+12:35:56 [INFO] orchestrator — Deliberación aprobada (intento 1)
+12:36:00 [INFO] httpx — HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+12:36:00 [INFO] orchestrator — Explicación generada
+12:36:00 [INFO] orchestrator —  Plan diario generado
+12:36:00 [ERROR] __main__ — Error inesperado
+Traceback (most recent call last):
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\main.py", line 54, in main
+    shared_state = orchestrator.run(shared_state)
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\orchestrator.py", line 66, in run
+    self.writer.write(state)
+    ^^^^^^^^^^^
+AttributeError: 'Orchestrator' object has no attribute 'writer'
+12:36:27 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+12:36:30 [INFO] orchestrator — Observación completada
+12:36:30 [INFO] orchestrator — Inferencia completada
+12:36:30 [INFO] orchestrator — Predicción completada
+12:36:30 [INFO] orchestrator — Riesgos evaluados
+12:36:30 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+12:36:30 [INFO] orchestrator — Deliberación completa
+12:36:30 [INFO] orchestrator — Deliberación aprobada (intento 1)
+12:36:32 [INFO] httpx — HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+12:36:32 [INFO] orchestrator — Explicación generada
+12:36:32 [INFO] orchestrator —  Plan diario generado
+12:36:32 [ERROR] __main__ — Error inesperado
+Traceback (most recent call last):
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\main.py", line 54, in main
+    shared_state = orchestrator.run(shared_state)
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\orchestrator.py", line 68, in run
+    self.writer.write(state)
+    ^^^^^^^^^^^
+AttributeError: 'Orchestrator' object has no attribute 'writer'
+12:36:41 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+12:36:46 [INFO] orchestrator — Observación completada
+12:36:46 [INFO] orchestrator — Inferencia completada
+12:36:46 [INFO] orchestrator — Predicción completada
+12:36:46 [INFO] orchestrator — Riesgos evaluados
+12:36:46 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+12:36:46 [INFO] orchestrator — Deliberación completa
+12:36:46 [INFO] orchestrator — Deliberación aprobada (intento 1)
+12:36:51 [INFO] httpx — HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+12:36:51 [INFO] orchestrator — Explicación generada
+12:36:51 [INFO] orchestrator —  Plan diario generado
+12:36:51 [ERROR] __main__ — Error inesperado
+Traceback (most recent call last):
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\main.py", line 54, in main
+    shared_state = orchestrator.run(shared_state)
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\orchestrator.py", line 69, in run
+    self.writer.write(state)
+    ~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\output\writer.py", line 18, in write
+    json.dump(data, f, ensure_ascii=False, indent=2)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\egilc\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__init__.py", line 181, in dump
+    for chunk in iterable:
+                 ^^^^^^^^
+  File "C:\Users\egilc\AppData\Local\Python\pythoncore-3.14-64\Lib\json\encoder.py", line 444, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "C:\Users\egilc\AppData\Local\Python\pythoncore-3.14-64\Lib\json\encoder.py", line 413, in _iterencode_dict
+    yield from chunks
+  File "C:\Users\egilc\AppData\Local\Python\pythoncore-3.14-64\Lib\json\encoder.py", line 451, in _iterencode
+    newobj = _default(o)
+  File "C:\Users\egilc\AppData\Local\Python\pythoncore-3.14-64\Lib\json\encoder.py", line 182, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type set is not JSON serializable
+when serializing dict item 'meta'
+12:39:45 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+12:39:47 [INFO] orchestrator — Observación completada
+12:39:47 [INFO] orchestrator — Inferencia completada
+12:39:47 [INFO] orchestrator — Predicción completada
+12:39:47 [INFO] orchestrator — Riesgos evaluados
+12:39:47 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+12:39:47 [INFO] orchestrator — Deliberación aprobada (intento 1)
+12:39:50 [INFO] httpx — HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+12:39:50 [INFO] orchestrator — Explicación generada
+12:39:50 [INFO] orchestrator — Plan diario generado
+12:39:50 [INFO] __main__ — Pipeline completado — región: Navarra
