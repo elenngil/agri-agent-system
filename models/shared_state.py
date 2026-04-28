@@ -54,7 +54,7 @@ class RiskLevel(Enum):
 @dataclass
 class Alert:
     risk_type: str
-    level: str
+    level: RiskLevel
     value: float | str | None
     threshold: float | str | None
     penalty: float
@@ -77,12 +77,43 @@ class Scenario:
 
 
 @dataclass
+class IrrigationPlan:
+    base_liters: float
+    adjusted_liters: float
+    adjustment_reason: str
+    soil_multiplier: float
+    assumed_values: bool
+
+@dataclass
+class ClimateSummary:
+    condition: str
+    temp_min: float
+    temp_max: float
+    precipitation: float
+    humidity: float
+    interpretation: str
+
+@dataclass
+class CropStatus:
+    phase: str
+    recommendation: str
+    assumed: bool
+
+@dataclass
+class PreventionItem:
+    risk: str
+    label: str
+    priority: str
+    action: str
+
+@dataclass
 class DailyPlan:
-    irrigation: dict
-    climate: dict
-    crop_status: dict
-    prevention: List[str]
+    irrigation: IrrigationPlan
+    climate: ClimateSummary
+    crop_status: CropStatus
+    prevention: list[PreventionItem]
     explanation: str
+    sms: str
 
 
 @dataclass

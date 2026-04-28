@@ -1,9 +1,7 @@
 # orchestrator.py — reemplazar completamente
 
-import json
-from pathlib import Path
 import logging
-from models.shared_state import SharedState
+from models.shared_state import SharedState, RiskLevel
 from agents.observation_agent import ObservationAgent
 from agents.inference_agent import InferenceAgent
 from agents.prediction_agent import PredictionAgent
@@ -53,7 +51,10 @@ class Orchestrator:
         logger.info("Riesgos evaluados")
 
         # ── Fase 2: routing según nivel de riesgo ───────────────
-        critical_alerts = [a for a in state.alerts if a.level in ("alto", "crítico")]
+        critical_alerts = [
+            a for a in state.alerts
+            if a.level in (RiskLevel.HIGH, RiskLevel.CRITICAL)
+        ]
 
         if critical_alerts:
             logger.info(f"{len(critical_alerts)} alerta(s) crítica(s) — activando ruta urgente")

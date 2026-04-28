@@ -181,3 +181,30 @@ TypeError: '>' not supported between instances of 'NoneType' and 'int'
 12:52:48 [INFO] orchestrator — Explicación generada
 12:52:48 [INFO] orchestrator — Plan diario generado
 12:52:48 [INFO] __main__ — Pipeline completado — región: Navarra
+13:10:01 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+13:10:02 [ERROR] __main__ — Error inesperado
+Traceback (most recent call last):
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\main.py", line 54, in main
+    shared_state = orchestrator.run(shared_state)
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\orchestrator.py", line 37, in run
+    state = self.observation.run(state)
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\agents\observation_agent.py", line 16, in run
+    crop_raw = get_crop_data(shared_state.ccaa)
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\tools\crop_data.py", line 17, in get_crop_data
+    ccaa = station_to_ccaa(station)
+  File "C:\Users\egilc\Desktop\TFG INF\TFG INF\agri-agent-system\tools\aemet_stations.py", line 20, in station_to_ccaa
+    raise ValueError(f"No encuentro la estación {station} en el inventario de AEMET")
+ValueError: No encuentro la estación Navarra en el inventario de AEMET
+13:10:49 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+13:10:49 [ERROR] __main__ — Error AEMET: Error de conexión con AEMET: 429 Client Error: Too Many Requests for url: https://opendata.aemet.es/opendata/api/valores/climatologicos/diarios/datos/fechaini/2024-07-22T00:00:00UTC/fechafin/2024-07-26T23:59:59UTC/estacion/9995Y?api_key=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlLmdpbGN1bmNoaWxsb3NAZ21haWwuY29tIiwianRpIjoiN2Y1MGU2MWYtOTc4MS00MjBlLWJlMzktMGQ1YjMzNzBhNjMxIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE3NzI0NzAyNzEsInVzZXJJZCI6IjdmNTBlNjFmLTk3ODEtNDIwZS1iZTM5LTBkNWIzMzcwYTYzMSIsInJvbGUiOiIifQ.ExIAJEPJVOCtAEsw_WkbmtL-eHlfkvX3KlId5-4Rij0
+13:11:06 [INFO] __main__ — Iniciando pipeline para Navarra (estación 9995Y)
+13:11:08 [INFO] orchestrator — Observación completada
+13:11:08 [INFO] orchestrator — Inferencia completada
+13:11:08 [INFO] orchestrator — Predicción completada
+13:11:08 [INFO] orchestrator — Riesgos evaluados
+13:11:08 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+13:11:08 [INFO] orchestrator — Deliberación aprobada (intento 1)
+13:11:11 [INFO] httpx — HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+13:11:11 [INFO] orchestrator — Explicación generada
+13:11:11 [INFO] orchestrator — Plan diario generado
+13:11:11 [INFO] __main__ — Pipeline completado — región: Navarra

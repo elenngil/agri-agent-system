@@ -5,7 +5,7 @@ no viola reglas agronómicas básicas antes de generar la explicación.
 No usa LLM: es determinista. Rápido y predecible.
 """
 
-from models.shared_state import SharedState
+from models.shared_state import SharedState, RiskLevel
 
 
 # Reglas que nunca deben violarse, independientemente del scoring de utilidad
@@ -19,7 +19,7 @@ HARD_RULES = [
             and hasattr(state, "start_date")
             and getattr(state.start_date, "month", 0) >= 9
         ),
-        "problematic_actions": ["fungicide"],
+        "problematic_actions": [("fungicide", "curative")],
     },
     {
         "id": "no_heavy_defoliation_in_heat",
@@ -27,10 +27,9 @@ HARD_RULES = [
         "check": lambda actions, state: not (
             any(a.type == "canopy_management" and a.intensity == "heavy_defoliation" for a in actions)
             and state.climate_features is not None
-            and isinstance(state.climate_features.heat_stress, dict)
-            and state.climate_features.heat_stress.get("level") == "Alto"
+            and str(state.climate_features.heat_stress).lower() == "alto"
         ),
-        "problematic_actions": ["canopy_management"],
+        "problematic_actions": [("canopy_management", "heavy_defoliation")],
     },
     {
         "id": "no_intensive_irrigation_with_rain",
@@ -40,7 +39,7 @@ HARD_RULES = [
             and state.weather_data is not None
             and state.weather_data.precipitation > 30
         ),
-        "problematic_actions": ["irrigation"],
+        "problematic_actions": [("irrigation", "intensive")],
     },
 ]
 
@@ -73,6 +72,6 @@ class CriticAgent:
 
         return {
             "approved": True,
-            "reason": "Riego intensivo con suelo saturado es contraproducente",
-            "problematic_actions": [("irrigation", "intensive")]
+            "reason": "Todas las reglas agronómicas verificadas correctamente",
+            "problematic_actions": []
         }
