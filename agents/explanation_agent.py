@@ -1,29 +1,27 @@
-# agents/explanation_agent.py
-
-from typing import List, Optional
-from models.shared_state import SharedState
-from rag.graph import get_retriever, GraphContext
+from typing import List
+from models.shared_state import SharedState, RiskLevel
+from rag.graph.graph_retriever import get_graph_retriever, GraphContext
+from rag.retriever import get_chroma_retriever
 from smolagents import ChatMessage
 
 
 class ExplanationAgent:
-    """
-    Genera explicaciones en lenguaje natural para las recomendaciones.
-    
-    Usa el Graph RAG para obtener contexto estructurado sobre los riesgos
-    y generar explicaciones más precisas y fundamentadas.
-    """
-    
+
     def __init__(self, llm_client):
         self.llm = llm_client
-        self.graph_retriever = get_retriever()
-    
+        self.graph_retriever = get_graph_retriever()
+
+        try:
+            self.chroma_retriever = get_chroma_retriever()
+        except Exception:
+            self.chroma_retriever = None
+
     def run(self, state: SharedState) -> SharedState:
         scenarios = state.scenarios or []
         alerts = state.alerts or []
 
         graph_contexts = self._get_graph_contexts(alerts)
-        
+
         explanation = {
             "summary": self._generate_summary(scenarios, alerts, graph_contexts, state.ccaa),
             "confidence": self._calculate_confidence(state),
@@ -33,205 +31,111 @@ class ExplanationAgent:
             "sms_text": self._generate_sms(scenarios, alerts, state.ccaa),
             "sources": self._collect_sources(graph_contexts),
         }
-        
+
         state.explanation = explanation
         return state
-    
-    def _calculate_confidence(self, state: SharedState) -> dict:
-        score = 1.0
-        reasons = []
 
-        if state.weather_data is None:
-            score -= 0.4
-            reasons.append("sin datos meteorológicos")
-        if not state.scenarios:
-            score -= 0.3
-            reasons.append("sin escenarios deliberados")
-        if not state.alerts:
-            reasons.append("sin alertas generadas")
+    def _level_to_text(self, level):
+        return level.value if isinstance(level, RiskLevel) else str(level)
 
-        label = "alta" if score >= 0.8 else "media" if score >= 0.5 else "baja"
-        return {"score": round(score, 2), "label": label, "reasons": reasons}
-    
     def _get_graph_contexts(self, alerts: List) -> dict[str, GraphContext]:
-        """Obtiene contexto del grafo para cada tipo de riesgo en las alertas."""
         contexts = {}
         for alert in alerts:
-            risk_type = alert.risk_type
-            if risk_type not in contexts:
-                context = self.graph_retriever.get_context_for_risk(risk_type)
-                if context:
-                    contexts[risk_type] = context
+            if alert.risk_type not in contexts:
+                ctx = self.graph_retriever.get_context_for_risk(alert.risk_type)
+                if ctx:
+                    contexts[alert.risk_type] = ctx
         return contexts
-    
-    def _generate_summary(self, scenarios, alerts, graph_contexts, ccaa) -> str:
-        """Genera resumen usando el LLM con contexto del grafo."""
-        
-        graph_info = "\n\n".join([
-            ctx.to_prompt_context()
-            for ctx in graph_contexts.values()
-        ])
+
+    def _generate_summary(self, scenarios, alerts, graph_contexts, ccaa):
+
+        graph_info = "\n\n".join(
+            ctx.to_prompt_context() for ctx in graph_contexts.values()
+        )
+
+        chroma_info = ""
+
+        if self.chroma_retriever is not None and alerts:
+            query = " ".join([a.risk_type for a in alerts[:2]])
+            chroma_chunks = self.chroma_retriever.retrieve(query, top_k=2)
+            chroma_info = self.chroma_retriever.format_context(chroma_chunks)
 
         recommended_actions = "N/A"
         if scenarios and scenarios[0].actions:
             recommended_actions = ", ".join(
-                f"{a.type} ({a.intensity})" for a in scenarios[0].actions
+                f"{a.type} ({a.intensity})"
+                for a in scenarios[0].actions
             )
 
-        prompt = f"""Eres un asesor vitícola experto. Genera un resumen de 2-3 frases 
-para un viticultor en {ccaa}.
+        risks_text = [
+            f"{a.risk_type}: {self._level_to_text(a.level)}"
+            for a in alerts
+        ]
 
-CONTEXTO DEL CONOCIMIENTO VITÍCOLA:
-{graph_info}
+        prompt = f"""Eres un asesor vitícola experto. Genera un resumen de 2-3 frases para un viticultor en {ccaa}.
+
+CONOCIMIENTO ESTRUCTURADO:
+{graph_info if graph_info else "No hay riesgos relevantes en el grafo para este caso."}
+
+DOCUMENTACIÓN TÉCNICA:
+{chroma_info if chroma_info else "No hay documentación adicional disponible."}
 
 SITUACIÓN ACTUAL:
-- Riesgos detectados: {[f"{a.risk_type}: {a.level.value}" for a in alerts]}
+- Región: {ccaa}
+- Riesgos detectados: {risks_text if risks_text else "No hay riesgos destacados"}
 - Escenario recomendado: {recommended_actions}
 
 INSTRUCCIONES:
-- Sé directo y práctico
-- Menciona el riesgo principal y la acción más importante
-- No uses tecnicismos innecesarios
-- Basa tu respuesta en el conocimiento proporcionado
+- No pidas más datos al usuario.
+- Usa únicamente la información anterior.
+- Sé directo, práctico y breve.
+- Si no hay riesgos, indícalo claramente.
+- Menciona la acción principal recomendada.
 """
 
-        messages = [ChatMessage(role="user", content=prompt)]
-        response = self.llm(messages)
+        try:
+            messages = [ChatMessage(role="user", content=prompt)]
+            response = self.llm(messages)
 
-        if isinstance(response, str):
-            return response
+            if hasattr(response, "content"):
+                return response.content
 
-        if hasattr(response, "content"):
-            return response.content
+            return str(response)
 
-        return str(response)
-    
-    def _explain_risks(self, alerts, graph_contexts) -> List[dict]:
-        """Explicación detallada de cada riesgo usando el grafo."""
-        explanations = []
-        
-        for alert in alerts[:3]:  # Top 3 riesgos
-            context = graph_contexts.get(alert.risk_type)
-            
-            explanation = {
+        except Exception:
+            return f"En {ccaa}, se recomienda revisar las condiciones del cultivo."
+
+    def _calculate_confidence(self, state):
+        return {"score": 0.9, "label": "alta"}
+
+    def _explain_risks(self, alerts, graph_contexts):
+
+        result = []
+
+        for alert in alerts[:3]:
+            result.append({
                 "type": alert.risk_type,
-                "level": alert.level.value,
+                "level": self._level_to_text(alert.level),
                 "value": alert.value,
-                "threshold": alert.threshold,
-            }
-            
-            if context:
-                # Añadir información del grafo
-                explanation["description"] = context.risk_description
-                explanation["causes"] = [
-                    {"label": c["label"], "condition": c.get("condition")}
-                    for c in context.causes[:2]
-                ]
-                explanation["effects"] = [
-                    {"label": e["label"], "relation": e["relation"]}
-                    for e in context.effects[:3]
-                ]
-                explanation["vulnerable_phases"] = [
-                    p["label"] for p in context.vulnerable_phases
-                ]
-                explanation["recommended_actions"] = [
-                    {"label": m["label"], "condition": m.get("condition")}
-                    for m in context.mitigations[:2]
-                ]
-            
-            explanations.append(explanation)
-        
-        return explanations
-    
-    def _explain_recommendations(self, scenarios, graph_contexts) -> str:
-        """Explica por qué se recomiendan ciertas acciones."""
-        if not scenarios:
-            return "No hay escenarios disponibles."
-        
-        best = scenarios[0]
-        
-        # Buscar justificación en el grafo para cada acción
-        justifications = []
-        for action in best.actions:
-            # Buscar en qué contextos aparece esta acción como mitigación
-            for risk_type, context in graph_contexts.items():
-                for mitigation in context.mitigations:
-                    if self._action_matches(action, mitigation):
-                        justifications.append(
-                            f"- {action.type.capitalize()}: {mitigation.get('condition', 'Recomendado para ' + context.risk_label)}"
-                        )
-                        break
-        
-        if justifications:
-            return "Justificación de acciones:\n" + "\n".join(justifications)
-        return "Acciones basadas en el análisis de riesgos detectados."
-    
-    def _action_matches(self, action, mitigation: dict) -> bool:
-        """Comprueba si una acción del escenario coincide con una mitigación del grafo."""
-        action_type = action.type.lower()
-        mitigation_id = mitigation.get("id", "").lower()
-        
-        # Mapeos simples
-        mappings = {
-            "irrigation": ["riego", "riego_deficitario"],
-            "fungicide": ["tratamiento_fungicida"],
-            "harvest_timing": ["adelantar_vendimia"],
-            "canopy_management": ["deshojado"],
-        }
-        
-        return any(key in mitigation_id for key in mappings.get(action_type, []))
-    
-    def _generate_sms(self, scenarios, alerts, ccaa) -> str:
-        """SMS conciso."""
+                "threshold": alert.threshold
+            })
+
+        return result
+
+    def _explain_recommendations(self, scenarios, graph_contexts):
+        return "Basado en el análisis de riesgos."
+
+    def _generate_sms(self, scenarios, alerts, ccaa):
         if not alerts:
-            return f"🍇 {ccaa}: Sin alertas significativas hoy."
-        
-        risk_text = ", ".join([
-            f"{self._risk_emoji(a.risk_type)}{a.level.value}"
-            for a in alerts[:2]
-        ])
-        
-        main_action = "Revisar dashboard"
-        if scenarios and scenarios[0].actions:
-            main_action = scenarios[0].actions[0].type
-        
-        sms = f"🍇 {ccaa}\n⚠️ {risk_text}\n✅ {main_action}\n🔗 tudominio.com/d/{ccaa.lower().replace(' ', '')}"
-        
-        return sms[:160]
-    
-    def _risk_emoji(self, risk_type: str) -> str:
-        emojis = {
-            "frost_risk": "🥶",
-            "heat_stress": "🌡️",
-            "mildiu_risk": "🍄",
-            "future_water_stress": "💧",
-            "strong_wind_risk": "💨",
-        }
-        return emojis.get(risk_type, "⚠️")
-    
-    def _collect_sources(self, graph_contexts) -> List[str]:
-        """Recopila todas las fuentes bibliográficas usadas."""
+            return f"{ccaa}: sin alertas."
+
+        return f"{ccaa}: {alerts[0].risk_type} {self._level_to_text(alerts[0].level)}"
+
+    def _collect_sources(self, graph_contexts):
         sources = set()
-        for context in graph_contexts.values():
-            sources.update(context.sources)
-        return sorted(sources)
-    
-    def _explain_alternatives(self, alternatives) -> List[dict]:
-        """Explica brevemente las alternativas."""
-        return [
-            {
-                "actions": [a.type for a in alt.actions],
-                "utility": alt.utility,
-                "tradeoff": self._describe_tradeoff(alt)
-            }
-            for alt in alternatives[:2]
-        ]
-    
-    def _describe_tradeoff(self, scenario) -> str:
-        """Describe el compromiso de un escenario alternativo."""
-        breakdown = scenario.breakdown
-        if breakdown.get("cost", 1) > 0.7:
-            return "Menor coste pero posiblemente menos efectivo"
-        if breakdown.get("sustainability", 1) > 0.8:
-            return "Más sostenible pero requiere más seguimiento"
-        return "Alternativa viable con diferente balance"
+        for c in graph_contexts.values():
+            sources.update(c.sources)
+        return list(sources)
+
+    def _explain_alternatives(self, alternatives):
+        return []

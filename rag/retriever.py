@@ -24,8 +24,13 @@ class Chunk:
 
 class AgriRetriever:
 
+    _encoder_instance = None
+
     def __init__(self):
-        self._encoder    = SentenceTransformer(MODEL_NAME)
+        if AgriRetriever._encoder_instance is None:
+            AgriRetriever._encoder_instance = SentenceTransformer(MODEL_NAME)
+        self._encoder = AgriRetriever._encoder_instance
+        
         client           = chromadb.PersistentClient(path=str(CHROMA_DIR))
         self._collection = client.get_collection(COLLECTION)
 
@@ -80,6 +85,6 @@ class AgriRetriever:
 
 
 @lru_cache(maxsize=1)
-def get_retriever() -> AgriRetriever:
+def get_chroma_retriever() -> AgriRetriever:
     """Singleton: el modelo y ChromaDB se cargan una sola vez."""
     return AgriRetriever()

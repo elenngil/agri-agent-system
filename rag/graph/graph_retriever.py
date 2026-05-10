@@ -10,7 +10,13 @@ import networkx as nx
 from pathlib import Path
 from dataclasses import dataclass
 from typing import List, Optional
-from .schema import NodeType, RelationType, RISK_TO_NODE_MAPPING
+from .schema import (
+    RelationType,
+    RISK_TO_NODE_MAPPING,
+    CAUSE_RELATIONS,
+    EFFECT_RELATIONS,
+    MITIGATION_RELATIONS,
+)
 
 
 @dataclass
@@ -131,7 +137,7 @@ class GraphRetriever:
             edge = self.graph.edges[predecessor, node_id]
             pred_data = self.graph.nodes[predecessor]
             
-            if edge["type"] in ("causa", "provoca", "favorece"):
+            if edge["type"] in CAUSE_RELATIONS:
                 causes.append({
                     "id": predecessor,
                     "label": pred_data.get("label", predecessor),
@@ -148,7 +154,7 @@ class GraphRetriever:
             edge = self.graph.edges[node_id, successor]
             succ_data = self.graph.nodes[successor]
             
-            if edge["type"] in ("daña", "reduce", "aumenta"):
+            if edge["type"] in EFFECT_RELATIONS:
                 effects.append({
                     "id": successor,
                     "label": succ_data.get("label", successor),
@@ -165,7 +171,7 @@ class GraphRetriever:
             edge = self.graph.edges[node_id, successor]
             succ_data = self.graph.nodes[successor]
             
-            if edge["type"] == "vulnerable_en":
+            if edge["type"] == RelationType.VULNERABLE_EN.value:
                 vulnerable_phases.append({
                     "id": successor,
                     "label": succ_data.get("label", successor),
@@ -180,7 +186,7 @@ class GraphRetriever:
             edge = self.graph.edges[predecessor, node_id]
             pred_data = self.graph.nodes[predecessor]
             
-            if edge["type"] in ("mitiga", "previene", "inhibe"):
+            if edge["type"] in MITIGATION_RELATIONS:
                 mitigations.append({
                     "id": predecessor,
                     "label": pred_data.get("label", predecessor),
@@ -251,7 +257,7 @@ class GraphRetriever:
 # Singleton para reutilizar
 _retriever_instance: Optional[GraphRetriever] = None
 
-def get_retriever() -> GraphRetriever:
+def get_graph_retriever() -> GraphRetriever:
     """Obtiene instancia singleton del retriever."""
     global _retriever_instance
     if _retriever_instance is None:

@@ -59,3 +59,5 @@ def station_to_ccaa(station: str):
             ccaa = "La Rioja"
 
     return ccaa
+
+print(get_stations())

@@ -202,6 +202,13 @@
       "label": "Aclareo de racimos",
       "description": "Reducción de carga para mejorar calidad",
       "source": "Hidalgo, L. (2002). Tratado de Viticultura General"
+    },
+    {
+      "id": "riesgo_viento",
+      "type": "riesgo",
+      "label": "Riesgo por viento fuerte",
+      "description": "Daño mecánico en brotes y racimos por viento superior a 50 km/h",
+      "source": "MAPA. Guía de gestión integrada de plagas"
     }
   ],
   "relations": [
@@ -444,6 +451,30 @@
       "weight": 0.6,
       "condition": "Riego refrescante, mantiene turgencia",
       "source_ref": "Keller (2015)"
+    },
+    {
+      "source": "viento_fuerte",
+      "target": "riesgo_viento",
+      "type": "provoca",
+      "weight": 0.85,
+      "condition": "Velocidad > 50 km/h",
+      "source_ref": "MAPA - Guía GIP Vid"
+    },
+    {
+      "source": "riesgo_viento",
+      "target": "brotes",
+      "type": "daña",
+      "weight": 0.7,
+      "condition": "Rotura mecánica en brotación",
+      "source_ref": "MAPA - Guía GIP Vid"
+    },
+    {
+      "source": "riesgo_viento",
+      "target": "floracion",
+      "type": "vulnerable_en",
+      "weight": 0.8,
+      "condition": "Interfiere con polinización",
+      "source_ref": "Reynier (2012)"
     }
   ]
 }
