@@ -1,0 +1,16 @@
+timestamp,scenario_id,scenario,seed,station,ccaa,ruta,n_alertas,alertas,critic_rechazos,utilidad,exito,errores,t_inference,t_prediction,t_risk,t_deliberative,t_critic,t_explanation,t_daily_plan,t_total,gt_alerts_ok,gt_actions_ok,gt_critic_ok,gt_pass
+2026-05-10T19:49:02.802391,S01,Condiciones óptimas en La Rioja — verano suave,42,9170,La Rioja,estandar,0,,0,0.7915,True,,0.0,0.0,0.0,0.0,0.0,11.307,0.0,11.307,True,True,True,True
+2026-05-10T19:50:04.557088,S02,Primavera tranquila en Navarra,42,9995Y,Navarra,estandar,0,,0,0.7915,True,,0.0,0.0,0.0,0.0,0.0,2.228,0.0,2.228,True,True,True,True
+2026-05-10T19:50:06.786756,S03,Otoño templado en Castilla — post-vendimia,42,2889,Castilla y León,estandar,1,mildiu_risk,1,0.6575,True,,0.0,0.0,0.0,0.0,0.0,2.968,0.0,2.968,True,True,True,True
+2026-05-10T19:50:09.756066,S04,Mildiu alto en floración — Galicia húmeda,42,1387,Galicia,urgente,1,mildiu_risk,0,0.7845,True,,0.0,0.0,0.0,0.0,0.0,3.992,0.0,3.992,True,True,True,True
+2026-05-10T19:50:13.750211,S05,Mildiu crítico — humedad extrema y temperatura óptima,42,1387,Galicia,urgente,1,mildiu_risk,0,0.7845,True,,0.0,0.0,0.0,0.0,0.0,2.356,0.0,2.356,True,True,True,True
+2026-05-10T19:50:16.107550,S06,Mildiu en maduración — septiembre Galicia (test guardarraíl),42,1387,Galicia,urgente,1,mildiu_risk,0,0.7845,True,,0.0,0.0,0.0,0.0,0.0,2.761,0.0,2.761,True,True,True,True
+2026-05-10T19:50:18.869627,S07,Estrés hídrico moderado — verano seco La Rioja,42,9170,La Rioja,urgente,3,heat_stress|future_water_stress|irrigation_need,0,0.5515,True,,0.0,0.0,0.0,0.0,0.0,3.891,0.0,3.891,True,True,True,True
+2026-05-10T19:50:22.762167,S08,Estrés hídrico severo — ola de calor Castilla,42,2889,Castilla y León,urgente,3,heat_stress|future_water_stress|irrigation_need,0,0.5515,True,,0.0,0.0,0.0,0.001,0.0,4.093,0.0,4.094,True,True,True,True
+2026-05-10T19:50:26.857492,S09,Riego intensivo con lluvia — test guardarraíl,42,9170,La Rioja,estandar,0,,0,0.7915,True,,0.0,0.0,0.0,0.0,0.0,2.149,0.0,2.149,True,True,True,True
+2026-05-10T19:50:29.008579,S10,Helada tardía en brotación — Castilla y León,42,2889,Castilla y León,urgente,1,frost_risk,0,0.7605,True,,0.0,0.0,0.0,0.0,0.0,2.66,0.0,2.66,True,True,True,True
+2026-05-10T19:50:31.669818,S11,Riesgo de helada leve — temperatura límite,42,9995Y,Navarra,estandar,1,frost_risk,0,0.7605,True,,0.0,0.0,0.0,0.0,0.0,5.041,0.0,5.041,True,True,True,True
+2026-05-10T19:50:36.712434,S12,Mildiu + estrés hídrico simultáneos — primavera tardía,42,9995Y,Navarra,urgente,1,mildiu_risk,0,0.7845,True,,0.0,0.0,0.0,0.0,0.0,2.361,0.0,2.361,True,True,True,True
+2026-05-10T19:50:39.074696,S13,Estrés térmico + estrés hídrico — verano extremo,42,2889,Castilla y León,urgente,3,heat_stress|future_water_stress|irrigation_need,0,0.5515,True,,0.0,0.0,0.0,0.001,0.0,5.531,0.0,5.532,True,True,True,True
+2026-05-10T19:50:44.607234,S14,Triple alerta — mildiu + helada + viento fuerte,42,1387,Galicia,urgente,3,mildiu_risk|strong_wind_risk|frost_risk,0,0.5135,True,,0.0,0.0,0.0,0.001,0.0,3.654,0.0,3.655,True,True,True,True
+2026-05-10T19:50:48.264932,S15,Condiciones post-lluvia intensa — riesgo de botrytis,42,1387,Galicia,urgente,1,mildiu_risk,0,0.7845,True,,0.0,0.0,0.0,0.0,0.0,2.985,0.0,2.985,True,True,True,True

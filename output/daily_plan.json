@@ -1,57 +1,57 @@
 {
-  "station": "B013X",
-  "start_date": "2024-05-01",
-  "end_date": "2024-05-06",
-  "ccaa": "Islas Baleares",
-  "selected_variety": "Airen",
+  "station": "9995Y",
+  "start_date": "2026-05-01",
+  "end_date": "2026-05-05",
+  "ccaa": "Navarra",
+  "selected_variety": "Tempranillo",
   "weather_data": {
-    "temperature_max": 26.1,
-    "temperature_min": 3.0,
-    "temperature_mean": 14.016666666666666,
-    "precipitation": 7.1,
-    "humidity": 50.333333333333336,
-    "wind": 1.7,
+    "temperature_max": 22.3,
+    "temperature_min": 7.9,
+    "temperature_mean": 14.62,
+    "precipitation": 48.6,
+    "humidity": 84.2,
+    "wind": 3.1,
     "pressure": null,
-    "days_count": 6
+    "days_count": 5
   },
-  "soil_multiplier": 1.0,
+  "soil_multiplier": 0.7,
   "crop_data": {
-    "variety": "Airen",
-    "color": "white",
-    "water_need": "low",
-    "frost_sensitivity": "low",
-    "heat_sensitivity": "high",
-    "humidity_sensitivity": "low",
-    "optimal_temp_min": 13.0,
-    "optimal_temp_max": 37.0,
-    "optimal_humidity_max": 45.0,
-    "optimal_precip_mm": 350.0
+    "variety": "Tempranillo",
+    "color": "red",
+    "water_need": "medium",
+    "frost_sensitivity": "medium",
+    "heat_sensitivity": "medium",
+    "humidity_sensitivity": "medium",
+    "optimal_temp_min": 11.0,
+    "optimal_temp_max": 31.0,
+    "optimal_humidity_max": 65.0,
+    "optimal_precip_mm": 500.0
   },
   "climate_features": {
-    "etc": 1.58,
+    "etc": 1.2,
     "dha": 0,
     "frost_risk": {
-      "level": "Bajo",
-      "score": 0.2,
-      "value": 3.0,
+      "level": "Nulo",
+      "score": 0.0,
+      "value": 7.9,
       "threshold": 5.0
     },
     "heat_stress": {
       "level": "Bajo",
       "score": 0.2,
-      "value": 26.1,
-      "threshold": 40.0
+      "value": 22.3,
+      "threshold": 34.0
     },
     "mildiu_risk": {
       "level": "Bajo",
       "score": 0.2,
-      "value": 50.333333333333336,
+      "value": 84.2,
       "threshold": 85
     },
     "strong_wind_risk": {
       "level": "Bajo",
       "score": 0.2,
-      "value": 1.7,
+      "value": 3.1,
       "threshold": 50
     }
   },
@@ -61,6 +61,37 @@
   },
   "alerts": [],
   "scenarios": [
+    {
+      "actions": [
+        {
+          "type": "irrigation",
+          "intensity": "light",
+          "cost": 0.05
+        },
+        {
+          "type": "fungicide",
+          "intensity": "none",
+          "cost": 0.0
+        },
+        {
+          "type": "harvest_timing",
+          "intensity": "normal",
+          "cost": 0.0
+        },
+        {
+          "type": "canopy_management",
+          "intensity": "none",
+          "cost": 0.0
+        }
+      ],
+      "utility": 0.7915,
+      "breakdown": {
+        "quality": 0.7799999999999999,
+        "production": 0.75,
+        "cost": 0.9,
+        "sustainability": 0.82
+      }
+    },
     {
       "actions": [
         {
@@ -91,41 +122,10 @@
         "cost": 1.0,
         "sustainability": 0.85
       }
-    },
-    {
-      "actions": [
-        {
-          "type": "irrigation",
-          "intensity": "light",
-          "cost": 0.05
-        },
-        {
-          "type": "fungicide",
-          "intensity": "none",
-          "cost": 0.0
-        },
-        {
-          "type": "harvest_timing",
-          "intensity": "normal",
-          "cost": 0.0
-        },
-        {
-          "type": "canopy_management",
-          "intensity": "none",
-          "cost": 0.0
-        }
-      ],
-      "utility": 0.7595,
-      "breakdown": {
-        "quality": 0.7,
-        "production": 0.75,
-        "cost": 0.9,
-        "sustainability": 0.82
-      }
     }
   ],
   "explanation": {
-    "summary": "En Islas Baleares, no se detectan riesgos relevantes para tu viñedo en este momento. Mantén un calendario de riego y cuidado de la vid según las prácticas estándar, y sigue un horario de cosecha normal.",
+    "summary": "En Navarra, actualmente no se detectan riesgos significativos para tu viñedo. Se recomienda mantener un riego ligero y seguir con las prácticas normales de poda y cosecha.",
     "confidence": {
       "score": 0.9,
       "label": "alta"
@@ -133,45 +133,45 @@
     "risk_explanation": [],
     "recommendation_reasoning": "Basado en el análisis de riesgos.",
     "alternatives": [],
-    "sms_text": "Islas Baleares: sin alertas.",
+    "sms_text": "Navarra: sin alertas.",
     "sources": []
   },
   "daily_plan": {
     "irrigation": {
       "base_liters": 6.0,
-      "adjusted_liters": 1.6,
-      "adjustment_reason": "base ajustada por ETc (1.6 L/m²)",
-      "soil_multiplier": 1.0,
+      "adjusted_liters": 0.0,
+      "adjustment_reason": "base ajustada por ETc (1.2 L/m²); -4.0 L/m² por precipitación (48.6 mm); ×0.70 por tipo de suelo",
+      "soil_multiplier": 0.7,
       "assumed_values": []
     },
     "climate": {
-      "condition": "óptimo",
-      "temp_min": 3.0,
-      "temp_max": 26.1,
-      "precipitation": 7.1,
-      "humidity": 50.333333333333336,
-      "interpretation": "Condiciones térmicas (3.0–26.1 °C) y de humedad (50.333333333333336 %) dentro de rangos favorables para el viñedo."
+      "condition": "húmedo",
+      "temp_min": 7.9,
+      "temp_max": 22.3,
+      "precipitation": 48.6,
+      "humidity": 84.2,
+      "interpretation": "Humedad relativa del 84.2 % favorece el desarrollo de mildiu y botrytis. Revisar cobertura fungicida."
     },
     "crop_status": {
       "phase": "crecimiento",
-      "recommendation": "[Airen] Aplicar tratamientos preventivos si hay humedad alta.",
+      "recommendation": "[Tempranillo] Aplicar tratamientos preventivos si hay humedad alta.",
       "assumed": false
     },
     "prevention": [
-      {
-        "risk": "frost_risk",
-        "label": "Riesgo de helada",
-        "priority": "media",
-        "action": "Activar sistemas antihelada o protección de brotes si temperatura baja de 2 °C."
-      },
       {
         "risk": "future_water_stress",
         "label": "Estrés hídrico futuro",
         "priority": "alta",
         "action": "El balance hídrico es deficitario. Aumentar frecuencia de riego preventivo."
+      },
+      {
+        "risk": "mildiu_risk",
+        "label": "Riesgo de mildiu",
+        "priority": "media",
+        "action": "Condiciones óptimas para mildiu. Revisar cobertura fungicida (cobre o sistémico)."
       }
     ],
-    "explanation": "Plan de manejo para Islas Baleares — 2024-05-01 a 2024-05-06.\n\nClima: Condiciones térmicas (3.0–26.1 °C) y de humedad (50.333333333333336 %) dentro de rangos favorables para el viñedo.\n\nRiego: se recomiendan 1.6 L/m² (base ajustada por ETc (1.6 L/m²)).\n\nCultivo en fase de crecimiento. [Airen] Aplicar tratamientos preventivos si hay humedad alta.\n\nPrevención: Atención prioritaria: Estrés hídrico futuro. Vigilar también: Riesgo de helada.",
-    "sms": "🍇 Islas Baleares | 💧 1.6 L/m² | 🟢 óptimo | ⚠️ Estrés hídrico futuro | 📊 http://localhost:8501"
+    "explanation": "Plan de manejo para Navarra — 2026-05-01 a 2026-05-05.\n\nClima: Humedad relativa del 84.2 % favorece el desarrollo de mildiu y botrytis. Revisar cobertura fungicida.\n\nRiego: se recomiendan 0.0 L/m² (base ajustada por ETc (1.2 L/m²); -4.0 L/m² por precipitación (48.6 mm); ×0.70 por tipo de suelo).\n\nCultivo en fase de crecimiento. [Tempranillo] Aplicar tratamientos preventivos si hay humedad alta.\n\nPrevención: Atención prioritaria: Estrés hídrico futuro. Vigilar también: Riesgo de mildiu.",
+    "sms": "🍇 Navarra | 💧 0.0 L/m² | 🌫️ húmedo | ⚠️ Estrés hídrico futuro | 📊 http://localhost:8501"
   }
 }

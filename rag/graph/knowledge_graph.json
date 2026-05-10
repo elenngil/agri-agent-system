@@ -209,6 +209,13 @@
       "label": "Riesgo por viento fuerte",
       "description": "Daño mecánico en brotes y racimos por viento superior a 50 km/h",
       "source": "MAPA. Guía de gestión integrada de plagas"
+    },
+    {
+      "id": "poda_protectora",
+      "type": "accion",
+      "label": "Formación y poda protectora",
+      "description": "Sistemas de conducción que reducen la exposición al viento",
+      "source": "Reynier, A. (2012). Manual de Viticultura"
     }
   ],
   "relations": [
@@ -474,6 +481,22 @@
       "type": "vulnerable_en",
       "weight": 0.8,
       "condition": "Interfiere con polinización",
+      "source_ref": "Reynier (2012)"
+    },
+    {
+      "source": "poda_protectora",
+      "target": "riesgo_viento",
+      "type": "mitiga",
+      "weight": 0.6,
+      "condition": "Formación en espaldera reduce exposición al viento",
+      "source_ref": "Reynier (2012)"
+    },
+    {
+      "source": "adelantar_vendimia",
+      "target": "riesgo_viento",
+      "type": "mitiga",
+      "weight": 0.7,
+      "condition": "Vendimia anticipada evita pérdidas mecánicas por viento fuerte",
       "source_ref": "Reynier (2012)"
     }
   ]

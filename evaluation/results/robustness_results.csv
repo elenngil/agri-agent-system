@@ -1,0 +1,21 @@
+scenario_id,scenario,temperature,n_iter,utilidad_media,utilidad_std,utilidad_min,utilidad_max,tasa_cambio_recomendacion,accion_mas_frecuente
+S01,Condiciones óptimas en La Rioja — verano,0.0,100,0.7915,0.0,0.7915,0.7915,0.0,irrigation:light
+S01,Condiciones óptimas en La Rioja — verano,0.03,100,0.8064,0.0242,0.7486,0.8744,0.31,irrigation:light
+S01,Condiciones óptimas en La Rioja — verano,0.05,100,0.8023,0.0437,0.7085,0.9096,0.4,irrigation:light
+S01,Condiciones óptimas en La Rioja — verano,0.1,100,0.8361,0.0856,0.6042,1.0,0.48,irrigation:none
+S04,Mildiu alto en floración — Galicia húmed,0.0,100,0.7845,0.0,0.7845,0.7845,0.0,fungicide:curative
+S04,Mildiu alto en floración — Galicia húmed,0.03,100,0.8068,0.0209,0.7554,0.8643,0.0,fungicide:curative
+S04,Mildiu alto en floración — Galicia húmed,0.05,100,0.8255,0.0329,0.7546,0.9169,0.0,fungicide:curative
+S04,Mildiu alto en floración — Galicia húmed,0.1,100,0.884,0.0637,0.7418,1.0,0.01,fungicide:curative
+S07,Estrés hídrico moderado — verano seco La,0.0,100,0.5515,0.0,0.5515,0.5515,0.0,irrigation:moderate
+S07,Estrés hídrico moderado — verano seco La,0.03,100,0.5794,0.0183,0.5363,0.6185,0.0,irrigation:moderate
+S07,Estrés hídrico moderado — verano seco La,0.05,100,0.6053,0.0348,0.5244,0.6905,0.05,irrigation:moderate
+S07,Estrés hídrico moderado — verano seco La,0.1,100,0.6806,0.0633,0.5771,0.8714,0.14,irrigation:moderate
+S10,Helada tardía en brotación — Castilla y ,0.0,100,0.7605,0.0,0.7605,0.7605,0.0,irrigation:light
+S10,Helada tardía en brotación — Castilla y ,0.03,100,0.7713,0.0292,0.6938,0.8406,0.35,irrigation:light
+S10,Helada tardía en brotación — Castilla y ,0.05,100,0.7798,0.0415,0.6607,0.8874,0.33,irrigation:light
+S10,Helada tardía en brotación — Castilla y ,0.1,100,0.8143,0.0865,0.6102,1.0,0.46,irrigation:light
+S12,Mildiu + estrés hídrico simultáneos — pr,0.0,100,0.7845,0.0,0.7845,0.7845,0.0,fungicide:curative
+S12,Mildiu + estrés hídrico simultáneos — pr,0.03,100,0.8068,0.0209,0.7554,0.8643,0.0,fungicide:curative
+S12,Mildiu + estrés hídrico simultáneos — pr,0.05,100,0.8255,0.0329,0.7546,0.9169,0.0,fungicide:curative
+S12,Mildiu + estrés hídrico simultáneos — pr,0.1,100,0.884,0.0637,0.7418,1.0,0.01,fungicide:curative
