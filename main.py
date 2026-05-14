@@ -1,5 +1,7 @@
-from datetime import date
+import logging_config  # PRIMERA línea — configura logging antes de todo
 import logging
+
+from datetime import date
 from orchestrator import Orchestrator
 from models.shared_state import SharedState
 from tools.aemet_stations import station_to_ccaa
@@ -9,29 +11,16 @@ import os
 from dotenv import load_dotenv
 from smolagents import InferenceClientModel
 
-os.makedirs("logs", exist_ok=True)
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s — %(message)s",
-    datefmt="%H:%M:%S",
-    handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler("logs/agri_agent.log"),
-    ]
-)
-
 logger = logging.getLogger(__name__)
+
 
 def main():
     station = "9995Y"
 
-    load_dotenv()
-
     try:
         ccaa = station_to_ccaa(station)
     except ValueError as e:
-        logger.error("Error con la estación: %s", e)
+        logger.error("Estación no encontrada: %s", e)
         return
 
     shared_state = SharedState(
@@ -41,23 +30,20 @@ def main():
         ccaa=ccaa
     )
 
+    load_dotenv()
+
     model = InferenceClientModel(
         model_id="Qwen/Qwen2.5-72B-Instruct",
         token=os.environ["HF_TOKEN"],
     )
-
     orchestrator = Orchestrator(model=model)
 
-    logger.info("Iniciando pipeline para %s (estación %s)", ccaa, station)
-
     try:
+        logger.info("Iniciando pipeline para %s (estación %s)", ccaa, station)
+
         shared_state = orchestrator.run(shared_state)
 
-        logger.info("Pipeline completado — región: %s", shared_state.ccaa)
-
-        print("\n" + "=" * 50)
-        print("RESULTADO FINAL")
-        print("=" * 50)
+        logger.info("Pipeline completado — región: %s", ccaa)
 
         print("\n" + "=" * 50)
         print("RESUMEN EXPLICATIVO")
@@ -65,7 +51,7 @@ def main():
         print(shared_state.explanation["summary"])
 
         print("\n" + "=" * 50)
-        print("MOTIVO DE LA DECISIÓN")
+        print("MOTIVO DE LA DECISION")
         print("=" * 50)
         print(shared_state.explanation["recommendation_reasoning"])
 
@@ -81,13 +67,12 @@ def main():
         print("\nSMS:")
         print(shared_state.daily_plan.sms)
 
-        print("\nExplicación:")
+        print("\nExplicacion:")
         print(shared_state.daily_plan.explanation)
 
     except AemetError as e:
-        logger.error("Error AEMET: %s", e)
-
-    except Exception:
+        logger.error("Error de AEMET: %s", e)
+    except Exception as e:
         logger.exception("Error inesperado")
         raise
 

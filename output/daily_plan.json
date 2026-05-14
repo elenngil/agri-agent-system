@@ -1,16 +1,16 @@
 {
   "station": "9995Y",
-  "start_date": "2026-05-01",
-  "end_date": "2026-05-05",
+  "start_date": "2024-07-22",
+  "end_date": "2024-07-26",
   "ccaa": "Navarra",
-  "selected_variety": "Tempranillo",
+  "selected_variety": null,
   "weather_data": {
-    "temperature_max": 22.3,
-    "temperature_min": 7.9,
-    "temperature_mean": 14.62,
-    "precipitation": 48.6,
-    "humidity": 84.2,
-    "wind": 3.1,
+    "temperature_max": 26.8,
+    "temperature_min": 12.5,
+    "temperature_mean": 19.82,
+    "precipitation": 4.6,
+    "humidity": 81.8,
+    "wind": 1.9,
     "pressure": null,
     "days_count": 5
   },
@@ -28,30 +28,30 @@
     "optimal_precip_mm": 500.0
   },
   "climate_features": {
-    "etc": 1.2,
+    "etc": 1.06,
     "dha": 0,
     "frost_risk": {
       "level": "Nulo",
       "score": 0.0,
-      "value": 7.9,
-      "threshold": 5.0
+      "value": 12.5,
+      "threshold": 11.0
     },
     "heat_stress": {
       "level": "Bajo",
       "score": 0.2,
-      "value": 22.3,
+      "value": 26.8,
       "threshold": 34.0
     },
     "mildiu_risk": {
       "level": "Bajo",
       "score": 0.2,
-      "value": 84.2,
+      "value": 81.8,
       "threshold": 85
     },
     "strong_wind_risk": {
       "level": "Bajo",
       "score": 0.2,
-      "value": 3.1,
+      "value": 1.9,
       "threshold": 50
     }
   },
@@ -125,7 +125,7 @@
     }
   ],
   "explanation": {
-    "summary": "En Navarra, actualmente no se detectan riesgos significativos para tu viñedo. Se recomienda mantener un riego ligero y seguir con las prácticas normales de poda y cosecha.",
+    "summary": "En tu viñedo en Navarra no se han detectado riesgos destacados. Se recomienda mantener un riego ligero y seguir con la poda y el calendario de cosecha habitual.",
     "confidence": {
       "score": 0.9,
       "label": "alta"
@@ -139,22 +139,22 @@
   "daily_plan": {
     "irrigation": {
       "base_liters": 6.0,
-      "adjusted_liters": 0.0,
-      "adjustment_reason": "base ajustada por ETc (1.2 L/m²); -4.0 L/m² por precipitación (48.6 mm); ×0.70 por tipo de suelo",
+      "adjusted_liters": 0.7,
+      "adjustment_reason": "base ajustada por ETc (1.1 L/m²); ×0.70 por tipo de suelo",
       "soil_multiplier": 0.7,
       "assumed_values": []
     },
     "climate": {
       "condition": "húmedo",
-      "temp_min": 7.9,
-      "temp_max": 22.3,
-      "precipitation": 48.6,
-      "humidity": 84.2,
-      "interpretation": "Humedad relativa del 84.2 % favorece el desarrollo de mildiu y botrytis. Revisar cobertura fungicida."
+      "temp_min": 12.5,
+      "temp_max": 26.8,
+      "precipitation": 4.6,
+      "humidity": 81.8,
+      "interpretation": "Humedad relativa del 81.8 % favorece el desarrollo de mildiu y botrytis. Revisar cobertura fungicida."
     },
     "crop_status": {
-      "phase": "crecimiento",
-      "recommendation": "[Tempranillo] Aplicar tratamientos preventivos si hay humedad alta.",
+      "phase": "maduración",
+      "recommendation": "[Tempranillo] Reducir aporte nitrogenado. Mantener riego equilibrado.",
       "assumed": false
     },
     "prevention": [
@@ -171,7 +171,7 @@
         "action": "Condiciones óptimas para mildiu. Revisar cobertura fungicida (cobre o sistémico)."
       }
     ],
-    "explanation": "Plan de manejo para Navarra — 2026-05-01 a 2026-05-05.\n\nClima: Humedad relativa del 84.2 % favorece el desarrollo de mildiu y botrytis. Revisar cobertura fungicida.\n\nRiego: se recomiendan 0.0 L/m² (base ajustada por ETc (1.2 L/m²); -4.0 L/m² por precipitación (48.6 mm); ×0.70 por tipo de suelo).\n\nCultivo en fase de crecimiento. [Tempranillo] Aplicar tratamientos preventivos si hay humedad alta.\n\nPrevención: Atención prioritaria: Estrés hídrico futuro. Vigilar también: Riesgo de mildiu.",
-    "sms": "🍇 Navarra | 💧 0.0 L/m² | 🌫️ húmedo | ⚠️ Estrés hídrico futuro | 📊 http://localhost:8501"
+    "explanation": "Plan de manejo para Navarra — 2024-07-22 a 2024-07-26.\n\nClima: Humedad relativa del 81.8 % favorece el desarrollo de mildiu y botrytis. Revisar cobertura fungicida.\n\nRiego: se recomiendan 0.7 L/m² (base ajustada por ETc (1.1 L/m²); ×0.70 por tipo de suelo).\n\nCultivo en fase de maduración. [Tempranillo] Reducir aporte nitrogenado. Mantener riego equilibrado.\n\nPrevención: Atención prioritaria: Estrés hídrico futuro. Vigilar también: Riesgo de mildiu.",
+    "sms": "🍇 Navarra | 💧 0.7 L/m² | 🌫️ húmedo | ⚠️ Estrés hídrico futuro | 📊 http://localhost:8501"
   }
 }

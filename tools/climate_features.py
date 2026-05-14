@@ -2,74 +2,35 @@ from datetime import datetime
 from models.shared_state import WeatherData, CropData
 
 
-def get_kc_base(month: int) -> float:
+def get_kc(month: int) -> float:
     """
-    Kc base para vid según fase fenológica aproximada por mes.
+    La funcioón calcula el coeficiente del cultivo base (Kc), es decir, cuánta agua necesita el cultivo según la fase fenológica.
+    Se aproximan los valores a los encontrados en el documento oficial de la FAO 56, ajústandolos a las condiciones climaticas de España.
     """
 
-    # Reposo vegetativo
-    if month in [12, 1, 2]:
+    if month in [12, 1, 2]: # Reposo vegetativo: vid dormida, no hay hojas ni crecimiento activo
         return 0.30
 
-    # Brotación
-    elif month in [3, 4]:
+    elif month in [3, 4]: # Brotación: comienzan a salir las hojas
         return 0.45
 
-    # Crecimiento vegetativo / floración
-    elif month in [5, 6]:
+    elif month in [5, 6]: # Crecimiento vegetativo / floración: los brotes se desarrollan, las hojas crecen y se forman las flores
         return 0.75
 
-    # Envero y maduración
-    elif month in [7, 8]:
+    elif month in [7, 8]: # Envero y maduración: momento en el que las uvas cambian de color, se llenan y maduran
         return 0.65
 
-    # Vendimia
-    elif month == 9:
+    elif month == 9: # Vendimia: recolección de las uvas, el crecimiento se detiene y el consumo de agua disminuye
         return 0.55
 
-    # Senescencia
-    else:  # 10, 11
+    else:  # 10, 11 Senescencia: las hojas amarillean y caen, el crecimiento se detiene y el consumo de agua es mínimo
         return 0.40
-
-
-def get_kc(weather_data: WeatherData, start_date: datetime) -> float:
-    """
-    Calcula Kc combinando:
-    - fase fenológica (mes)
-    - ajustes por humedad y precipitación
-    """
-
-    month = start_date.month
-    humidity = weather_data.humidity
-    precipitation = weather_data.precipitation
-
-    kc = get_kc_base(month)
-
-    # Ajuste por humedad
-    if humidity is not None:
-        if humidity > 80:
-            kc += 0.05
-        elif humidity < 40:
-            kc -= 0.05
-
-    # Ajuste por precipitación
-    if precipitation is not None:
-        if precipitation > 20:
-            kc += 0.05
-        elif precipitation < 5:
-            kc -= 0.05
-
-    # Limitar valores
-    kc = max(0.20, min(kc, 0.90))
-
-    return kc
 
 
 def calculate_etc(weather_data: WeatherData, start_date: datetime) -> float:
     """
-    Calcula ETc total usando:
-    - Hargreaves-Samani (ET0)
-    - Kc dinámico según fase y clima
+    La función calcula la evapotranspiración del cultivo (ETc) a partir de los datos climáticos.
+    Para ello, se utiliza la fórmula simplificada de Hargreaves-Samani.
     """
 
     tmin = weather_data.temperature_min
@@ -79,23 +40,22 @@ def calculate_etc(weather_data: WeatherData, start_date: datetime) -> float:
 
     if tmin is None or tmax is None or tmed is None or days is None:
         return 0.0
-
     if tmax < tmin:
         return 0.0
 
-    kc = get_kc(weather_data, start_date)
+    kc = get_kc(start_date.month)
 
-    # ET0 (Hargreaves-Samani simplificada)
+    # Fórmula de Hargreaves-Samani simplificada
     et0 = 0.0023 * (tmax - tmin) ** 0.5 * (tmed + 17.8)
 
     etc_daily = et0 * kc
-    etc_total = etc_daily * days
+    etc_total = etc_daily * days # demanda a lo largo del periodo pedido por el usuario
 
     return round(etc_total, 2)
 
 def calculate_dha(weather_data: WeatherData, start_date: datetime) -> float:
     """
-    Calcula el déficit hídrico aparente a partir de la ETc y la precipitación.
+    La función calcula el deficit hídrico acumulado (dha) que es la diferencia entre lo que la vid necesita y lo que ha recibido de la lluvia.
     """
     etc = calculate_etc(weather_data, start_date)
     precipitation = weather_data.precipitation
@@ -105,30 +65,40 @@ def calculate_dha(weather_data: WeatherData, start_date: datetime) -> float:
 
 
 def calculate_frost_risk(weather_data: WeatherData, crop_data: CropData) -> dict:
+    """
+    La función calcula el riesgo de helada para un cultivo específico.
+    Para ello se tiene en cuenta la diferencia entre la temperatura mínima registrada y la temperatura mínima óptima para esa variedad de vid.
+
+    Devuelve un diccionario con:
+    - level: clasificación del riesgo (Nulo, Bajo, Moderado o Alto)
+    - score: puntuación numéricadel riesgo 
+    - value: valor de la temperatura mínima registrada
+    - threshold: la línea que no debería cruzarse (en este caso, la temperatura mínima óptima para el cultivo)
+    """
+
     tmin = weather_data.temperature_min
     optimal_tmin = crop_data.optimal_temp_min
 
     if tmin is None:
-        return {
-            "level": "Desconocido",
-            "score": 0.0,
-            "value": None,
-            "threshold": 0.0,
-        }
+        return {"level": "Desconocido", "score": 0.0, "value": None, "threshold": 0.0} 
 
-    # Riesgo meteorológico real de helada
+    desviacion = optimal_tmin - tmin
+
     if tmin <= 0:
-        level, score = "Alto", 0.9
+        level, score = "Alto", 0.9       
         threshold = 0.0
-    elif tmin <= 2:
-        level, score = "Moderado", 0.5
-        threshold = 2.0
-    elif tmin <= 5:
-        level, score = "Bajo", 0.2
-        threshold = 5.0
+    elif desviacion >= 8:
+        level, score = "Alto", 0.8        
+        threshold = optimal_tmin - 8
+    elif desviacion >= 5:
+        level, score = "Moderado", 0.5   
+        threshold = optimal_tmin - 5
+    elif desviacion >= 2:
+        level, score = "Bajo", 0.2        
+        threshold = optimal_tmin - 2
     else:
-        level, score = "Nulo", 0.0
-        threshold = 5.0
+        level, score = "Nulo", 0.0        
+        threshold = optimal_tmin
 
     return {
         "level": level,

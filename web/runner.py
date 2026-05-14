@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import logging_config  # PRIMERA línea — configura logging antes de todo
+import logging
+
 import json
-from copy import deepcopy
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -14,17 +16,13 @@ from models.shared_state import SharedState
 from web.db import get_connection
 
 import os
-import logging
 
 load_dotenv()
-level =logging.DEBUG if os.getenv("ENV") == "dev" else logging.INFO
 
-logging.basicConfig(
-    level=level,
-    format="%(asctime)s [%(levelname)s] %(name)s — %(message)s"
-    )
+logger = logging.getLogger(__name__)
 
-def build_model():
+
+def build_model() -> InferenceClientModel:
     return InferenceClientModel(
         model_id="Qwen/Qwen2.5-72B-Instruct",
         token=os.environ["HF_TOKEN"],
@@ -44,13 +42,7 @@ def build_state(
         start_date=start_date,
         end_date=end_date,
     )
-
-    # Forzamos variedad si luego tu ObservationAgent la sobrescribe,
-    # puedes mover esto a donde te convenga.
-    if getattr(state, "crop_data", None) is None:
-        state.crop_data = None
-
-    state.selected_variety = variety  # útil si luego quieres leerlo
+    state.selected_variety = variety
     return state
 
 
@@ -74,24 +66,24 @@ def run_analysis(
     final_state = orchestrator.run(state)
 
     explanation = getattr(final_state, "explanation", {}) or {}
-    daily_plan = getattr(final_state, "daily_plan", None)
+    daily_plan  = getattr(final_state, "daily_plan", None)
 
     result = {
         "meta": {
-            "station": getattr(final_state, "station", station),
-            "ccaa": getattr(final_state, "ccaa", ccaa),
-            "variety": getattr(getattr(final_state, "crop_data", None), "variety", variety),
+            "station":    getattr(final_state, "station", station),
+            "ccaa":       getattr(final_state, "ccaa", ccaa),
+            "variety":    getattr(getattr(final_state, "crop_data", None), "variety", variety),
             "start_date": str(start_date),
-            "end_date": str(end_date),
+            "end_date":   str(end_date),
         },
-        "summary": explanation.get("summary", ""),
-        "confidence": explanation.get("confidence", {}),
-        "decision_why": explanation.get("decision_why", {}),
-        "risk_explanation": explanation.get("risk_explanation", []),
+        "summary":                  explanation.get("summary", ""),
+        "confidence":               explanation.get("confidence", {}),
+        "decision_why":             explanation.get("decision_why", {}),
+        "risk_explanation":         explanation.get("risk_explanation", []),
         "recommendation_reasoning": explanation.get("recommendation_reasoning", {}),
-        "alternatives": explanation.get("alternatives", []),
-        "sms_text": explanation.get("sms_text", ""),
-        "daily_plan_text": getattr(daily_plan, "explanation", "") if daily_plan else "",
+        "alternatives":             explanation.get("alternatives", []),
+        "sms_text":                 explanation.get("sms_text", ""),
+        "daily_plan_text":          getattr(daily_plan, "explanation", "") if daily_plan else "",
     }
     return result
 

@@ -1,6 +1,5 @@
-# orchestrator.py — reemplazar completamente
-
 import logging
+import time
 from models.shared_state import SharedState, RiskLevel
 from agents.observation_agent import ObservationAgent
 from agents.inference_agent import InferenceAgent
@@ -34,23 +33,30 @@ class Orchestrator:
 
     def run(self, state: SharedState) -> SharedState:
         # ── Fase 1: siempre se ejecuta ──────────────────────────
+
+        t0 = time.perf_counter()
         state = self.observation.run(state)
-        logger.info("Observación completada")
+        logger.info("Observación completada en %.3fs", time.perf_counter() - t0)
 
         if state.weather_data is None:
             logger.warning("Sin datos meteorológicos — abortando pipeline")
             return state
 
+        t0 = time.perf_counter()
         state = self.inference.run(state)
-        logger.info("Inferencia completada")
+        logger.info("Inferencia completada en %.3fs", time.perf_counter() - t0)
 
+        t0 = time.perf_counter()
         state = self.prediction.run(state)
-        logger.info("Predicción completada")
+        logger.info("Predicción completada en %.3fs", time.perf_counter() - t0)
 
+        t0 = time.perf_counter()
         state = self.risk.run(state)
-        logger.info("Riesgos evaluados")
+        logger.info("Riesgos evaluados en %.3fs — %d alertas generadas", time.perf_counter() - t0, len(state.alerts))
 
         # ── Fase 2: routing según nivel de riesgo ───────────────
+        t_total = time.perf_counter()
+
         critical_alerts = [
             a for a in state.alerts
             if a.level in (RiskLevel.HIGH, RiskLevel.CRITICAL)
@@ -64,8 +70,11 @@ class Orchestrator:
             state = self._run_standard_path(state)
 
         # ── Fase 3: plan diario siempre ─────────────────────────
+        t0 = time.perf_counter()
         state = self.daily_plan.run(state)
-        logger.info("Plan diario generado")
+        logger.info("Plan diario generado en %.3fs", time.perf_counter() - t0)
+
+        logger.info("Pipeline completado en %.3fs", time.perf_counter() - t_total)
 
         self.writer.write(state)
         return state
