@@ -465,3 +465,147 @@ AttributeError: 'ExplanationAgent' object has no attribute 'chroma_retriever'. D
 13:34:23 [INFO] orchestrator — Plan diario generado en 0.000s
 13:34:23 [INFO] orchestrator — Pipeline completado en 2.086s
 13:34:23 [INFO] __main__ — Pipeline completado — región: Navarra
+10:04:06 [INFO] orchestrator — Observación completada en 1.879s
+10:04:06 [INFO] orchestrator — Inferencia completada en 0.000s
+10:04:06 [INFO] orchestrator — Predicción completada en 0.000s
+10:04:06 [INFO] orchestrator — Riesgos evaluados en 0.000s — 0 alertas generadas
+10:04:06 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+10:04:06 [INFO] orchestrator — Deliberación aprobada (intento 1)
+10:04:08 [INFO] orchestrator — Explicación generada
+10:04:08 [INFO] orchestrator — Plan diario generado en 0.000s
+10:04:08 [INFO] orchestrator — Pipeline completado en 2.298s
+10:21:38 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+10:32:44 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+10:32:46 [INFO] orchestrator — Observación completada en 2.278s
+10:32:46 [INFO] orchestrator — Inferencia completada en 0.000s
+10:32:46 [INFO] orchestrator — Predicción completada en 0.000s
+10:32:46 [INFO] orchestrator — Riesgos evaluados en 0.000s — 2 alertas generadas
+10:32:46 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+10:32:46 [INFO] orchestrator — Deliberación aprobada (intento 1)
+10:32:55 [INFO] orchestrator — Explicación generada
+10:32:55 [INFO] orchestrator — Plan diario generado en 0.000s
+10:32:55 [INFO] orchestrator — Pipeline completado en 8.573s
+10:40:29 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+10:40:30 [ERROR] __main__ — Error en analisis inicial: Error descargando datos de AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+10:43:59 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+10:44:01 [INFO] orchestrator — Observación completada en 1.844s
+10:44:01 [INFO] orchestrator — Inferencia completada en 0.000s
+10:44:01 [INFO] orchestrator — Predicción completada en 0.000s
+10:44:01 [INFO] orchestrator — Riesgos evaluados en 0.000s — 2 alertas generadas
+10:44:01 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+10:44:01 [INFO] orchestrator — Deliberación aprobada (intento 1)
+10:44:12 [INFO] orchestrator — Explicación generada
+10:44:12 [INFO] orchestrator — Plan diario generado en 0.000s
+10:44:12 [INFO] orchestrator — Pipeline completado en 10.501s
+10:46:47 [INFO] web.runner — Objetivo de produccion: produccion — pesos: {'quality': 0.25, 'production': 0.55, 'cost': 0.12, 'sustainability': 0.08}
+10:46:47 [ERROR] __main__ — Error al recalcular analisis: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+10:46:52 [INFO] web.runner — Objetivo de produccion: produccion — pesos: {'quality': 0.25, 'production': 0.55, 'cost': 0.12, 'sustainability': 0.08}
+10:46:52 [ERROR] __main__ — Error al recalcular analisis: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+10:46:53 [INFO] web.runner — Objetivo de produccion: produccion — pesos: {'quality': 0.25, 'production': 0.55, 'cost': 0.12, 'sustainability': 0.08}
+10:46:53 [ERROR] __main__ — Error al recalcular analisis: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+10:46:54 [INFO] web.runner — Objetivo de produccion: produccion — pesos: {'quality': 0.25, 'production': 0.55, 'cost': 0.12, 'sustainability': 0.08}
+10:46:55 [ERROR] __main__ — Error al recalcular analisis: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+10:46:57 [INFO] web.runner — Objetivo de produccion: produccion — pesos: {'quality': 0.25, 'production': 0.55, 'cost': 0.12, 'sustainability': 0.08}
+10:46:57 [ERROR] __main__ — Error al recalcular analisis: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+10:47:01 [INFO] web.runner — Objetivo de produccion: produccion — pesos: {'quality': 0.25, 'production': 0.55, 'cost': 0.12, 'sustainability': 0.08}
+10:47:02 [ERROR] __main__ — Error al recalcular analisis: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+10:47:12 [INFO] web.runner — Objetivo de produccion: calidad — pesos: {'quality': 0.55, 'production': 0.25, 'cost': 0.12, 'sustainability': 0.08}
+10:47:12 [ERROR] __main__ — Error al recalcular analisis: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+10:47:14 [INFO] web.runner — Objetivo de produccion: calidad — pesos: {'quality': 0.55, 'production': 0.25, 'cost': 0.12, 'sustainability': 0.08}
+10:47:14 [ERROR] __main__ — Error al recalcular analisis: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+11:05:16 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+11:05:18 [INFO] orchestrator — Observación completada en 2.049s
+11:05:18 [INFO] orchestrator — Inferencia completada en 0.000s
+11:05:18 [INFO] orchestrator — Predicción completada en 0.000s
+11:05:18 [INFO] orchestrator — Riesgos evaluados en 0.000s — 2 alertas generadas
+11:05:18 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+11:05:18 [INFO] orchestrator — Deliberación aprobada (intento 1)
+11:05:27 [INFO] orchestrator — Explicación generada
+11:05:27 [INFO] orchestrator — Plan diario generado en 0.000s
+11:05:27 [INFO] orchestrator — Pipeline completado en 8.601s
+11:05:43 [INFO] web.runner — Objetivo de produccion: produccion — pesos: {'quality': 0.25, 'production': 0.55, 'cost': 0.12, 'sustainability': 0.08}
+11:05:45 [INFO] orchestrator — Observación completada en 1.892s
+11:05:45 [INFO] orchestrator — Inferencia completada en 0.000s
+11:05:45 [INFO] orchestrator — Predicción completada en 0.000s
+11:05:45 [INFO] orchestrator — Riesgos evaluados en 0.000s — 2 alertas generadas
+11:05:45 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+11:05:45 [INFO] orchestrator — Deliberación aprobada (intento 1)
+11:05:54 [INFO] orchestrator — Explicación generada
+11:05:54 [INFO] orchestrator — Plan diario generado en 0.000s
+11:05:54 [INFO] orchestrator — Pipeline completado en 8.887s
+11:08:22 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+11:08:23 [ERROR] __main__ — Error en analisis inicial: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+11:09:48 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+11:09:49 [ERROR] __main__ — Error en analisis inicial: Error descargando datos de AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+11:12:22 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+11:12:24 [INFO] orchestrator — Observación completada en 2.136s
+11:12:24 [INFO] orchestrator — Inferencia completada en 0.000s
+11:12:24 [INFO] orchestrator — Predicción completada en 0.000s
+11:12:24 [INFO] orchestrator — Riesgos evaluados en 0.000s — 2 alertas generadas
+11:12:24 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+11:12:24 [INFO] orchestrator — Deliberación aprobada (intento 1)
+11:12:33 [INFO] orchestrator — Explicación generada
+11:12:33 [INFO] orchestrator — Plan diario generado en 0.000s
+11:12:33 [INFO] orchestrator — Pipeline completado en 9.386s
+11:12:51 [INFO] web.runner — Objetivo de produccion: produccion — pesos: {'quality': 0.25, 'production': 0.55, 'cost': 0.12, 'sustainability': 0.08}
+11:12:53 [INFO] orchestrator — Observación completada en 2.017s
+11:12:53 [INFO] orchestrator — Inferencia completada en 0.000s
+11:12:53 [INFO] orchestrator — Predicción completada en 0.000s
+11:12:53 [INFO] orchestrator — Riesgos evaluados en 0.000s — 2 alertas generadas
+11:12:53 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+11:12:53 [INFO] orchestrator — Deliberación aprobada (intento 1)
+11:13:03 [INFO] orchestrator — Explicación generada
+11:13:03 [INFO] orchestrator — Plan diario generado en 0.000s
+11:13:03 [INFO] orchestrator — Pipeline completado en 9.832s
+11:14:00 [INFO] web.runner — Objetivo de produccion: calidad — pesos: {'quality': 0.55, 'production': 0.25, 'cost': 0.12, 'sustainability': 0.08}
+11:14:00 [ERROR] __main__ — Error al recalcular analisis: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+11:14:06 [INFO] web.runner — Objetivo de produccion: calidad — pesos: {'quality': 0.55, 'production': 0.25, 'cost': 0.12, 'sustainability': 0.08}
+11:14:07 [ERROR] __main__ — Error al recalcular analisis: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+11:14:09 [INFO] web.runner — Objetivo de produccion: calidad — pesos: {'quality': 0.55, 'production': 0.25, 'cost': 0.12, 'sustainability': 0.08}
+11:14:10 [ERROR] __main__ — Error al recalcular analisis: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+11:14:16 [INFO] web.runner — Objetivo de produccion: calidad — pesos: {'quality': 0.55, 'production': 0.25, 'cost': 0.12, 'sustainability': 0.08}
+11:14:16 [ERROR] __main__ — Error al recalcular analisis: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+11:14:18 [INFO] web.runner — Objetivo de produccion: calidad — pesos: {'quality': 0.55, 'production': 0.25, 'cost': 0.12, 'sustainability': 0.08}
+11:14:19 [ERROR] __main__ — Error al recalcular analisis: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+11:14:30 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+11:14:30 [ERROR] __main__ — Error en analisis inicial: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+11:14:44 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+11:14:44 [ERROR] __main__ — Error en analisis inicial: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+11:15:40 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+11:15:40 [ERROR] __main__ — Error en analisis inicial: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+11:16:37 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+11:16:37 [ERROR] __main__ — Error en analisis inicial: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+11:18:31 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+11:18:34 [INFO] orchestrator — Observación completada en 2.337s
+11:18:34 [INFO] orchestrator — Inferencia completada en 0.000s
+11:18:34 [INFO] orchestrator — Predicción completada en 0.000s
+11:18:34 [INFO] orchestrator — Riesgos evaluados en 0.000s — 2 alertas generadas
+11:18:34 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+11:18:34 [INFO] orchestrator — Deliberación aprobada (intento 1)
+11:18:45 [INFO] orchestrator — Explicación generada
+11:18:45 [INFO] orchestrator — Plan diario generado en 0.000s
+11:18:45 [INFO] orchestrator — Pipeline completado en 11.508s
+11:18:58 [INFO] web.runner — Objetivo de produccion: calidad — pesos: {'quality': 0.55, 'production': 0.25, 'cost': 0.12, 'sustainability': 0.08}
+11:19:00 [INFO] orchestrator — Observación completada en 1.880s
+11:19:00 [INFO] orchestrator — Inferencia completada en 0.000s
+11:19:00 [INFO] orchestrator — Predicción completada en 0.000s
+11:19:00 [INFO] orchestrator — Riesgos evaluados en 0.000s — 2 alertas generadas
+11:19:00 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+11:19:00 [INFO] orchestrator — Deliberación aprobada (intento 1)
+11:19:10 [INFO] orchestrator — Explicación generada
+11:19:10 [INFO] orchestrator — Plan diario generado en 0.000s
+11:19:10 [INFO] orchestrator — Pipeline completado en 10.349s
+11:21:30 [INFO] web.runner — Objetivo de produccion: calidad — pesos: {'quality': 0.55, 'production': 0.25, 'cost': 0.12, 'sustainability': 0.08}
+11:21:31 [ERROR] __main__ — Error al recalcular analisis: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+11:21:33 [INFO] web.runner — Objetivo de produccion: calidad — pesos: {'quality': 0.55, 'production': 0.25, 'cost': 0.12, 'sustainability': 0.08}
+11:21:33 [ERROR] __main__ — Error al recalcular analisis: Error de conexión con AEMET: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+11:25:07 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+11:25:09 [INFO] orchestrator — Observación completada en 1.929s
+11:25:09 [INFO] orchestrator — Inferencia completada en 0.000s
+11:25:09 [INFO] orchestrator — Predicción completada en 0.000s
+11:25:09 [INFO] orchestrator — Riesgos evaluados en 0.000s — 2 alertas generadas
+11:25:09 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+11:25:09 [INFO] orchestrator — Deliberación aprobada (intento 1)
+11:25:22 [INFO] orchestrator — Explicación generada
+11:25:22 [INFO] orchestrator — Plan diario generado en 0.000s
+11:25:22 [INFO] orchestrator — Pipeline completado en 12.143s

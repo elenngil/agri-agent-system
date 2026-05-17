@@ -20,12 +20,12 @@ class Orchestrator:
     según el estado del sistema. No es un pipeline fijo.
     """
 
-    def __init__(self, model):
+    def __init__(self, model, deliberative_weights: dict | None = None):
         self.observation   = ObservationAgent()
         self.inference     = InferenceAgent()
         self.prediction    = PredictionAgent()
         self.risk          = RiskAgent()
-        self.deliberative  = DeliberativeAgent()
+        self.deliberative = DeliberativeAgent(weights=deliberative_weights)
         self.explanation   = ExplanationAgent(llm_client=model)
         self.daily_plan    = DailyPlanAgent()
         self.writer        = OutputWriter()

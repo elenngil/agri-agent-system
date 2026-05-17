@@ -125,15 +125,19 @@
     }
   ],
   "explanation": {
-    "summary": "En tu viñedo en Navarra no se han detectado riesgos destacados. Se recomienda mantener un riego ligero y seguir con la poda y el calendario de cosecha habitual.",
-    "confidence": {
-      "score": 0.9,
-      "label": "alta"
-    },
+    "summary": "En Navarra no hay riesgos destacados para tu viñedo actualmente. Se recomienda mantener una irrigación ligera y planificar la cosecha con el timing normal. Todo parece estar en buen camino.",
     "risk_explanation": [],
-    "recommendation_reasoning": "Basado en el análisis de riesgos.",
-    "alternatives": [],
-    "sms_text": "Navarra: sin alertas.",
+    "recommendation_reasoning": "La irrigación ligera es adecuada ya que mantiene el estrés hídrico controlado, favoreciendo la concentración de sabores y aromas en las uvas sin comprometer su salud. La cosecha en el momento normal asegura una maduración óptima, equilibrando la calidad y la producción sin incurrir en costos adicionales. Estas prácticas sostenibles minimizan el uso de recursos, manteniendo un alto nivel de calidad y producción con un bajo impacto ambiental. El equilibrio entre calidad, producción y coste es óptimo, asegurando la viabilidad económica y la sostenibilidad del viñedo.",
+    "alternatives": [
+      {
+        "utility": 0.777,
+        "actions": [
+          "harvest timing normal"
+        ],
+        "tradeoff": "Alternativa 2 con utilidad 0.78."
+      }
+    ],
+    "sms_text": "AgroVid | Navarra | Sin alertas activas. Condiciones favorables para el vinedo. Ver detalle: http://localhost:8501ss",
     "sources": []
   },
   "daily_plan": {
@@ -172,6 +176,6 @@
       }
     ],
     "explanation": "Plan de manejo para Navarra — 2024-07-22 a 2024-07-26.\n\nClima: Humedad relativa del 81.8 % favorece el desarrollo de mildiu y botrytis. Revisar cobertura fungicida.\n\nRiego: se recomiendan 0.7 L/m² (base ajustada por ETc (1.1 L/m²); ×0.70 por tipo de suelo).\n\nCultivo en fase de maduración. [Tempranillo] Reducir aporte nitrogenado. Mantener riego equilibrado.\n\nPrevención: Atención prioritaria: Estrés hídrico futuro. Vigilar también: Riesgo de mildiu.",
-    "sms": "🍇 Navarra | 💧 0.7 L/m² | 🌫️ húmedo | ⚠️ Estrés hídrico futuro | 📊 http://localhost:8501"
+    "sms": "🍇 Navarra | 💧 0.7 L/m² | 🌫️ húmedo | ⚠️ Estrés hídrico futuro | 📊 http://localhost:8501ss"
   }
 }
