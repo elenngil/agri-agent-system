@@ -1,61 +1,106 @@
 timestamp,scenario_id,scenario,config,ruta,n_alertas,utilidad,critic_rechazos,violaciones,exito,gt_alerts_ok,gt_actions_ok,gt_critic_ok,gt_pass
-2026-05-10T19:40:27.857258,S01,Condiciones óptimas en La Rioja — verano suave,completo,estandar,0,0.7915,0,0,True,True,True,True,True
-2026-05-10T19:40:27.857574,S02,Primavera tranquila en Navarra,completo,estandar,0,0.7915,0,0,True,True,True,True,True
-2026-05-10T19:40:27.857819,S03,Otoño templado en Castilla — post-vendimia,completo,estandar,1,0.6575,1,0,True,True,True,True,True
-2026-05-10T19:40:27.858443,S04,Mildiu alto en floración — Galicia húmeda,completo,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.858891,S05,Mildiu crítico — humedad extrema y temperatura óptima,completo,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.859264,S06,Mildiu en maduración — septiembre Galicia (test guardarraíl),completo,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.859625,S07,Estrés hídrico moderado — verano seco La Rioja,completo,urgente,3,0.5515,0,0,True,True,True,True,True
-2026-05-10T19:40:27.860288,S08,Estrés hídrico severo — ola de calor Castilla,completo,urgente,3,0.5515,0,0,True,True,True,True,True
-2026-05-10T19:40:27.860869,S09,Riego intensivo con lluvia — test guardarraíl,completo,estandar,0,0.7915,0,0,True,True,True,True,True
-2026-05-10T19:40:27.861075,S10,Helada tardía en brotación — Castilla y León,completo,urgente,1,0.7605,0,0,True,True,True,True,True
-2026-05-10T19:40:27.861334,S11,Riesgo de helada leve — temperatura límite,completo,estandar,1,0.7605,0,0,True,True,True,True,True
-2026-05-10T19:40:27.861594,S12,Mildiu + estrés hídrico simultáneos — primavera tardía,completo,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.862001,S13,Estrés térmico + estrés hídrico — verano extremo,completo,urgente,3,0.5515,0,0,True,True,True,True,True
-2026-05-10T19:40:27.862686,S14,Triple alerta — mildiu + helada + viento fuerte,completo,urgente,3,0.5135,0,0,True,True,True,True,True
-2026-05-10T19:40:27.863599,S15,Condiciones post-lluvia intensa — riesgo de botrytis,completo,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.864354,S01,Condiciones óptimas en La Rioja — verano suave,sin_critic,estandar,0,0.7915,0,0,True,True,True,True,True
-2026-05-10T19:40:27.864663,S02,Primavera tranquila en Navarra,sin_critic,estandar,0,0.7915,0,0,True,True,True,True,True
-2026-05-10T19:40:27.864856,S03,Otoño templado en Castilla — post-vendimia,sin_critic,estandar,1,0.7845,0,1,True,True,True,False,False
-2026-05-10T19:40:27.865172,S04,Mildiu alto en floración — Galicia húmeda,sin_critic,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.865491,S05,Mildiu crítico — humedad extrema y temperatura óptima,sin_critic,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.865871,S06,Mildiu en maduración — septiembre Galicia (test guardarraíl),sin_critic,urgente,1,0.7845,0,1,True,True,True,True,True
-2026-05-10T19:40:27.866569,S07,Estrés hídrico moderado — verano seco La Rioja,sin_critic,urgente,3,0.5515,0,0,True,True,True,True,True
-2026-05-10T19:40:27.867660,S08,Estrés hídrico severo — ola de calor Castilla,sin_critic,urgente,3,0.5515,0,0,True,True,True,True,True
-2026-05-10T19:40:27.868682,S09,Riego intensivo con lluvia — test guardarraíl,sin_critic,estandar,0,0.7915,0,0,True,True,True,True,True
-2026-05-10T19:40:27.868988,S10,Helada tardía en brotación — Castilla y León,sin_critic,urgente,1,0.7605,0,0,True,True,True,True,True
-2026-05-10T19:40:27.869399,S11,Riesgo de helada leve — temperatura límite,sin_critic,estandar,1,0.7605,0,0,True,True,True,True,True
-2026-05-10T19:40:27.869958,S12,Mildiu + estrés hídrico simultáneos — primavera tardía,sin_critic,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.870681,S13,Estrés térmico + estrés hídrico — verano extremo,sin_critic,urgente,3,0.5515,0,0,True,True,True,True,True
-2026-05-10T19:40:27.871615,S14,Triple alerta — mildiu + helada + viento fuerte,sin_critic,urgente,3,0.5135,0,0,True,True,True,True,True
-2026-05-10T19:40:27.872600,S15,Condiciones post-lluvia intensa — riesgo de botrytis,sin_critic,urgente,1,0.7845,0,1,True,True,True,True,True
-2026-05-10T19:40:27.873659,S01,Condiciones óptimas en La Rioja — verano suave,sin_graph_rag,estandar,0,0.7915,0,0,True,True,True,True,True
-2026-05-10T19:40:27.874076,S02,Primavera tranquila en Navarra,sin_graph_rag,estandar,0,0.7915,0,0,True,True,True,True,True
-2026-05-10T19:40:27.874433,S03,Otoño templado en Castilla — post-vendimia,sin_graph_rag,estandar,1,0.6575,1,0,True,True,True,True,True
-2026-05-10T19:40:27.874996,S04,Mildiu alto en floración — Galicia húmeda,sin_graph_rag,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.875362,S05,Mildiu crítico — humedad extrema y temperatura óptima,sin_graph_rag,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.875660,S06,Mildiu en maduración — septiembre Galicia (test guardarraíl),sin_graph_rag,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.876025,S07,Estrés hídrico moderado — verano seco La Rioja,sin_graph_rag,urgente,3,0.5515,0,0,True,True,True,True,True
-2026-05-10T19:40:27.876622,S08,Estrés hídrico severo — ola de calor Castilla,sin_graph_rag,urgente,3,0.5515,0,0,True,True,True,True,True
-2026-05-10T19:40:27.877125,S09,Riego intensivo con lluvia — test guardarraíl,sin_graph_rag,estandar,0,0.7915,0,0,True,True,True,True,True
-2026-05-10T19:40:27.877250,S10,Helada tardía en brotación — Castilla y León,sin_graph_rag,urgente,1,0.7605,0,0,True,True,True,True,True
-2026-05-10T19:40:27.877449,S11,Riesgo de helada leve — temperatura límite,sin_graph_rag,estandar,1,0.7605,0,0,True,True,True,True,True
-2026-05-10T19:40:27.877635,S12,Mildiu + estrés hídrico simultáneos — primavera tardía,sin_graph_rag,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.877949,S13,Estrés térmico + estrés hídrico — verano extremo,sin_graph_rag,urgente,3,0.5515,0,0,True,True,True,True,True
-2026-05-10T19:40:27.878438,S14,Triple alerta — mildiu + helada + viento fuerte,sin_graph_rag,urgente,3,0.5135,0,0,True,True,True,True,True
-2026-05-10T19:40:27.879109,S15,Condiciones post-lluvia intensa — riesgo de botrytis,sin_graph_rag,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.879573,S01,Condiciones óptimas en La Rioja — verano suave,sin_rag,estandar,0,0.7915,0,0,True,True,True,True,True
-2026-05-10T19:40:27.879802,S02,Primavera tranquila en Navarra,sin_rag,estandar,0,0.7915,0,0,True,True,True,True,True
-2026-05-10T19:40:27.879919,S03,Otoño templado en Castilla — post-vendimia,sin_rag,estandar,1,0.6575,1,0,True,True,True,True,True
-2026-05-10T19:40:27.880585,S04,Mildiu alto en floración — Galicia húmeda,sin_rag,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.880902,S05,Mildiu crítico — humedad extrema y temperatura óptima,sin_rag,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.881225,S06,Mildiu en maduración — septiembre Galicia (test guardarraíl),sin_rag,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.881500,S07,Estrés hídrico moderado — verano seco La Rioja,sin_rag,urgente,3,0.5515,0,0,True,True,True,True,True
-2026-05-10T19:40:27.882258,S08,Estrés hídrico severo — ola de calor Castilla,sin_rag,urgente,3,0.5515,0,0,True,True,True,True,True
-2026-05-10T19:40:27.882735,S09,Riego intensivo con lluvia — test guardarraíl,sin_rag,estandar,0,0.7915,0,0,True,True,True,True,True
-2026-05-10T19:40:27.882907,S10,Helada tardía en brotación — Castilla y León,sin_rag,urgente,1,0.7605,0,0,True,True,True,True,True
-2026-05-10T19:40:27.883129,S11,Riesgo de helada leve — temperatura límite,sin_rag,estandar,1,0.7605,0,0,True,True,True,True,True
-2026-05-10T19:40:27.883540,S12,Mildiu + estrés hídrico simultáneos — primavera tardía,sin_rag,urgente,1,0.7845,0,0,True,True,True,True,True
-2026-05-10T19:40:27.884009,S13,Estrés térmico + estrés hídrico — verano extremo,sin_rag,urgente,3,0.5515,0,0,True,True,True,True,True
-2026-05-10T19:40:27.885237,S14,Triple alerta — mildiu + helada + viento fuerte,sin_rag,urgente,3,0.5135,0,0,True,True,True,True,True
-2026-05-10T19:40:27.886504,S15,Condiciones post-lluvia intensa — riesgo de botrytis,sin_rag,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.894023,S01,Condiciones óptimas en La Rioja — verano,completo,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.894269,S02,Primavera tranquila en Navarra,completo,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.894412,S03,Otoño templado en Castilla — post-vendim,completo,estandar,1,0.6575,1,0,True,True,True,True,True
+2026-05-14T17:04:13.894826,S04,Mildiu alto en floración — Galicia húmed,completo,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.895083,S05,Mildiu crítico — humedad extrema y tempe,completo,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.895325,S06,Mildiu en maduración — septiembre Galici,completo,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.895559,S07,Estrés hídrico moderado — verano seco La,completo,urgente,3,0.5515,0,0,True,True,True,True,True
+2026-05-14T17:04:13.896178,S08,Estrés hídrico severo — ola de calor Cas,completo,urgente,3,0.5515,0,0,True,True,True,True,True
+2026-05-14T17:04:13.896661,S09,Riego intensivo con lluvia — test guarda,completo,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.896779,S10,Helada tardía en brotación — Castilla y ,completo,urgente,1,0.7605,0,0,True,True,True,True,True
+2026-05-14T17:04:13.896919,S11,Riesgo de helada leve — temperatura lími,completo,urgente,1,0.7605,0,0,True,True,True,True,True
+2026-05-14T17:04:13.897052,S12,Mildiu + estrés hídrico simultáneos — pr,completo,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.897279,S13,Estrés térmico + estrés hídrico — verano,completo,urgente,3,0.5515,0,0,True,True,True,True,True
+2026-05-14T17:04:13.897682,S14,Triple alerta — mildiu + helada + viento,completo,urgente,3,0.5135,0,0,True,True,True,True,True
+2026-05-14T17:04:13.898302,S15,Condiciones post-lluvia intensa — riesgo,completo,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.898635,S01,Condiciones óptimas en La Rioja — verano,sin_fase1,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.898747,S02,Primavera tranquila en Navarra,sin_fase1,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.898843,S03,Otoño templado en Castilla — post-vendim,sin_fase1,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.898944,S04,Mildiu alto en floración — Galicia húmed,sin_fase1,estandar,0,0.7915,0,0,True,False,False,True,False
+2026-05-14T17:04:13.899180,S05,Mildiu crítico — humedad extrema y tempe,sin_fase1,estandar,0,0.7915,0,0,True,False,False,True,False
+2026-05-14T17:04:13.899527,S06,Mildiu en maduración — septiembre Galici,sin_fase1,estandar,0,0.7915,0,0,True,False,True,False,False
+2026-05-14T17:04:13.899807,S07,Estrés hídrico moderado — verano seco La,sin_fase1,estandar,0,0.7915,0,0,True,False,True,True,False
+2026-05-14T17:04:13.899920,S08,Estrés hídrico severo — ola de calor Cas,sin_fase1,estandar,0,0.7915,0,0,True,False,True,True,False
+2026-05-14T17:04:13.900014,S09,Riego intensivo con lluvia — test guarda,sin_fase1,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.900134,S10,Helada tardía en brotación — Castilla y ,sin_fase1,estandar,0,0.7915,0,0,True,False,True,True,False
+2026-05-14T17:04:13.900367,S11,Riesgo de helada leve — temperatura lími,sin_fase1,estandar,0,0.7915,0,0,True,False,True,True,False
+2026-05-14T17:04:13.900533,S12,Mildiu + estrés hídrico simultáneos — pr,sin_fase1,estandar,0,0.7915,0,0,True,False,False,True,False
+2026-05-14T17:04:13.900636,S13,Estrés térmico + estrés hídrico — verano,sin_fase1,estandar,0,0.7915,0,0,True,False,False,True,False
+2026-05-14T17:04:13.900751,S14,Triple alerta — mildiu + helada + viento,sin_fase1,estandar,0,0.7915,0,0,True,False,False,True,False
+2026-05-14T17:04:13.900950,S15,Condiciones post-lluvia intensa — riesgo,sin_fase1,estandar,0,0.7915,0,0,True,False,True,False,False
+2026-05-14T17:04:13.901255,S01,Condiciones óptimas en La Rioja — verano,sin_inference,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.901366,S02,Primavera tranquila en Navarra,sin_inference,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.901451,S03,Otoño templado en Castilla — post-vendim,sin_inference,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.901545,S04,Mildiu alto en floración — Galicia húmed,sin_inference,estandar,0,0.7915,0,0,True,False,False,True,False
+2026-05-14T17:04:13.901645,S05,Mildiu crítico — humedad extrema y tempe,sin_inference,estandar,0,0.7915,0,0,True,False,False,True,False
+2026-05-14T17:04:13.901842,S06,Mildiu en maduración — septiembre Galici,sin_inference,estandar,0,0.7915,0,0,True,False,True,False,False
+2026-05-14T17:04:13.901941,S07,Estrés hídrico moderado — verano seco La,sin_inference,estandar,0,0.7915,0,0,True,False,True,True,False
+2026-05-14T17:04:13.902216,S08,Estrés hídrico severo — ola de calor Cas,sin_inference,estandar,0,0.7915,0,0,True,False,True,True,False
+2026-05-14T17:04:13.902509,S09,Riego intensivo con lluvia — test guarda,sin_inference,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.902699,S10,Helada tardía en brotación — Castilla y ,sin_inference,estandar,0,0.7915,0,0,True,False,True,True,False
+2026-05-14T17:04:13.902904,S11,Riesgo de helada leve — temperatura lími,sin_inference,estandar,0,0.7915,0,0,True,False,True,True,False
+2026-05-14T17:04:13.903113,S12,Mildiu + estrés hídrico simultáneos — pr,sin_inference,estandar,0,0.7915,0,0,True,False,False,True,False
+2026-05-14T17:04:13.903327,S13,Estrés térmico + estrés hídrico — verano,sin_inference,estandar,0,0.7915,0,0,True,False,False,True,False
+2026-05-14T17:04:13.903447,S14,Triple alerta — mildiu + helada + viento,sin_inference,estandar,0,0.7915,0,0,True,False,False,True,False
+2026-05-14T17:04:13.903553,S15,Condiciones post-lluvia intensa — riesgo,sin_inference,estandar,0,0.7915,0,0,True,False,True,False,False
+2026-05-14T17:04:13.903833,S01,Condiciones óptimas en La Rioja — verano,sin_prediction,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.904126,S02,Primavera tranquila en Navarra,sin_prediction,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.904362,S03,Otoño templado en Castilla — post-vendim,sin_prediction,estandar,1,0.6575,1,0,True,True,True,True,True
+2026-05-14T17:04:13.905084,S04,Mildiu alto en floración — Galicia húmed,sin_prediction,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.905425,S05,Mildiu crítico — humedad extrema y tempe,sin_prediction,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.905866,S06,Mildiu en maduración — septiembre Galici,sin_prediction,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.906231,S07,Estrés hídrico moderado — verano seco La,sin_prediction,urgente,1,0.5565,0,0,True,False,True,True,False
+2026-05-14T17:04:13.906594,S08,Estrés hídrico severo — ola de calor Cas,sin_prediction,urgente,1,0.5565,0,0,True,False,True,True,False
+2026-05-14T17:04:13.906920,S09,Riego intensivo con lluvia — test guarda,sin_prediction,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.907053,S10,Helada tardía en brotación — Castilla y ,sin_prediction,urgente,1,0.7605,0,0,True,True,True,True,True
+2026-05-14T17:04:13.907196,S11,Riesgo de helada leve — temperatura lími,sin_prediction,urgente,1,0.7605,0,0,True,True,True,True,True
+2026-05-14T17:04:13.907331,S12,Mildiu + estrés hídrico simultáneos — pr,sin_prediction,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.907612,S13,Estrés térmico + estrés hídrico — verano,sin_prediction,urgente,1,0.5565,0,0,True,False,True,True,False
+2026-05-14T17:04:13.907840,S14,Triple alerta — mildiu + helada + viento,sin_prediction,urgente,3,0.5135,0,0,True,True,True,True,True
+2026-05-14T17:04:13.908412,S15,Condiciones post-lluvia intensa — riesgo,sin_prediction,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.908738,S01,Condiciones óptimas en La Rioja — verano,sin_routing,estandar_forzado,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.908847,S02,Primavera tranquila en Navarra,sin_routing,estandar_forzado,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.908936,S03,Otoño templado en Castilla — post-vendim,sin_routing,estandar_forzado,1,0.6575,1,0,True,True,True,True,True
+2026-05-14T17:04:13.909425,S04,Mildiu alto en floración — Galicia húmed,sin_routing,estandar_forzado,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.909675,S05,Mildiu crítico — humedad extrema y tempe,sin_routing,estandar_forzado,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.909934,S06,Mildiu en maduración — septiembre Galici,sin_routing,estandar_forzado,1,0.5675,1,0,True,True,True,False,False
+2026-05-14T17:04:13.910346,S07,Estrés hídrico moderado — verano seco La,sin_routing,estandar_forzado,3,0.5515,0,0,True,True,True,True,True
+2026-05-14T17:04:13.910802,S08,Estrés hídrico severo — ola de calor Cas,sin_routing,estandar_forzado,3,0.5515,0,0,True,True,True,True,True
+2026-05-14T17:04:13.911289,S09,Riego intensivo con lluvia — test guarda,sin_routing,estandar_forzado,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.911425,S10,Helada tardía en brotación — Castilla y ,sin_routing,estandar_forzado,1,0.7605,0,0,True,True,True,True,True
+2026-05-14T17:04:13.911589,S11,Riesgo de helada leve — temperatura lími,sin_routing,estandar_forzado,1,0.7605,0,0,True,True,True,True,True
+2026-05-14T17:04:13.911747,S12,Mildiu + estrés hídrico simultáneos — pr,sin_routing,estandar_forzado,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.912015,S13,Estrés térmico + estrés hídrico — verano,sin_routing,estandar_forzado,3,0.5515,0,0,True,True,True,True,True
+2026-05-14T17:04:13.912453,S14,Triple alerta — mildiu + helada + viento,sin_routing,estandar_forzado,3,0.5135,0,0,True,True,True,True,True
+2026-05-14T17:04:13.913047,S15,Condiciones post-lluvia intensa — riesgo,sin_routing,estandar_forzado,1,0.5675,1,0,True,True,True,False,False
+2026-05-14T17:04:13.913598,S01,Condiciones óptimas en La Rioja — verano,sin_critic,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.913718,S02,Primavera tranquila en Navarra,sin_critic,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.913838,S03,Otoño templado en Castilla — post-vendim,sin_critic,estandar,1,0.7845,0,1,True,True,True,False,False
+2026-05-14T17:04:13.914074,S04,Mildiu alto en floración — Galicia húmed,sin_critic,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.914306,S05,Mildiu crítico — humedad extrema y tempe,sin_critic,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.914589,S06,Mildiu en maduración — septiembre Galici,sin_critic,urgente,1,0.7845,0,1,True,True,True,True,True
+2026-05-14T17:04:13.914902,S07,Estrés hídrico moderado — verano seco La,sin_critic,urgente,3,0.5515,0,0,True,True,True,True,True
+2026-05-14T17:04:13.915427,S08,Estrés hídrico severo — ola de calor Cas,sin_critic,urgente,3,0.5515,0,0,True,True,True,True,True
+2026-05-14T17:04:13.915970,S09,Riego intensivo con lluvia — test guarda,sin_critic,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.916124,S10,Helada tardía en brotación — Castilla y ,sin_critic,urgente,1,0.7605,0,0,True,True,True,True,True
+2026-05-14T17:04:13.916298,S11,Riesgo de helada leve — temperatura lími,sin_critic,urgente,1,0.7605,0,0,True,True,True,True,True
+2026-05-14T17:04:13.916441,S12,Mildiu + estrés hídrico simultáneos — pr,sin_critic,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.916690,S13,Estrés térmico + estrés hídrico — verano,sin_critic,urgente,3,0.5515,0,0,True,True,True,True,True
+2026-05-14T17:04:13.917164,S14,Triple alerta — mildiu + helada + viento,sin_critic,urgente,3,0.5135,0,0,True,True,True,True,True
+2026-05-14T17:04:13.917781,S15,Condiciones post-lluvia intensa — riesgo,sin_critic,urgente,1,0.7845,0,1,True,True,True,True,True
+2026-05-14T17:04:13.918166,S01,Condiciones óptimas en La Rioja — verano,sin_rag,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.918275,S02,Primavera tranquila en Navarra,sin_rag,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.918367,S03,Otoño templado en Castilla — post-vendim,sin_rag,estandar,1,0.6575,1,0,True,True,True,True,True
+2026-05-14T17:04:13.919017,S04,Mildiu alto en floración — Galicia húmed,sin_rag,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.919346,S05,Mildiu crítico — humedad extrema y tempe,sin_rag,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.920159,S06,Mildiu en maduración — septiembre Galici,sin_rag,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.920868,S07,Estrés hídrico moderado — verano seco La,sin_rag,urgente,3,0.5515,0,0,True,True,True,True,True
+2026-05-14T17:04:13.921455,S08,Estrés hídrico severo — ola de calor Cas,sin_rag,urgente,3,0.5515,0,0,True,True,True,True,True
+2026-05-14T17:04:13.922125,S09,Riego intensivo con lluvia — test guarda,sin_rag,estandar,0,0.7915,0,0,True,True,True,True,True
+2026-05-14T17:04:13.922247,S10,Helada tardía en brotación — Castilla y ,sin_rag,urgente,1,0.7605,0,0,True,True,True,True,True
+2026-05-14T17:04:13.922415,S11,Riesgo de helada leve — temperatura lími,sin_rag,urgente,1,0.7605,0,0,True,True,True,True,True
+2026-05-14T17:04:13.922549,S12,Mildiu + estrés hídrico simultáneos — pr,sin_rag,urgente,1,0.7845,0,0,True,True,True,True,True
+2026-05-14T17:04:13.922774,S13,Estrés térmico + estrés hídrico — verano,sin_rag,urgente,3,0.5515,0,0,True,True,True,True,True
+2026-05-14T17:04:13.923214,S14,Triple alerta — mildiu + helada + viento,sin_rag,urgente,3,0.5135,0,0,True,True,True,True,True
+2026-05-14T17:04:13.923865,S15,Condiciones post-lluvia intensa — riesgo,sin_rag,urgente,1,0.7845,0,0,True,True,True,True,True

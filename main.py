@@ -1,4 +1,3 @@
-import logging_config  # PRIMERA línea — configura logging antes de todo
 import logging
 
 from datetime import date
