@@ -5,44 +5,16 @@ load_dotenv()
 
 BASE = "https://opendata.aemet.es/opendata/api"
 
-def aemet_get(endpoint: str, params: dict | None = None, timeout: int = 30):
-
-    """
-    Realiza una solicitud a la API de AEMET y descarga los datos reales.
-    Devuelve:
-      - dict/list si es JSON
-      - str si es texto/CSV
-    """
-
-    api_key = os.getenv("AEMET_API_KEY")
-    if not api_key:
-        raise RuntimeError("No encuentro AEMET_API_KEY. Revisa tu archivo .env")
-
-    params = dict(params or {})
-    params["api_key"] = api_key
-
-    r = requests.get(f"{BASE}/{endpoint}", params=params, timeout=timeout)
-    r.raise_for_status()
-    meta = r.json()
-
-    if meta.get("estado") != 200:
-        raise RuntimeError(f"AEMET devolvió error: {meta}")
-
-    datos_url = meta["datos"]
-
-    # PASO 2
-    r2 = requests.get(datos_url, timeout=timeout)
-    r2.raise_for_status()
-
-    ctype = (r2.headers.get("Content-Type") or "").lower()
-    if "application/json" in ctype:
-        return r2.json()
-    return r2.json()  
-
 class AemetError(Exception):
-    """Error específico de AEMET."""
+    """
+    Error específico de AEMET.
+    """
     pass
+
 def aemet_get(endpoint: str, params: dict | None = None, timeout: int = 30):
+    """
+    Realiza una solicitud a la API de AEMET y devuelve los datos JSON.
+    """
     api_key = os.getenv("AEMET_API_KEY")
     if not api_key:
         raise AemetError("AEMET_API_KEY no configurada en .env")

@@ -57,12 +57,14 @@ def build_state(
     variety:    str,
     start_date: date,
     end_date:   date,
+    soil_type: str | None = None,
 ) -> SharedState:
     state = SharedState(
         station=station,
         ccaa=ccaa,
         start_date=start_date,
         end_date=end_date,
+        soil_type=soil_type
     )
     state.selected_variety = variety
     return state
@@ -75,6 +77,7 @@ def run_analysis(
     start_date: date,
     end_date:   date,
     objective:  str = "equilibrio",
+    soil_type: str | None = None,
 ) -> dict[str, Any]:
 
     # Seleccionar pesos segun el objetivo del usuario
@@ -85,7 +88,7 @@ def run_analysis(
     orchestrator = Orchestrator(model=model, deliberative_weights=weights)
     state        = build_state(
         station=station, ccaa=ccaa, variety=variety,
-        start_date=start_date, end_date=end_date,
+        start_date=start_date, end_date=end_date, soil_type=soil_type
     )
 
     final_state = orchestrator.run(state)

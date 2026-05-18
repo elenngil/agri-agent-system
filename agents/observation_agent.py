@@ -1,23 +1,18 @@
 from models.shared_state import SharedState, WeatherData, CropData
 from tools.weather_data import get_climate_summary
-from tools.soil_data import get_soil_multiplier
-from tools.crop_data import get_crop_data
+from tools.soil_data import get_soil_multiplier, get_soil_from_ccaa
+from tools.crop_data import get_crop_data, get_variety_from_ccaa
 
 
 class ObservationAgent:
-    """Recopila datos de clima, suelo y cultivo y los guarda en el shared state."""
+    """Recopila datos de clima, suelo y cultivo y los guarda en el SharedState."""
 
-    def run(self, shared_state: SharedState) -> SharedState:
-        weather_raw = get_climate_summary(
-            shared_state.station,
-            shared_state.start_date,
-            shared_state.end_date
-        )
-        crop_raw = get_crop_data(
-            shared_state.station,
-            shared_state.selected_variety)
+    def run(self, state: SharedState) -> SharedState:
 
-        shared_state.weather_data = (
+        # ── Datos meteorológicos ──────────────────────────────────────────────
+        weather_raw = get_climate_summary(state.station, state.start_date, state.end_date)
+
+        state.weather_data = (
             WeatherData(
                 temperature_max=weather_raw["temperature_max"],
                 temperature_min=weather_raw["temperature_min"],
@@ -28,13 +23,23 @@ class ObservationAgent:
                 pressure=weather_raw["pressure"],
                 days_count=weather_raw["days_count"],
             )
-            if weather_raw
-            else None
+            if weather_raw else None
         )
 
-        shared_state.soil_multiplier = get_soil_multiplier(shared_state.station)
+        soil_type = getattr(state, "soil_type", None)
+        if soil_type:
+            state.soil_multiplier = get_soil_multiplier(soil_type)
+        else:
+            soil = get_soil_from_ccaa(state.station)
+            state.soil_multiplier = get_soil_multiplier(soil)
 
-        shared_state.crop_data = (
+        variety = getattr(state, "selected_variety", None)
+        if not variety:
+            variety = get_variety_from_ccaa(state.station)
+
+        crop_raw = get_crop_data(variety)
+
+        state.crop_data = (
             CropData(
                 variety=crop_raw["variety"],
                 color=crop_raw["color"],
@@ -47,8 +52,7 @@ class ObservationAgent:
                 optimal_humidity_max=crop_raw["optimal_humidity_max"],
                 optimal_precip_mm=crop_raw["optimal_precip_mm"],
             )
-            if crop_raw
-            else None
+            if crop_raw else None
         )
 
-        return shared_state
+        return state

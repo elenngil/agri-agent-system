@@ -3,6 +3,9 @@ from tools.aemet_api import aemet_get
 
 
 def to_float(x):
+
+    '''Convierte un valor a float'''
+    
     if x is None:
         return None
     if isinstance(x, (int, float)):

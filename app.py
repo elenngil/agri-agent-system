@@ -508,6 +508,7 @@ def maybe_run_default_analysis(user: dict) -> None:
                 start_date=start,
                 end_date=end,
                 objective=user.get("objective", "equilibrio"),
+                soil_type=user.get("soil_type") or None,
             )
             st.session_state.analysis_result = result
             save_analysis(user["id"], result)

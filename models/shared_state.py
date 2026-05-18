@@ -126,6 +126,7 @@ class SharedState:
     selected_variety: Optional[str] = None
 
     weather_data: Optional[WeatherData] = None
+    soil_type: str | None = None
     soil_multiplier: Optional[float] = None
     crop_data: Optional[CropData] = None
 

@@ -1,10 +1,12 @@
 from datetime import datetime
 from models.shared_state import WeatherData, CropData
 
+# Indicadores agronómicos (consumidos por el DeliberativeAgent)
 
 def get_kc(month: int) -> float:
+
     """
-    La funcioón calcula el coeficiente del cultivo base (Kc), es decir, cuánta agua necesita el cultivo según la fase fenológica.
+    La función calcula el coeficiente del cultivo base (Kc), es decir, cuánta agua necesita el cultivo según la fase fenológica.
     Se aproximan los valores a los encontrados en el documento oficial de la FAO 56, ajústandolos a las condiciones climaticas de España.
     """
 
@@ -28,8 +30,9 @@ def get_kc(month: int) -> float:
 
 
 def calculate_etc(weather_data: WeatherData, start_date: datetime) -> float:
+
     """
-    La función calcula la evapotranspiración del cultivo (ETc) a partir de los datos climáticos.
+    La función calcula la evapotranspiración del cultivo (ETc) que es la cantidad de agua que una planta transpira durante un período determinado.
     Para ello, se utiliza la fórmula simplificada de Hargreaves-Samani.
     """
 
@@ -45,24 +48,26 @@ def calculate_etc(weather_data: WeatherData, start_date: datetime) -> float:
 
     kc = get_kc(start_date.month)
 
-    # Fórmula de Hargreaves-Samani simplificada
     et0 = 0.0023 * (tmax - tmin) ** 0.5 * (tmed + 17.8)
 
     etc_daily = et0 * kc
-    etc_total = etc_daily * days # demanda a lo largo del periodo pedido por el usuario
+    etc_total = etc_daily * days
 
     return round(etc_total, 2)
 
 def calculate_dha(weather_data: WeatherData, start_date: datetime) -> float:
+
     """
     La función calcula el deficit hídrico acumulado (dha) que es la diferencia entre lo que la vid necesita y lo que ha recibido de la lluvia.
     """
+
     etc = calculate_etc(weather_data, start_date)
     precipitation = weather_data.precipitation
 
     dha = etc - precipitation
     return max(dha, 0)
 
+# Indicadores de riesgo (consumidos por el RiskAgent)
 
 def calculate_frost_risk(weather_data: WeatherData, crop_data: CropData) -> dict:
     """
@@ -71,7 +76,7 @@ def calculate_frost_risk(weather_data: WeatherData, crop_data: CropData) -> dict
 
     Devuelve un diccionario con:
     - level: clasificación del riesgo (Nulo, Bajo, Moderado o Alto)
-    - score: puntuación numéricadel riesgo 
+    - score: puntuación numérica del riesgo
     - value: valor de la temperatura mínima registrada
     - threshold: la línea que no debería cruzarse (en este caso, la temperatura mínima óptima para el cultivo)
     """
@@ -109,6 +114,7 @@ def calculate_frost_risk(weather_data: WeatherData, crop_data: CropData) -> dict
 
 
 def calculate_mildiu_risk(weather_data: WeatherData) -> dict:
+
     """
     Evalúa el riesgo de mildiu a partir de humedad y precipitación.
     """
@@ -139,6 +145,11 @@ def calculate_mildiu_risk(weather_data: WeatherData) -> dict:
 
 
 def calculate_heat_stress(weather_data: WeatherData, crop_data: CropData) -> dict:
+
+    """
+    Evalúa el riesgo de estrés térmico a partir de la temperatura máxima registrada y la temperatura máxima óptima para el cultivo.
+    """
+    
     tmax = weather_data.temperature_max
     optimal_temp_max = crop_data.optimal_temp_max
 
