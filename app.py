@@ -401,7 +401,7 @@ def render_register() -> None:
         with c4:
             st.markdown('<label class="auth-label">Tipo de suelo</label>', unsafe_allow_html=True)
             soil_type = st.selectbox("reg_soil_h", key="reg_soil",
-                                     options=["", "arenoso", "franco", "arcilloso"],
+                                     options=["", "arenoso", "franco", "arcilloso", "pizarra", "volcanico", "granitico", "aluvial", "calizo"],
                                      format_func=lambda x: "Selecciona..." if x == "" else x.capitalize(),
                                      label_visibility="collapsed")
             st.markdown('<label class="auth-label">Objetivo de produccion</label>', unsafe_allow_html=True)

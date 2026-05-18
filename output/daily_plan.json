@@ -1,18 +1,18 @@
 {
   "station": "9995Y",
-  "start_date": "2024-07-22",
-  "end_date": "2024-07-26",
+  "start_date": "2026-05-07",
+  "end_date": "2026-05-12",
   "ccaa": "Navarra",
-  "selected_variety": null,
+  "selected_variety": "Tempranillo",
   "weather_data": {
-    "temperature_max": 26.8,
-    "temperature_min": 12.5,
-    "temperature_mean": 19.82,
-    "precipitation": 4.6,
-    "humidity": 81.8,
-    "wind": 1.9,
+    "temperature_max": 22.5,
+    "temperature_min": 5.0,
+    "temperature_mean": 14.583333333333334,
+    "precipitation": 28.599999999999998,
+    "humidity": 71.16666666666667,
+    "wind": 2.8,
     "pressure": null,
-    "days_count": 5
+    "days_count": 6
   },
   "soil_multiplier": 0.7,
   "crop_data": {
@@ -28,30 +28,30 @@
     "optimal_precip_mm": 500.0
   },
   "climate_features": {
-    "etc": 1.06,
+    "etc": 1.4,
     "dha": 0,
     "frost_risk": {
-      "level": "Nulo",
-      "score": 0.0,
-      "value": 12.5,
-      "threshold": 11.0
+      "level": "Moderado",
+      "score": 0.5,
+      "value": 5.0,
+      "threshold": 6.0
     },
     "heat_stress": {
       "level": "Bajo",
       "score": 0.2,
-      "value": 26.8,
+      "value": 22.5,
       "threshold": 34.0
     },
     "mildiu_risk": {
-      "level": "Bajo",
-      "score": 0.2,
-      "value": 81.8,
+      "level": "Moderado",
+      "score": 0.5,
+      "value": 71.16666666666667,
       "threshold": 85
     },
     "strong_wind_risk": {
       "level": "Bajo",
       "score": 0.2,
-      "value": 1.9,
+      "value": 2.8,
       "threshold": 50
     }
   },
@@ -59,7 +59,38 @@
     "future_water_stress": "Bajo",
     "irrigation_need": "Baja"
   },
-  "alerts": [],
+  "alerts": [
+    {
+      "risk_type": "frost_risk",
+      "level": {
+        "_value_": "medio",
+        "_name_": "MEDIUM",
+        "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x000001F42DDF07D0>)>, '__module__': 'models.shared_state', '__firstlineno__': 48, '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFD50344BF0>, '_use_args_': False, '_member_names_': ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], '_member_map_': {'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>}, '_value2member_map_': {'bajo': <RiskLevel.LOW: 'bajo'>, 'medio': <RiskLevel.MEDIUM: 'medio'>, 'alto': <RiskLevel.HIGH: 'alto'>, 'crítico': <RiskLevel.CRITICAL: 'crítico'>}, '_hashable_values_': ['bajo', 'medio', 'alto', 'crítico'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, '__doc__': None, 'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>, '__new__': <function Enum.__new__ at 0x000001F42DDF05C0>}",
+        "_sort_order_": 1
+      },
+      "value": 5.0,
+      "threshold": 6.0,
+      "penalty": 0.5,
+      "ccaa": "Navarra",
+      "valid_until": "2026-05-12",
+      "message": "Riesgo de helada medio: temperatura mínima observada 5.0°C frente al umbral del cultivo 6.0°C."
+    },
+    {
+      "risk_type": "mildiu_risk",
+      "level": {
+        "_value_": "medio",
+        "_name_": "MEDIUM",
+        "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x000001F42DDF07D0>)>, '__module__': 'models.shared_state', '__firstlineno__': 48, '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFD50344BF0>, '_use_args_': False, '_member_names_': ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], '_member_map_': {'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>}, '_value2member_map_': {'bajo': <RiskLevel.LOW: 'bajo'>, 'medio': <RiskLevel.MEDIUM: 'medio'>, 'alto': <RiskLevel.HIGH: 'alto'>, 'crítico': <RiskLevel.CRITICAL: 'crítico'>}, '_hashable_values_': ['bajo', 'medio', 'alto', 'crítico'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, '__doc__': None, 'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>, '__new__': <function Enum.__new__ at 0x000001F42DDF05C0>}",
+        "_sort_order_": 1
+      },
+      "value": 71.16666666666667,
+      "threshold": 85,
+      "penalty": 0.5,
+      "ccaa": "Navarra",
+      "valid_until": "2026-05-12",
+      "message": "Riesgo de mildiu medio: humedad observada 71.16666666666667 frente al umbral 85."
+    }
+  ],
   "scenarios": [
     {
       "actions": [
@@ -70,13 +101,44 @@
         },
         {
           "type": "fungicide",
-          "intensity": "none",
-          "cost": 0.0
+          "intensity": "curative",
+          "cost": 0.14
         },
         {
           "type": "harvest_timing",
-          "intensity": "normal",
-          "cost": 0.0
+          "intensity": "delayed",
+          "cost": 0.05
+        },
+        {
+          "type": "canopy_management",
+          "intensity": "light_defoliation",
+          "cost": 0.05
+        }
+      ],
+      "utility": 0.7535,
+      "breakdown": {
+        "quality": 0.86,
+        "production": 0.79,
+        "cost": 0.41999999999999993,
+        "sustainability": 0.7
+      }
+    },
+    {
+      "actions": [
+        {
+          "type": "irrigation",
+          "intensity": "light",
+          "cost": 0.05
+        },
+        {
+          "type": "fungicide",
+          "intensity": "curative",
+          "cost": 0.14
+        },
+        {
+          "type": "harvest_timing",
+          "intensity": "delayed",
+          "cost": 0.05
         },
         {
           "type": "canopy_management",
@@ -84,12 +146,12 @@
           "cost": 0.0
         }
       ],
-      "utility": 0.7915,
+      "utility": 0.7484999999999999,
       "breakdown": {
-        "quality": 0.7799999999999999,
-        "production": 0.75,
-        "cost": 0.9,
-        "sustainability": 0.82
+        "quality": 0.8099999999999999,
+        "production": 0.79,
+        "cost": 0.52,
+        "sustainability": 0.7
       }
     },
     {
@@ -101,81 +163,216 @@
         },
         {
           "type": "fungicide",
-          "intensity": "none",
-          "cost": 0.0
+          "intensity": "curative",
+          "cost": 0.14
         },
         {
           "type": "harvest_timing",
-          "intensity": "normal",
-          "cost": 0.0
+          "intensity": "delayed",
+          "cost": 0.05
         },
         {
           "type": "canopy_management",
-          "intensity": "none",
-          "cost": 0.0
+          "intensity": "light_defoliation",
+          "cost": 0.05
         }
       ],
-      "utility": 0.7775,
+      "utility": 0.7394999999999999,
       "breakdown": {
-        "quality": 0.7,
-        "production": 0.75,
-        "cost": 1.0,
-        "sustainability": 0.85
+        "quality": 0.78,
+        "production": 0.79,
+        "cost": 0.52,
+        "sustainability": 0.73
       }
     }
   ],
   "explanation": {
-    "summary": "En Navarra no hay riesgos destacados para tu viñedo actualmente. Se recomienda mantener una irrigación ligera y planificar la cosecha con el timing normal. Todo parece estar en buen camino.",
-    "risk_explanation": [],
-    "recommendation_reasoning": "La irrigación ligera es adecuada ya que mantiene el estrés hídrico controlado, favoreciendo la concentración de sabores y aromas en las uvas sin comprometer su salud. La cosecha en el momento normal asegura una maduración óptima, equilibrando la calidad y la producción sin incurrir en costos adicionales. Estas prácticas sostenibles minimizan el uso de recursos, manteniendo un alto nivel de calidad y producción con un bajo impacto ambiental. El equilibrio entre calidad, producción y coste es óptimo, asegurando la viabilidad económica y la sostenibilidad del viñedo.",
-    "alternatives": [
+    "summary": "En Navarra, el riesgo de heladas y mildiu es medio. Recomiendo realizar una ligera deshojada para mejorar la ventilación y aplicar un tratamiento fungicida curativo. Ajusta el riego de forma moderada y considera retrasar la cosecha si es necesario.",
+    "risk_explanation": [
       {
-        "utility": 0.777,
-        "actions": [
-          "harvest timing normal"
+        "type": "frost_risk",
+        "level": "medio",
+        "value": 5.0,
+        "threshold": 6.0,
+        "description": "",
+        "causes": [
+          {
+            "id": "temperatura_bajo_cero",
+            "label": "Temperatura bajo cero",
+            "relation": "provoca",
+            "weight": 0.95,
+            "condition": null
+          },
+          {
+            "id": "temperatura_baja",
+            "label": "Temperatura baja",
+            "relation": "favorece",
+            "weight": 0.7,
+            "condition": "Temperatura entre 0°C y 3°C con humedad alta"
+          }
         ],
-        "tradeoff": "Alternativa 2 con utilidad 0.78."
+        "effects": [
+          {
+            "id": "brotes",
+            "label": "Brotes",
+            "relation": "daña",
+            "weight": 0.95,
+            "condition": "Especialmente en brotación"
+          },
+          {
+            "id": "produccion",
+            "label": "Producción",
+            "relation": "reduce",
+            "weight": 0.8,
+            "condition": null
+          }
+        ],
+        "recommended_actions": [
+          {
+            "id": "proteccion_heladas",
+            "label": "Protección contra heladas",
+            "relation": "mitiga",
+            "weight": 0.8,
+            "condition": "Aspersión, estufas, ventiladores"
+          }
+        ],
+        "vulnerable_phases": [
+          {
+            "id": "brotacion",
+            "label": "Brotación",
+            "condition": "Máxima sensibilidad a heladas tardías"
+          }
+        ]
+      },
+      {
+        "type": "mildiu_risk",
+        "level": "medio",
+        "value": 71.16666666666667,
+        "threshold": 85,
+        "description": "",
+        "causes": [
+          {
+            "id": "humedad_alta",
+            "label": "Humedad relativa alta",
+            "relation": "favorece",
+            "weight": 0.85,
+            "condition": "Humedad > 80% con temperatura 10-25°C"
+          }
+        ],
+        "effects": [
+          {
+            "id": "hojas",
+            "label": "Hojas",
+            "relation": "daña",
+            "weight": 0.9,
+            "condition": "Manchas de aceite, necrosis"
+          },
+          {
+            "id": "racimos",
+            "label": "Racimos",
+            "relation": "daña",
+            "weight": 0.85,
+            "condition": "Mildiu larvado en bayas jóvenes"
+          },
+          {
+            "id": "produccion",
+            "label": "Producción",
+            "relation": "reduce",
+            "weight": 0.8,
+            "condition": null
+          }
+        ],
+        "recommended_actions": [
+          {
+            "id": "tratamiento_fungicida",
+            "label": "Tratamiento fungicida",
+            "relation": "previene",
+            "weight": 0.85,
+            "condition": "Tratamiento preventivo antes de lluvia"
+          },
+          {
+            "id": "deshojado",
+            "label": "Deshojado",
+            "relation": "inhibe",
+            "weight": 0.5,
+            "condition": "Mejora aireación, reduce humedad foliar"
+          }
+        ],
+        "vulnerable_phases": [
+          {
+            "id": "floracion",
+            "label": "Floración",
+            "condition": "Infecciones primarias más dañinas"
+          }
+        ]
       }
     ],
-    "sms_text": "AgroVid | Navarra | Sin alertas activas. Condiciones favorables para el vinedo. Ver detalle: http://localhost:8501ss",
-    "sources": []
+    "recommendation_reasoning": "La irrigación ligera es recomendada para mantener el estrés hídrico controlado, reduciendo la sensibilidad a la helada y mejorando la resistencia de la planta. El tratamiento fungicida curativo es necesario para combatir el mildiu, especialmente en fases críticas como la floración, donde las infecciones pueden ser más dañinas. La cosecha retrasada permite que los racimos maduren plenamente, mejorando la calidad de la uva, aunque con un posible impacto moderado en la producción. La poda ligera de hojas mejora la ventilación y disminuye la humedad foliar, reduciendo el riesgo de mildiu y equilibrando la calidad y sostenibilidad del cultivo.",
+    "alternatives": [
+      {
+        "utility": 0.748,
+        "actions": [
+          "irrigation light",
+          "fungicide curative",
+          "harvest timing delayed"
+        ],
+        "tradeoff": "Alternativa 2 con utilidad 0.75."
+      },
+      {
+        "utility": 0.739,
+        "actions": [
+          "fungicide curative",
+          "harvest timing delayed",
+          "canopy management light_defoliation"
+        ],
+        "tradeoff": "Alternativa 3 con utilidad 0.74."
+      }
+    ],
+    "sms_text": "AgroVid | Navarra | Alerta: Frost risk nivel MEDIO. Accion: irrigation light. Ver detalle: http://localhost:8501ss",
+    "sources": [
+      "MAPA. Guía de gestión integrada de plagas de la vid",
+      "Reynier (2012)",
+      "Hidalgo, L. (2002). Tratado de Viticultura General",
+      "MAPA - Guía GIP Vid",
+      "Hidalgo (2002)"
+    ]
   },
   "daily_plan": {
     "irrigation": {
       "base_liters": 6.0,
-      "adjusted_liters": 0.7,
-      "adjustment_reason": "base ajustada por ETc (1.1 L/m²); ×0.70 por tipo de suelo",
+      "adjusted_liters": 0.0,
+      "adjustment_reason": "base ajustada por ETc (1.4 L/m²); -4.0 L/m² por precipitación (28.6 mm); ×0.70 por tipo de suelo",
       "soil_multiplier": 0.7,
       "assumed_values": []
     },
     "climate": {
-      "condition": "húmedo",
-      "temp_min": 12.5,
-      "temp_max": 26.8,
-      "precipitation": 4.6,
-      "humidity": 81.8,
-      "interpretation": "Humedad relativa del 81.8 % favorece el desarrollo de mildiu y botrytis. Revisar cobertura fungicida."
+      "condition": "óptimo",
+      "temp_min": 5.0,
+      "temp_max": 22.5,
+      "precipitation": 28.599999999999998,
+      "humidity": 71.16666666666667,
+      "interpretation": "Condiciones térmicas (5.0–22.5 °C) y de humedad (71.16666666666667 %) dentro de rangos favorables para el viñedo."
     },
     "crop_status": {
-      "phase": "maduración",
-      "recommendation": "[Tempranillo] Reducir aporte nitrogenado. Mantener riego equilibrado.",
+      "phase": "crecimiento",
+      "recommendation": "[Tempranillo] Aplicar tratamientos preventivos si hay humedad alta.",
       "assumed": false
     },
     "prevention": [
+      {
+        "risk": "frost_risk",
+        "label": "Riesgo de helada",
+        "priority": "media",
+        "action": "Activar sistemas antihelada o protección de brotes si temperatura baja de 2 °C."
+      },
       {
         "risk": "future_water_stress",
         "label": "Estrés hídrico futuro",
         "priority": "alta",
         "action": "El balance hídrico es deficitario. Aumentar frecuencia de riego preventivo."
-      },
-      {
-        "risk": "mildiu_risk",
-        "label": "Riesgo de mildiu",
-        "priority": "media",
-        "action": "Condiciones óptimas para mildiu. Revisar cobertura fungicida (cobre o sistémico)."
       }
     ],
-    "explanation": "Plan de manejo para Navarra — 2024-07-22 a 2024-07-26.\n\nClima: Humedad relativa del 81.8 % favorece el desarrollo de mildiu y botrytis. Revisar cobertura fungicida.\n\nRiego: se recomiendan 0.7 L/m² (base ajustada por ETc (1.1 L/m²); ×0.70 por tipo de suelo).\n\nCultivo en fase de maduración. [Tempranillo] Reducir aporte nitrogenado. Mantener riego equilibrado.\n\nPrevención: Atención prioritaria: Estrés hídrico futuro. Vigilar también: Riesgo de mildiu.",
-    "sms": "🍇 Navarra | 💧 0.7 L/m² | 🌫️ húmedo | ⚠️ Estrés hídrico futuro | 📊 http://localhost:8501ss"
+    "explanation": "Plan de manejo para Navarra — 2026-05-07 a 2026-05-12.\n\nClima: Condiciones térmicas (5.0–22.5 °C) y de humedad (71.16666666666667 %) dentro de rangos favorables para el viñedo.\n\nRiego: se recomiendan 0.0 L/m² (base ajustada por ETc (1.4 L/m²); -4.0 L/m² por precipitación (28.6 mm); ×0.70 por tipo de suelo).\n\nCultivo en fase de crecimiento. [Tempranillo] Aplicar tratamientos preventivos si hay humedad alta.\n\nPrevención: Atención prioritaria: Estrés hídrico futuro. Vigilar también: Riesgo de helada.",
+    "sms": "🍇 Navarra | 💧 0.0 L/m² | 🟢 óptimo | ⚠️ Estrés hídrico futuro | 📊 http://localhost:8501ss"
   }
 }

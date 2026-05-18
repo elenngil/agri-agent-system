@@ -609,3 +609,13 @@ AttributeError: 'ExplanationAgent' object has no attribute 'chroma_retriever'. D
 11:25:22 [INFO] orchestrator — Explicación generada
 11:25:22 [INFO] orchestrator — Plan diario generado en 0.000s
 11:25:22 [INFO] orchestrator — Pipeline completado en 12.143s
+21:05:35 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+21:05:37 [INFO] orchestrator — Observación completada en 1.826s
+21:05:37 [INFO] orchestrator — Inferencia completada en 0.000s
+21:05:37 [INFO] orchestrator — Predicción completada en 0.000s
+21:05:37 [INFO] orchestrator — Riesgos evaluados en 0.000s — 2 alertas generadas
+21:05:37 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+21:05:37 [INFO] orchestrator — Deliberación aprobada (intento 1)
+21:05:49 [INFO] orchestrator — Explicación generada
+21:05:49 [INFO] orchestrator — Plan diario generado en 0.000s
+21:05:49 [INFO] orchestrator — Pipeline completado en 11.994s

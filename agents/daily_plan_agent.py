@@ -354,25 +354,17 @@ class DailyPlanAgent:
     def _build_sms(self, irr, climate, prev, state) -> str:
         region = getattr(state, "ccaa", "—")
 
-        climate_icon = {
-            "óptimo": "🟢",
-            "estrés térmico": "🌡️",
-            "riesgo de helada": "🥶",
-            "frío": "❄️",
-            "húmedo": "🌫️",
-        }.get(climate.condition, "🌤️")
-
         top_prev = next((p for p in prev if p.priority == "alta"), None) or prev[0]
-        warn_text = f"⚠️ {top_prev.label}" if top_prev.risk != "none" else "✅ Sin alertas"
+        warn_text = f"Alerta: {top_prev.label}" if top_prev.risk != "none" else "Sin alertas"
 
         sms = (
-            f"🍇 {region} | "
-            f"💧 {irr.adjusted_liters} L/m² | "
-            f"{climate_icon} {climate.condition} | "
+            f"AgroVid | {region} | "
+            f"Riego: {irr.adjusted_liters} L/m2 | "
+            f"{climate.condition} | "
             f"{warn_text}"
         )
 
         dashboard_url = os.getenv("DASHBOARD_URL", "http://localhost:8501")
-        candidate = f"{sms} | 📊 {dashboard_url}"
+        candidate = f"{sms} | {dashboard_url}"
 
         return candidate if len(candidate) <= 160 else sms[:160]
