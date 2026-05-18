@@ -9,6 +9,29 @@ import streamlit as st
 from web.auth import login_user, register_user, update_user_preferences
 from web.db import init_db
 
+@st.cache_data(show_spinner=False)
+def load_stations():
+    """Carga todas las estaciones AEMET y las devuelve como lista de opciones."""
+    try:
+        from tools.aemet_stations import get_stations
+        df = get_stations()
+        # Formato: "Nombre - Provincia (CODIGO)"
+        opciones = {
+            row["id"]: f"{row['nombre'].title()} - {row['provincia'].title()} ({row['id']})"
+            for _, row in df.iterrows()
+        }
+        return opciones
+    except Exception:
+        return {"9995Y": "Pamplona / Noain - Navarra (9995Y)"}
+
+def get_ccaa_from_station(station_id: str) -> str:
+    """Devuelve la CCAA a partir del código de estación."""
+    try:
+        from tools.aemet_stations import station_to_ccaa
+        return station_to_ccaa(station_id) or "Desconocida"
+    except Exception:
+        return "Desconocida"
+
 logger = logging.getLogger(__name__)
 
 # ── Configuracion de pagina ──────────────────────────────────────────────────
@@ -277,7 +300,7 @@ def _left_panel_html() -> str:
     <div class="auth-img-panel">
         <div class="auth-img-overlay">
             <div class="auth-tagline-img">
-                Gestión inteligente del viñedo con IA Agéntica
+                Gestion inteligente del vinedo con IA Agentica
             </div>
         </div>
     </div>
@@ -296,7 +319,7 @@ def render_login() -> None:
         st.markdown("<div style='height:20vh'></div>", unsafe_allow_html=True)
         st.markdown("""
         <div class="auth-logo-text">AgroVid</div>
-        <div class="auth-tagline">Maximiza tu potencial agrícola</div>
+        <div class="auth-tagline">Gestion inteligente del vinedo con IA Agentica</div>
         <div class="auth-section-title">Iniciar sesion</div>
         """, unsafe_allow_html=True)
 
@@ -376,7 +399,7 @@ def render_register() -> None:
         st.markdown("<div style='height:5vh'></div>", unsafe_allow_html=True)
         st.markdown("""
         <div class="auth-logo-text">AgroVid</div>
-        <div class="auth-tagline">Maximiza tu potencial agrícola</div>
+        <div class="auth-tagline">Gestion inteligente del vinedo con IA Agentica</div>
         <div class="auth-section-title">Crear nueva cuenta</div>
         """, unsafe_allow_html=True)
 
@@ -392,18 +415,38 @@ def render_register() -> None:
         st.markdown('<div class="auth-section-label">Tu vinedo</div>', unsafe_allow_html=True)
         c3, c4 = st.columns(2)
         with c3:
-            st.markdown('<label class="auth-label">Estacion AEMET</label>', unsafe_allow_html=True)
-            station = st.text_input("reg_st_h", value="9995Y", key="reg_station", label_visibility="collapsed")
-            st.markdown('<label class="auth-label">Comunidad autonoma</label>', unsafe_allow_html=True)
-            ccaa = st.text_input("reg_ccaa_h", value="Navarra", key="reg_ccaa", label_visibility="collapsed")
-            st.markdown('<label class="auth-label">Variedad principal</label>', unsafe_allow_html=True)
-            variety = st.text_input("reg_var_h", value="Tempranillo", key="reg_variety", label_visibility="collapsed")
+            st.markdown('<label class="auth-label">Estacion meteorologica</label>', unsafe_allow_html=True)
+            stations = load_stations()
+            station_ids = list(stations.keys())
+            default_idx = station_ids.index("9995Y") if "9995Y" in station_ids else 0
+            selected_station = st.selectbox(
+                "reg_st_h", options=station_ids, index=default_idx,
+                format_func=lambda x: stations.get(x, x),
+                key="reg_station", label_visibility="collapsed"
+            )
+            station = selected_station
+            ccaa = get_ccaa_from_station(station)
+            st.caption(f"Region detectada: {ccaa}")
+            st.markdown('<label class="auth-label">Variedad de uva</label>', unsafe_allow_html=True)
+            variety_opts = ["Usar la predominante de mi region"] + ['Airen', 'AlbarinBlanco', 'Albariño', 'Bobal', 'Garnacha', 'Godello', 'ListanBlancodeCanarias', 'Macabeo', 'MantoNegro', 'Mencia', 'Monastrell', 'Palomino', 'Pardina', 'PedroXimenez', 'Tempranillo', 'Verdejo']
+            variety_sel = st.selectbox(
+                "reg_var_h", options=variety_opts,
+                index=0,
+                key="reg_variety", label_visibility="collapsed"
+            )
+            variety = "" if variety_sel == "Usar la predominante de mi region" else variety_sel
+            if variety_sel == "Usar la predominante de mi region":
+                st.caption("Se usara la variedad predominante de tu region")
         with c4:
             st.markdown('<label class="auth-label">Tipo de suelo</label>', unsafe_allow_html=True)
-            soil_type = st.selectbox("reg_soil_h", key="reg_soil",
-                                     options=["", "arenoso", "franco", "arcilloso", "pizarra", "volcanico", "granitico", "aluvial", "calizo"],
-                                     format_func=lambda x: "Selecciona..." if x == "" else x.capitalize(),
+            soil_type_opts = ["Usar el predominante de mi region"] + ['arenoso', 'franco', 'arcilloso', 'pizarra', 'volcanico', 'granitico', 'aluvial', 'calizo']
+            soil_sel = st.selectbox("reg_soil_h", key="reg_soil",
+                                     options=soil_type_opts,
+                                     format_func=lambda x: x.capitalize(),
                                      label_visibility="collapsed")
+            soil_type = "" if soil_sel == "Usar el predominante de mi region" else soil_sel
+            if soil_sel == "Usar el predominante de mi region":
+                st.caption("Se usara el suelo predominante de la variedad seleccionada")
             st.markdown('<label class="auth-label">Objetivo de produccion</label>', unsafe_allow_html=True)
             objective = st.selectbox("reg_obj_h", key="reg_obj",
                                      options=["equilibrio", "produccion", "calidad"],
@@ -446,8 +489,8 @@ def maybe_run_default_analysis(user: dict) -> None:
     if st.session_state.analysis_result is not None:
         return
 
-    end   = date.today() - timedelta(days=5)
-    start = date.today() - timedelta(days=10)
+    end   = date.today() - timedelta(days=8)
+    start = date.today() - timedelta(days=13)
 
     try:
         from web.runner import run_analysis, save_analysis
@@ -481,12 +524,6 @@ def maybe_run_default_analysis(user: dict) -> None:
 def render_header(result: dict) -> None:
     meta = result.get("meta", {})
     obj  = meta.get("objective", "equilibrio").capitalize()
-    pesos = {
-        "calidad":     {"quality": 0.55, "production": 0.25},
-        "produccion":  {"quality": 0.25, "production": 0.55},
-        "equilibrio":  {"quality": 0.40, "production": 0.35},
-    }.get(obj, {})
-    st.caption(f"Pesos activos — calidad: {pesos.get('quality','—')} · produccion: {pesos.get('production','—')}")
     st.markdown(f"""
     <div class="header-agrovid">
         <h1>AgroVid</h1>
@@ -645,8 +682,12 @@ def tab_riesgos(result: dict) -> None:
                 if effects:
                     st.markdown("**Efectos sobre la vid:**")
                     for e in effects[:3]:
-                        label_e = e.get('label','—') if isinstance(e, dict) else str(e)
-                        st.markdown(f"- {label_e}")
+                        if isinstance(e, dict):
+                            relacion = e.get('relation', 'afecta a')
+                            label_e  = e.get('label', '—')
+                            st.markdown(f"- {relacion.capitalize()} {label_e.lower()}")
+                        else:
+                            st.markdown(f"- {str(e)}")
 
                 actions = risk.get("recommended_actions", [])
                 if actions:
@@ -785,18 +826,37 @@ def tab_configuracion(user: dict) -> dict:
 
     with col1:
         st.markdown("**Localizacion y cultivo**")
-        station = st.text_input("Codigo estacion AEMET", value=user["station"])
-        ccaa    = st.text_input("Comunidad autonoma",    value=user["ccaa"])
-        variety = st.text_input("Variedad principal",    value=user["variety"])
+        stations = load_stations()
+        station_ids = list(stations.keys())
+        current_station = user.get("station", "9995Y")
+        default_idx = station_ids.index(current_station) if current_station in station_ids else 0
+        station = st.selectbox(
+            "Estacion meteorologica", options=station_ids, index=default_idx,
+            format_func=lambda x: stations.get(x, x),
+        )
+        ccaa = get_ccaa_from_station(station)
+        st.caption(f"Region detectada: {ccaa}")
+        var_opts = ["Usar la predominante de mi region"] + ['Airen', 'AlbarinBlanco', 'Albariño', 'Bobal', 'Garnacha', 'Godello', 'ListanBlancodeCanarias', 'Macabeo', 'MantoNegro', 'Mencia', 'Monastrell', 'Palomino', 'Pardina', 'PedroXimenez', 'Tempranillo', 'Verdejo']
+        current_var = user.get("variety", "")
+        var_idx = var_opts.index(current_var) if current_var in var_opts else 0
+        variety_sel_cfg = st.selectbox("Variedad de uva", options=var_opts, index=var_idx)
+        variety = "" if variety_sel_cfg == "Usar la predominante de mi region" else variety_sel_cfg
+        if variety_sel_cfg == "Usar la predominante de mi region":
+            st.caption("Se usara la variedad predominante de tu region")
 
     with col2:
         st.markdown("**Caracteristicas del vinedo**")
-        soil_opts = ["", "arenoso", "franco", "arcilloso"]
-        soil_type = st.selectbox(
-            "Tipo de suelo", options=soil_opts,
-            index=soil_opts.index(user.get("soil_type", "") or ""),
-            format_func=lambda x: "Selecciona..." if x == "" else x.capitalize()
+        soil_opts_cfg = ["Usar el predominante de mi region"] + ['arenoso', 'franco', 'arcilloso', 'pizarra', 'volcanico', 'granitico', 'aluvial', 'calizo']
+        current_soil = user.get("soil_type", "")
+        soil_idx = soil_opts_cfg.index(current_soil) if current_soil in soil_opts_cfg else 0
+        soil_sel_cfg = st.selectbox(
+            "Tipo de suelo", options=soil_opts_cfg,
+            index=soil_idx,
+            format_func=lambda x: x.capitalize()
         )
+        soil_type = "" if soil_sel_cfg == "Usar el predominante de mi region" else soil_sel_cfg
+        if soil_sel_cfg == "Usar el predominante de mi region":
+            st.caption("Se usara el suelo predominante de la variedad seleccionada")
         obj_opts  = ["equilibrio", "produccion", "calidad"]
         objective = st.selectbox(
             "Objetivo de produccion", options=obj_opts,

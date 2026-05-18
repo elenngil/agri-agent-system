@@ -1,4 +1,3 @@
-import http
 from typing import List
 from models.shared_state import SharedState, RiskLevel
 from rag.graph.graph_retriever import get_graph_retriever, GraphContext
@@ -165,25 +164,46 @@ INSTRUCCIONES:
 
     # ── SMS ───────────────────────────────────────────────────────────────────
 
+    # Traducciones para el SMS
+    TRADUCCION_SMS = {
+        "irrigation": "riego", "fungicide": "fungicida",
+        "harvest_timing": "vendimia", "canopy_management": "deshojado",
+        "none": "ninguno", "light": "ligero", "moderate": "moderado",
+        "intensive": "intensivo", "preventive": "preventivo",
+        "curative": "curativo", "early": "anticipado",
+        "delayed": "retrasado", "normal": "normal",
+        "heavy_defoliation": "deshojado intenso",
+        "light_defoliation": "deshojado ligero",
+        "future_water_stress": "estres hidrico",
+        "mildiu_risk": "riesgo mildiu",
+        "frost_risk": "riesgo helada",
+        "heat_stress": "estres termico",
+        "strong_wind_risk": "viento fuerte",
+        "irrigation_need": "necesidad riego",
+    }
+
     def _generate_sms(self, scenarios, alerts, ccaa) -> str:
         dashboard_url = os.getenv("DASHBOARD_URL", "http://localhost:8501")
 
         if not alerts:
             base = f"AgroVid | {ccaa} | Sin alertas activas. Condiciones favorables para el vinedo."
         else:
-            # Alerta principal
             main_alert = alerts[0]
             level_text = self._level_to_text(main_alert.level).upper()
-            risk_text  = main_alert.risk_type.replace("_", " ").capitalize()
+            risk_text  = self.TRADUCCION_SMS.get(
+                main_alert.risk_type,
+                main_alert.risk_type.replace("_", " ")
+            ).capitalize()
 
-            # Accion principal recomendada
             action_text = ""
             if scenarios and scenarios[0].actions:
                 main_action = next(
                     (a for a in scenarios[0].actions if a.intensity != "none"), None
                 )
                 if main_action:
-                    action_text = f" Accion: {main_action.type.replace('_',' ')} {main_action.intensity}."
+                    tipo      = self.TRADUCCION_SMS.get(main_action.type, main_action.type)
+                    intensidad = self.TRADUCCION_SMS.get(main_action.intensity, main_action.intensity)
+                    action_text = f" Accion: {tipo} {intensidad}."
 
             base = f"AgroVid | {ccaa} | Alerta: {risk_text} nivel {level_text}.{action_text}"
 

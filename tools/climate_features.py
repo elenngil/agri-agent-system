@@ -139,11 +139,16 @@ def calculate_mildiu_risk(weather_data: WeatherData) -> dict:
 
 
 def calculate_heat_stress(weather_data: WeatherData, crop_data: CropData) -> dict:
-    """
-    Evalúa el riesgo de estrés térmico para un cultivo.
-    """
     tmax = weather_data.temperature_max
     optimal_temp_max = crop_data.optimal_temp_max
+
+    if tmax is None:
+        return {
+            "level": "Desconocido",
+            "score": 0.0,
+            "value": None,
+            "threshold": optimal_temp_max,
+        }
 
     if tmax <= optimal_temp_max:
         level, score = "Bajo", 0.2
