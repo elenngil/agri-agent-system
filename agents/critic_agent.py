@@ -1,18 +1,10 @@
-"""
-CriticAgent: verifica que la recomendación del DeliberativeAgent
-no viola reglas agronómicas básicas antes de generar la explicación.
-
-No usa LLM: es determinista. Rápido y predecible.
-"""
-
 from models.shared_state import SharedState, RiskLevel
 
 
-# Reglas que nunca deben violarse, independientemente del scoring de utilidad
 HARD_RULES = [
     {
         "id": "no_fungicide_in_harvest",
-        "description": "No recomendar fungicida curativo en fase de maduración tardía",
+        "description": "No recomendar fungicida curativo en fase de maduracion tardia",
         "check": lambda actions, state: not (
             any(a.type == "fungicide" and a.intensity == "curative" for a in actions)
             and getattr(state.crop_data, "variety", "") in ("Tempranillo", "Garnacha")
@@ -23,20 +15,24 @@ HARD_RULES = [
     },
     {
         "id": "no_heavy_defoliation_in_heat",
-        "description": "No recomendar defoliación intensa si hay estrés térmico alto",
+        "description": "No recomendar defoliacion intensa si hay estres termico alto",
         "check": lambda actions, state: not (
             any(a.type == "canopy_management" and a.intensity == "heavy_defoliation" for a in actions)
             and state.climate_features is not None
-            and str(state.climate_features.heat_stress).lower() == "alto"
+            and state.climate_features.heat_stress is not None
+            and state.climate_features.heat_stress.get("level", "").lower() in (
+                RiskLevel.HIGH.value.lower(), RiskLevel.CRITICAL.value.lower()
+            )
         ),
         "problematic_actions": [("canopy_management", "heavy_defoliation")],
     },
     {
         "id": "no_intensive_irrigation_with_rain",
-        "description": "No recomendar riego intensivo si la precipitación supera 30mm",
+        "description": "No recomendar riego intensivo si la precipitacion supera 30mm",
         "check": lambda actions, state: not (
             any(a.type == "irrigation" and a.intensity == "intensive" for a in actions)
             and state.weather_data is not None
+            and state.weather_data.precipitation is not None
             and state.weather_data.precipitation > 30
         ),
         "problematic_actions": [("irrigation", "intensive")],
@@ -45,33 +41,32 @@ HARD_RULES = [
 
 
 class CriticAgent:
-    """
-    Verifica las recomendaciones del mejor escenario contra reglas agronómicas duras.
-    Devuelve un dict con approved, reason y problematic_actions.
-    """
-
+    
     def run(self, state: SharedState) -> dict:
         if not state.scenarios:
-            return {"approved": True, "reason": "Sin escenarios que verificar", "problematic_actions": []}
+            return {
+                "approved": True,
+                "reason": "Sin escenarios que verificar",
+                "problematic_actions": [],
+            }
 
-        best = state.scenarios[0]
-        actions = best.actions
+        actions = state.scenarios[0].actions
 
         for rule in HARD_RULES:
             try:
                 if not rule["check"](actions, state):
                     return {
-                        "approved": False,
-                        "reason": rule["description"],
+                        "approved":            False,
+                        "reason":              rule["description"],
                         "problematic_actions": rule["problematic_actions"],
-                        "rule_id": rule["id"],
+                        "rule_id":             rule["id"],
                     }
             except Exception:
-                # Si la regla falla por datos incompletos, no bloqueamos
+                # Si la regla falla por datos incompletos no bloqueamos
                 continue
 
         return {
-            "approved": True,
-            "reason": "Todas las reglas agronómicas verificadas correctamente",
-            "problematic_actions": []
+            "approved":            True,
+            "reason":              "Todas las reglas agronomicas verificadas correctamente",
+            "problematic_actions": [],
         }

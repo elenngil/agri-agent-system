@@ -4,41 +4,44 @@ import random
 
 
 class DeliberativeAgent:
-    """Genera escenarios de actuación, calcula utilidad y selecciona los mejores."""
+
+    """
+    Genera escenarios de actuacion, calcula utilidad y selecciona los mejores.
+    """
 
     ACTION_SPACE = {
-        "irrigation":        ["none", "light", "moderate", "intensive"],
-        "fungicide":         ["none", "preventive", "curative"],
-        "harvest_timing":    ["normal", "early", "delayed"],
+        "irrigation": ["none", "light", "moderate", "intensive"],
+        "fungicide": ["none", "preventive", "curative"],
+        "harvest_timing": ["normal", "early", "delayed"],
         "canopy_management": ["none", "light_defoliation", "heavy_defoliation"],
     }
 
     MAX_POSSIBLE_COST = sum(
         max(costs.values())
         for costs in {
-            "irrigation":        {"none": 0.0, "light": 0.05, "moderate": 0.10, "intensive": 0.20},
-            "fungicide":         {"none": 0.0, "preventive": 0.08, "curative": 0.14},
-            "harvest_timing":    {"normal": 0.0, "early": 0.06, "delayed": 0.05},
+            "irrigation": {"none": 0.0, "light": 0.05, "moderate": 0.10, "intensive": 0.20},
+            "fungicide": {"none": 0.0, "preventive": 0.08, "curative": 0.14},
+            "harvest_timing": {"normal": 0.0, "early": 0.06, "delayed": 0.05},
             "canopy_management": {"none": 0.0, "light_defoliation": 0.05, "heavy_defoliation": 0.10},
         }.values()
     )
 
     def __init__(self, weights: dict | None = None, temperature: float = 0.0):
         self.weights = weights or {
-            "quality":        0.40,
-            "production":     0.35,
-            "cost":           0.15,
+            "quality": 0.40,
+            "production": 0.35,
+            "cost": 0.15,
             "sustainability": 0.10,
         }
         self.temperature = temperature
 
-    def run(self, state, top_n=3, excluded_actions: list[tuple[str, str]] | None = None) -> SharedState:
+    def run(self, state: SharedState, top_n: int = 3, excluded_actions: list[tuple[str, str]] | None = None) -> SharedState:
         if state.climate_features is None:
-            raise ValueError("climate_features no está disponible en shared_state")
+            raise ValueError("Los indicadores climaticos no estan disponibles en SharedState")
         if state.predictions is None:
-            raise ValueError("predictions no está disponible en shared_state")
+            raise ValueError("Las predicciones no estan disponibles en SharedState")
         if state.crop_data is None:
-            raise ValueError("crop_data no está disponible en shared_state")
+            raise ValueError("Los datos de cultivo no estan disponibles en SharedState")
 
         candidate_scenarios = self._generate_relevant_scenarios(state)
 
@@ -58,21 +61,27 @@ class DeliberativeAgent:
         state.scenarios = scored_scenarios[:top_n]
         return state
 
-    def _get_mildiu_level(self, state: SharedState) -> str | None:
-        """Devuelve el nivel de mildiu activo o None si no hay alerta."""
+    def _get_mildiu_level(self, state: SharedState) -> RiskLevel | None:
+        """
+        Devuelve el RiskLevel de mildiu activo o None si no hay alerta.
+        """
         for alert in state.alerts:
             if alert.risk_type == "mildiu_risk":
-                level = alert.level
-                return level.value if isinstance(level, RiskLevel) else str(level)
+                return alert.level if isinstance(alert.level, RiskLevel) else None
         return None
 
     def _generate_relevant_scenarios(self, state: SharedState) -> list[list[Action]]:
-        relevant_actions = {}
-        alert_types  = {a.risk_type for a in state.alerts}
-        climate      = state.climate_features
-        predictions  = state.predictions
 
-        # ── Riego ────────────────────────────────────────────────────────────
+        """
+        Genera escenarios relevantes basados en las alertas activas, los indicadores climaticos y las predicciones.
+        """
+
+        relevant_actions = {}
+        alert_types = {a.risk_type for a in state.alerts}
+        climate     = state.climate_features
+        predictions = state.predictions
+
+
         if (
             "future_water_stress" in alert_types
             or "irrigation_need"  in alert_types
@@ -83,33 +92,29 @@ class DeliberativeAgent:
         else:
             relevant_actions["irrigation"] = ["none", "light"]
 
-        # ── Fungicida — según nivel de mildiu ────────────────────────────────
-        # Sin datos de imagen no es posible confirmar infección activa.
-        # Solo se recomienda fungicida curativo cuando el riesgo es Alto o Crítico.
-        # Con riesgo Moderado se recomienda preventivo como máximo.
+
         if "mildiu_risk" in alert_types:
             mildiu_level = self._get_mildiu_level(state)
-            if mildiu_level in ("Alto", "Crítico", "alto", "crítico", "critico"):
+            if mildiu_level in (RiskLevel.HIGH, RiskLevel.CRITICAL):
                 relevant_actions["fungicide"] = ["none", "preventive", "curative"]
             else:
-                # Moderado o Bajo — solo preventivo, nunca curativo sin confirmar infección
                 relevant_actions["fungicide"] = ["none", "preventive"]
         else:
             relevant_actions["fungicide"] = ["none"]
 
-        # ── Calendario de vendimia ───────────────────────────────────────────
+
         if "frost_risk" in alert_types or "heat_stress" in alert_types:
             relevant_actions["harvest_timing"] = self.ACTION_SPACE["harvest_timing"]
         else:
             relevant_actions["harvest_timing"] = ["normal"]
 
-        # ── Gestión del dosel ────────────────────────────────────────────────
+
         if "mildiu_risk" in alert_types or "heat_stress" in alert_types:
             relevant_actions["canopy_management"] = self.ACTION_SPACE["canopy_management"]
         else:
             relevant_actions["canopy_management"] = ["none"]
 
-        keys      = list(relevant_actions.keys())
+        keys = list(relevant_actions.keys())
         scenarios = []
 
         for combo in product(*[relevant_actions[k] for k in keys]):
@@ -126,32 +131,38 @@ class DeliberativeAgent:
         return scenarios
 
     def _calculate_utility(self, actions: list[Action], state: SharedState) -> tuple[float, dict]:
+
+        """
+        Calcula la utilidad de un escenario.
+        """
+
         breakdown = {}
 
-        breakdown["quality"]      = self._estimate_quality_score(actions, state)
-        breakdown["production"]   = self._estimate_production_score(actions, state)
-        total_cost                = sum(a.cost for a in actions)
-        breakdown["cost"]         = 1.0 - (total_cost / self.MAX_POSSIBLE_COST)
+        breakdown["quality"] = self._estimate_quality_score(actions, state)
+        breakdown["production"] = self._estimate_production_score(actions, state)
+        breakdown["cost"] = 1.0 - (sum(a.cost for a in actions) / self.MAX_POSSIBLE_COST)
         breakdown["sustainability"] = self._estimate_sustainability_score(actions)
-
         residual_penalty = self._calculate_residual_penalty(actions, state.alerts)
 
         utility = (
-            self.weights["quality"]        * breakdown["quality"]
-            + self.weights["production"]   * breakdown["production"]
-            + self.weights["cost"]         * breakdown["cost"]
+            self.weights["quality"] * breakdown["quality"]
+            + self.weights["production"] * breakdown["production"]
+            + self.weights["cost"] * breakdown["cost"]
             + self.weights["sustainability"] * breakdown["sustainability"]
             - residual_penalty
         )
 
         if self.temperature > 0:
-            noise   = random.gauss(0, self.temperature)
-            utility = utility + noise
+            utility += random.gauss(0, self.temperature)
 
-        utility = max(0.0, min(1.0, utility))
-        return utility, breakdown
+        return max(0.0, min(1.0, utility)), breakdown
 
     def _estimate_quality_score(self, actions: list[Action], state: SharedState) -> float:
+
+        """
+        Estima la calidad del cultivo basada en las acciones y el estado actual.
+        """
+
         score = 0.7
         crop  = state.crop_data
 
@@ -181,12 +192,17 @@ class DeliberativeAgent:
         return max(0.0, min(1.0, score))
 
     def _estimate_production_score(self, actions: list[Action], state: SharedState) -> float:
+
+        """
+        Estima la produccion basada en las acciones y el estado actual.
+        """
+
         score       = 0.75
         alert_types = {a.risk_type for a in state.alerts}
 
         irrigation = self._get_action(actions, "irrigation")
-        fungicide  = self._get_action(actions, "fungicide")
-        harvest    = self._get_action(actions, "harvest_timing")
+        fungicide = self._get_action(actions, "fungicide")
+        harvest = self._get_action(actions, "harvest_timing")
 
         if "future_water_stress" in alert_types or "irrigation_need" in alert_types:
             if irrigation and irrigation.intensity in ("moderate", "intensive"):
@@ -211,32 +227,37 @@ class DeliberativeAgent:
         return max(0.0, min(1.0, score))
 
     def _estimate_sustainability_score(self, actions: list[Action]) -> float:
+
+        """
+        Estima la sostenibilidad basada en las acciones tomadas.
+        """
+
         score = 0.85
 
         irrigation = self._get_action(actions, "irrigation")
         fungicide  = self._get_action(actions, "fungicide")
 
         if irrigation:
-            if irrigation.intensity == "light":
-                score -= 0.03
-            elif irrigation.intensity == "moderate":
-                score -= 0.08
-            elif irrigation.intensity == "intensive":
-                score -= 0.18
+            if irrigation.intensity == "light":       score -= 0.03
+            elif irrigation.intensity == "moderate":  score -= 0.08
+            elif irrigation.intensity == "intensive": score -= 0.18
 
         if fungicide:
-            if fungicide.intensity == "preventive":
-                score -= 0.07
-            elif fungicide.intensity == "curative":
-                score -= 0.12
+            if fungicide.intensity == "preventive": score -= 0.07
+            elif fungicide.intensity == "curative": score -= 0.12
 
         return max(0.0, min(1.0, score))
 
     def _calculate_residual_penalty(self, actions: list[Action], alerts: list) -> float:
-        penalty    = 0.0
+
+        """
+        Calcula una penalizacion basada en las alertas que no se abordan completamente con las acciones tomadas.
+        """
+
+        penalty = 0.0
         irrigation = self._get_action(actions, "irrigation")
-        fungicide  = self._get_action(actions, "fungicide")
-        harvest    = self._get_action(actions, "harvest_timing")
+        fungicide = self._get_action(actions, "fungicide")
+        harvest = self._get_action(actions, "harvest_timing")
 
         for alert in alerts:
             if alert.risk_type in ("future_water_stress", "irrigation_need"):
@@ -263,10 +284,15 @@ class DeliberativeAgent:
         return min(1.0, penalty)
 
     def _action_cost(self, action_type: str, intensity: str) -> float:
+
+        """
+        Devuelve el coste asociado a una acción dada su intensidad.
+        """
+
         cost_map = {
-            "irrigation":        {"none": 0.0, "light": 0.05, "moderate": 0.10, "intensive": 0.20},
-            "fungicide":         {"none": 0.0, "preventive": 0.08, "curative": 0.14},
-            "harvest_timing":    {"normal": 0.0, "early": 0.06, "delayed": 0.05},
+            "irrigation": {"none": 0.0, "light": 0.05, "moderate": 0.10, "intensive": 0.20},
+            "fungicide": {"none": 0.0, "preventive": 0.08, "curative": 0.14},
+            "harvest_timing":  {"normal": 0.0, "early": 0.06, "delayed": 0.05},
             "canopy_management": {"none": 0.0, "light_defoliation": 0.05, "heavy_defoliation": 0.10},
         }
         return cost_map.get(action_type, {}).get(intensity, 0.0)

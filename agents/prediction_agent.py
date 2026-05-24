@@ -5,10 +5,8 @@ from tools.climate_predictions import predict_future_water_stress, predict_irrig
 class PredictionAgent:
 
     def run(self, state: SharedState) -> SharedState:
-        future_water_stress = predict_future_water_stress(state)
-
         state.predictions = Predictions(
-            future_water_stress=future_water_stress,
+            future_water_stress=predict_future_water_stress(state),
             irrigation_need=None,
         )
 

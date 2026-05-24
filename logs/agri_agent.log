@@ -675,3 +675,53 @@ AttributeError: 'ExplanationAgent' object has no attribute 'chroma_retriever'. D
 19:57:13 [INFO] orchestrator — Explicación generada
 19:57:13 [INFO] orchestrator — Plan diario generado en 0.000s
 19:57:13 [INFO] orchestrator — Pipeline completado en 12.568s
+20:49:10 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+20:49:11 [INFO] orchestrator — Observación completada en 1.000s
+20:49:11 [INFO] orchestrator — Inferencia completada en 0.000s
+20:49:11 [INFO] orchestrator — Predicción completada en 0.000s
+20:49:11 [INFO] orchestrator — Riesgos evaluados en 0.000s — 2 alertas generadas
+20:49:11 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+20:49:11 [INFO] orchestrator — Deliberación aprobada (intento 1)
+20:49:20 [INFO] orchestrator — Explicación generada
+20:49:20 [INFO] orchestrator — Plan diario generado en 0.000s
+20:49:20 [INFO] orchestrator — Pipeline completado en 8.998s
+17:32:38 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+17:32:39 [INFO] orchestrator — Observación completada en 1.196s
+17:32:39 [INFO] orchestrator — Inferencia completada en 0.000s
+17:32:39 [INFO] orchestrator — Predicción completada en 0.000s
+17:32:39 [INFO] orchestrator — Riesgos evaluados en 0.000s — 2 alertas generadas
+17:32:39 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+17:32:39 [INFO] orchestrator — Deliberación aprobada (intento 1)
+17:32:47 [INFO] orchestrator — Explicación generada
+17:32:47 [INFO] orchestrator — Plan diario generado en 0.000s
+17:32:47 [INFO] orchestrator — Pipeline completado en 8.050s
+17:51:39 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+17:51:40 [INFO] orchestrator — Observación completada en 1.025s
+17:51:40 [INFO] orchestrator — Inferencia completada en 0.000s
+17:51:40 [INFO] orchestrator — Predicción completada en 0.000s
+17:51:40 [INFO] orchestrator — Riesgos evaluados en 0.000s — 2 alertas generadas
+17:51:40 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+17:51:40 [INFO] orchestrator — Deliberación aprobada (intento 1)
+17:51:51 [INFO] orchestrator — Explicación generada
+17:51:51 [INFO] orchestrator — Plan diario generado en 0.000s
+17:51:51 [INFO] orchestrator — Pipeline completado en 10.638s
+17:59:00 [INFO] web.runner — Objetivo de produccion: produccion — pesos: {'quality': 0.25, 'production': 0.55, 'cost': 0.12, 'sustainability': 0.08}
+17:59:02 [INFO] orchestrator — Observación completada en 1.275s
+17:59:02 [INFO] orchestrator — Inferencia completada en 0.000s
+17:59:02 [INFO] orchestrator — Predicción completada en 0.000s
+17:59:02 [INFO] orchestrator — Riesgos evaluados en 0.000s — 1 alertas generadas
+17:59:02 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+17:59:02 [INFO] orchestrator — Deliberación aprobada (intento 1)
+17:59:10 [INFO] orchestrator — Explicación generada
+17:59:10 [INFO] orchestrator — Plan diario generado en 0.000s
+17:59:10 [INFO] orchestrator — Pipeline completado en 8.178s
+18:13:44 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+18:13:46 [INFO] orchestrator — Observación completada en 1.261s
+18:13:46 [INFO] orchestrator — Inferencia completada en 0.000s
+18:13:46 [INFO] orchestrator — Predicción completada en 0.000s
+18:13:46 [INFO] orchestrator — Riesgos evaluados en 0.000s — 2 alertas generadas
+18:13:46 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+18:13:46 [INFO] orchestrator — Deliberación aprobada (intento 1)
+18:13:55 [INFO] orchestrator — Explicación generada
+18:13:55 [INFO] orchestrator — Plan diario generado en 0.000s
+18:13:55 [INFO] orchestrator — Pipeline completado en 9.025s

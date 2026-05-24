@@ -1,15 +1,15 @@
 {
   "station": "9995Y",
-  "start_date": "2026-05-05",
-  "end_date": "2026-05-10",
+  "start_date": "2026-05-07",
+  "end_date": "2026-05-12",
   "ccaa": "Navarra",
   "selected_variety": "Tempranillo",
   "weather_data": {
     "temperature_max": 22.5,
     "temperature_min": 5.0,
-    "temperature_mean": 13.950000000000001,
-    "precipitation": 16.599999999999998,
-    "humidity": 71.33333333333333,
+    "temperature_mean": 14.583333333333334,
+    "precipitation": 28.599999999999998,
+    "humidity": 71.16666666666667,
     "wind": 2.8,
     "pressure": null,
     "days_count": 6
@@ -29,7 +29,7 @@
     "optimal_precip_mm": 500.0
   },
   "climate_features": {
-    "etc": 1.37,
+    "etc": 1.4,
     "dha": 0,
     "frost_risk": {
       "level": "Moderado",
@@ -46,7 +46,7 @@
     "mildiu_risk": {
       "level": "Moderado",
       "score": 0.5,
-      "value": 71.33333333333333,
+      "value": 71.16666666666667,
       "threshold": 85
     },
     "strong_wind_risk": {
@@ -66,30 +66,30 @@
       "level": {
         "_value_": "medio",
         "_name_": "MEDIUM",
-        "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x000002123E6A07D0>)>, '__module__': 'models.shared_state', '__firstlineno__': 48, '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFD1E004BF0>, '_use_args_': False, '_member_names_': ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], '_member_map_': {'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>}, '_value2member_map_': {'bajo': <RiskLevel.LOW: 'bajo'>, 'medio': <RiskLevel.MEDIUM: 'medio'>, 'alto': <RiskLevel.HIGH: 'alto'>, 'crítico': <RiskLevel.CRITICAL: 'crítico'>}, '_hashable_values_': ['bajo', 'medio', 'alto', 'crítico'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, '__doc__': None, 'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>, '__new__': <function Enum.__new__ at 0x000002123E6A05C0>}",
+        "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x0000021A51DC07D0>)>, '__module__': 'models.shared_state', '__firstlineno__': 48, '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFF6E684BF0>, '_use_args_': False, '_member_names_': ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], '_member_map_': {'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>}, '_value2member_map_': {'bajo': <RiskLevel.LOW: 'bajo'>, 'medio': <RiskLevel.MEDIUM: 'medio'>, 'alto': <RiskLevel.HIGH: 'alto'>, 'crítico': <RiskLevel.CRITICAL: 'crítico'>}, '_hashable_values_': ['bajo', 'medio', 'alto', 'crítico'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, '__doc__': None, 'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>, '__new__': <function Enum.__new__ at 0x0000021A51DC05C0>}",
         "_sort_order_": 1
       },
       "value": 5.0,
       "threshold": 6.0,
       "penalty": 0.5,
       "ccaa": "Navarra",
-      "valid_until": "2026-05-10",
-      "message": "Riesgo de helada medio: temperatura mínima observada 5.0°C frente al umbral del cultivo 6.0°C."
+      "valid_until": "2026-05-12",
+      "message": "Riesgo de helada medio: temperatura minima observada 5.0°C frente al umbral 6.0°C."
     },
     {
       "risk_type": "mildiu_risk",
       "level": {
         "_value_": "medio",
         "_name_": "MEDIUM",
-        "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x000002123E6A07D0>)>, '__module__': 'models.shared_state', '__firstlineno__': 48, '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFD1E004BF0>, '_use_args_': False, '_member_names_': ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], '_member_map_': {'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>}, '_value2member_map_': {'bajo': <RiskLevel.LOW: 'bajo'>, 'medio': <RiskLevel.MEDIUM: 'medio'>, 'alto': <RiskLevel.HIGH: 'alto'>, 'crítico': <RiskLevel.CRITICAL: 'crítico'>}, '_hashable_values_': ['bajo', 'medio', 'alto', 'crítico'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, '__doc__': None, 'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>, '__new__': <function Enum.__new__ at 0x000002123E6A05C0>}",
+        "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x0000021A51DC07D0>)>, '__module__': 'models.shared_state', '__firstlineno__': 48, '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFF6E684BF0>, '_use_args_': False, '_member_names_': ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], '_member_map_': {'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>}, '_value2member_map_': {'bajo': <RiskLevel.LOW: 'bajo'>, 'medio': <RiskLevel.MEDIUM: 'medio'>, 'alto': <RiskLevel.HIGH: 'alto'>, 'crítico': <RiskLevel.CRITICAL: 'crítico'>}, '_hashable_values_': ['bajo', 'medio', 'alto', 'crítico'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, '__doc__': None, 'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>, '__new__': <function Enum.__new__ at 0x0000021A51DC05C0>}",
         "_sort_order_": 1
       },
-      "value": 71.33333333333333,
+      "value": 71.16666666666667,
       "threshold": 85,
       "penalty": 0.5,
       "ccaa": "Navarra",
-      "valid_until": "2026-05-10",
-      "message": "Riesgo de mildiu medio: humedad observada 71.33333333333333 frente al umbral 85."
+      "valid_until": "2026-05-12",
+      "message": "Riesgo de mildiu medio: humedad observada 71.16666666666667% frente al umbral 85%."
     }
   ],
   "scenarios": [
@@ -188,7 +188,7 @@
     }
   ],
   "explanation": {
-    "summary": "En Navarra, el riesgo de helada y mildiu es medio. Recomiendo realizar una ligera irrigación y aplicar un tratamiento fungicida preventivo. Además, considera un deshojado ligero para mejorar la ventilación y reducir la humedad en las hojas.",
+    "summary": "En Navarra, el riesgo de helada y mildiu es medio. Recomiendo realizar riegos ligeros y aplicar fungicidas preventivos para proteger la viña. Además, considera un deshojado suave para mejorar la ventilación y reducir la humedad.",
     "risk_explanation": [
       {
         "type": "frost_risk",
@@ -248,7 +248,7 @@
       {
         "type": "mildiu_risk",
         "level": "medio",
-        "value": 71.33333333333333,
+        "value": 71.16666666666667,
         "threshold": 85,
         "description": "",
         "causes": [
@@ -308,7 +308,7 @@
         ]
       }
     ],
-    "recommendation_reasoning": "La irrigación ligera ayuda a mantener la humedad necesaria sin aumentar el riesgo de mildiu, equilibrando la producción y la sostenibilidad. El tratamiento fungicida preventivo es crucial ante el riesgo medio de mildiu, protegiendo las hojas y racimos durante la floración, lo que asegura una mejor calidad y producción. La cosecha retrasada permite que las uvas alcancen su madurez óptima, mejorando la calidad final del vino, aunque puede incrementar ligeramente el costo. La deshojada ligera mejora la ventilación y reducción de humedad foliar, minimizando el riesgo de mildiu y manteniendo un balance entre producción y sostenibilidad.",
+    "recommendation_reasoning": "La irrigación ligera ayuda a mantener el suelo húmedo pero no saturado, lo que reduce el estrés hídrico sin aumentar el riesgo de enfermedades fúngicas como el mildiu. El tratamiento fungicida preventivo es crucial para proteger la vid durante la floración, cuando las infecciones primarias de mildiu pueden ser más dañinas, asegurando una buena calidad y producción. Retrasar la cosecha permite que los racimos alcancen un mayor grado de maduración, mejorando la calidad del vino, aunque requiere monitoreo constante para evitar daños por heladas tardías. La deshojada ligera mejora la ventilación y reducción de humedad foliar, disminuyendo el riesgo de mildiu y optimizando la relación entre calidad, producción y sostenibilidad.",
     "alternatives": [
       {
         "utility": 0.622,
@@ -331,18 +331,18 @@
     ],
     "sms_text": "AgroVid | Navarra | Alerta: Riesgo helada nivel MEDIO. Accion: riego ligero. Ver detalle: http://localhost:8501ss",
     "sources": [
-      "Hidalgo, L. (2002). Tratado de Viticultura General",
-      "MAPA - Guía GIP Vid",
       "Reynier (2012)",
+      "Hidalgo, L. (2002). Tratado de Viticultura General",
+      "Hidalgo (2002)",
       "MAPA. Guía de gestión integrada de plagas de la vid",
-      "Hidalgo (2002)"
+      "MAPA - Guía GIP Vid"
     ]
   },
   "daily_plan": {
     "irrigation": {
       "base_liters": 6.0,
       "adjusted_liters": 0.0,
-      "adjustment_reason": "base ajustada por ETc (1.4 L/m²); -4.0 L/m² por precipitación (16.6 mm); ×1.30 por tipo de suelo",
+      "adjustment_reason": "base ajustada por ETc (1.4 L/m²); -4.0 L/m² por precipitación (28.6 mm); ×1.30 por tipo de suelo",
       "soil_multiplier": 1.3,
       "assumed_values": []
     },
@@ -350,9 +350,9 @@
       "condition": "óptimo",
       "temp_min": 5.0,
       "temp_max": 22.5,
-      "precipitation": 16.599999999999998,
-      "humidity": 71.33333333333333,
-      "interpretation": "Condiciones térmicas (5.0–22.5 °C) y de humedad (71.33333333333333 %) dentro de rangos favorables para el viñedo."
+      "precipitation": 28.599999999999998,
+      "humidity": 71.16666666666667,
+      "interpretation": "Condiciones térmicas (5.0–22.5 °C) y de humedad (71.16666666666667 %) dentro de rangos favorables para el viñedo."
     },
     "crop_status": {
       "phase": "crecimiento",
@@ -373,7 +373,7 @@
         "action": "El balance hídrico es deficitario. Aumentar frecuencia de riego preventivo."
       }
     ],
-    "explanation": "Plan de manejo para Navarra — 2026-05-05 a 2026-05-10.\n\nClima: Condiciones térmicas (5.0–22.5 °C) y de humedad (71.33333333333333 %) dentro de rangos favorables para el viñedo.\n\nRiego: se recomiendan 0.0 L/m² (base ajustada por ETc (1.4 L/m²); -4.0 L/m² por precipitación (16.6 mm); ×1.30 por tipo de suelo).\n\nCultivo en fase de crecimiento. [Tempranillo] Aplicar tratamientos preventivos si hay humedad alta.\n\nPrevención: Atención prioritaria: Estrés hídrico futuro. Vigilar también: Riesgo de helada.",
+    "explanation": "Plan de manejo para Navarra — 2026-05-07 a 2026-05-12.\n\nClima: Condiciones térmicas (5.0–22.5 °C) y de humedad (71.16666666666667 %) dentro de rangos favorables para el viñedo.\n\nRiego: se recomiendan 0.0 L/m² (base ajustada por ETc (1.4 L/m²); -4.0 L/m² por precipitación (28.6 mm); ×1.30 por tipo de suelo).\n\nCultivo en fase de crecimiento. [Tempranillo] Aplicar tratamientos preventivos si hay humedad alta.\n\nPrevención: Atención prioritaria: Estrés hídrico futuro. Vigilar también: Riesgo de helada.",
     "sms": "AgroVid | Navarra | Riego: 0.0 L/m2 | óptimo | Alerta: Estrés hídrico futuro | http://localhost:8501ss"
   }
 }

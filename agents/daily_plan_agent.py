@@ -44,10 +44,6 @@ CROP_PHASES = {
 
 
 class DailyPlanAgent:
-    """
-    Genera SIEMPRE un plan diario completo de manejo,
-    independientemente de si hay alertas activas.
-    """
 
     def run(self, state: SharedState) -> SharedState:
         weather  = self._extract_weather(state)
@@ -68,15 +64,7 @@ class DailyPlanAgent:
         )
         return state
 
-    # ─────────────────────────────────────────
-    # 1. Extracción y defaults de clima
-    # ─────────────────────────────────────────
-
     def _extract_weather(self, state: SharedState) -> dict:
-        """
-        Lee los datos del estado. Si falta algún campo,
-        asume un valor neutral y lo registra para la explicación.
-        """
         w = state.weather_data
 
         def get(attr, default, label):
@@ -118,9 +106,6 @@ class DailyPlanAgent:
             "assumed":      assumed_list,
         }
 
-    # ─────────────────────────────────────────
-    # 2. Resumen climático
-    # ─────────────────────────────────────────
 
     def _build_climate_summary(self, w: dict) -> ClimateSummary:
         t  = THRESHOLDS
@@ -156,9 +141,6 @@ class DailyPlanAgent:
             interpretation=interp,
         )
 
-    # ─────────────────────────────────────────
-    # 3. Plan de riego
-    # ─────────────────────────────────────────
 
     def _build_irrigation_plan(self, w: dict, state: SharedState) -> IrrigationPlan:
         t       = THRESHOLDS

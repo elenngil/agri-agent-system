@@ -15,7 +15,7 @@ def load_stations():
     try:
         from tools.aemet_stations import get_stations
         df = get_stations()
-        # Formato: "Nombre - Provincia (CODIGO)"
+        
         opciones = {
             row["id"]: f"{row['nombre'].title()} - {row['provincia'].title()} ({row['id']})"
             for _, row in df.iterrows()
@@ -36,7 +36,7 @@ logger = logging.getLogger(__name__)
 
 # ── Configuracion de pagina ──────────────────────────────────────────────────
 st.set_page_config(
-    page_title="AgroVid · Gestion Inteligente del Vinedo",
+    page_title="AgroVid · Gestión Inteligente del Viñedo",
     page_icon="",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -298,11 +298,6 @@ header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
 def _left_panel_html() -> str:
     return """
     <div class="auth-img-panel">
-        <div class="auth-img-overlay">
-            <div class="auth-tagline-img">
-                Gestion inteligente del vinedo con IA Agentica
-            </div>
-        </div>
     </div>
     """
 
@@ -319,14 +314,14 @@ def render_login() -> None:
         st.markdown("<div style='height:20vh'></div>", unsafe_allow_html=True)
         st.markdown("""
         <div class="auth-logo-text">AgroVid</div>
-        <div class="auth-tagline">Gestion inteligente del vinedo con IA Agentica</div>
-        <div class="auth-section-title">Iniciar sesion</div>
+        <div class="auth-tagline">Gestión inteligente del viñedo con inteligencia artificial</div>
+        <div class="auth-section-title">Iniciar sesión</div>
         """, unsafe_allow_html=True)
 
-        st.markdown('<label class="auth-label">Correo electronico</label>', unsafe_allow_html=True)
+        st.markdown('<label class="auth-label">Correo electrónico</label>', unsafe_allow_html=True)
         email = st.text_input("email_h", key="login_email", placeholder="tu@email.com", label_visibility="collapsed")
 
-        st.markdown('<label class="auth-label">Contrasena</label>', unsafe_allow_html=True)
+        st.markdown('<label class="auth-label">Contraseña</label>', unsafe_allow_html=True)
         password = st.text_input("pass_h", type="password", key="login_pass", placeholder="••••••••", label_visibility="collapsed")
 
         if st.button("Iniciar sesion", use_container_width=True, key="btn_login"):
@@ -336,13 +331,13 @@ def render_login() -> None:
                     st.session_state.user = user
                     st.rerun()
                 else:
-                    st.error("Correo o contrasena incorrectos.")
+                    st.error("Correo o contraseña incorrectos.")
             else:
                 st.warning("Completa todos los campos.")
 
         col_c = st.columns([1, 2, 1])
         with col_c[1]:
-            if st.button("Olvidaste tu contrasena?", key="btn_forgot", use_container_width=True):
+            if st.button("Olvidaste tu contraseña?", key="btn_forgot", use_container_width=True):
                 st.session_state.auth_screen = "forgot"
                 st.rerun()
 
@@ -364,22 +359,22 @@ def render_forgot_password() -> None:
         st.markdown("<div style='height:22vh'></div>", unsafe_allow_html=True)
         st.markdown("""
         <div class="auth-logo-text">AgroVid</div>
-        <div class="auth-tagline">Recuperacion de contrasena</div>
+        <div class="auth-tagline">Recuperación de contraseña</div>
         <div class="auth-section-title">Recuperar acceso</div>
         <p style="font-size:0.87rem; color:#6B5E4E; margin-bottom:1.5rem; line-height:1.65;">
-            Introduce tu correo electronico y te enviaremos un enlace
-            para restablecer tu contrasena.
+            Introduce tu correo electrónico y te enviaremos un enlace
+            para restablecer tu contraseña.
         </p>
         """, unsafe_allow_html=True)
 
-        st.markdown('<label class="auth-label">Correo electronico</label>', unsafe_allow_html=True)
+        st.markdown('<label class="auth-label">Correo electrónico</label>', unsafe_allow_html=True)
         forgot_email = st.text_input("forgot_h", key="forgot_email", placeholder="tu@email.com", label_visibility="collapsed")
 
-        if st.button("Enviar enlace de recuperacion", use_container_width=True, key="btn_send_link"):
+        if st.button("Enviar enlace de recuperación", use_container_width=True, key="btn_send_link"):
             if forgot_email and "@" in forgot_email:
                 st.success(f"Si existe una cuenta asociada a {forgot_email}, recibiras el enlace en breve.")
             else:
-                st.error("Introduce un correo electronico valido.")
+                st.error("Introduce un correo electrónico valido.")
 
         st.markdown("<hr class='auth-divider'>", unsafe_allow_html=True)
         if st.button("Volver al inicio de sesion", key="btn_back_login"):
@@ -399,23 +394,23 @@ def render_register() -> None:
         st.markdown("<div style='height:5vh'></div>", unsafe_allow_html=True)
         st.markdown("""
         <div class="auth-logo-text">AgroVid</div>
-        <div class="auth-tagline">Gestion inteligente del vinedo con IA Agentica</div>
+        <div class="auth-tagline">Gestión inteligente del viñedo con inteligencia artificial</div>
         <div class="auth-section-title">Crear nueva cuenta</div>
         """, unsafe_allow_html=True)
 
         st.markdown('<div class="auth-section-label">Datos de acceso</div>', unsafe_allow_html=True)
         c1, c2 = st.columns(2)
         with c1:
-            st.markdown('<label class="auth-label">Correo electronico</label>', unsafe_allow_html=True)
+            st.markdown('<label class="auth-label">Correo electrónico</label>', unsafe_allow_html=True)
             reg_email = st.text_input("reg_email_h", key="reg_email", placeholder="tu@email.com", label_visibility="collapsed")
         with c2:
-            st.markdown('<label class="auth-label">Contrasena</label>', unsafe_allow_html=True)
-            reg_password = st.text_input("reg_pass_h", type="password", key="reg_pass", placeholder="Minimo 8 caracteres", label_visibility="collapsed")
+            st.markdown('<label class="auth-label">Contraseña</label>', unsafe_allow_html=True)
+            reg_password = st.text_input("reg_pass_h", type="password", key="reg_pass", placeholder="mínimo 8 caracteres", label_visibility="collapsed")
 
-        st.markdown('<div class="auth-section-label">Tu vinedo</div>', unsafe_allow_html=True)
+        st.markdown('<div class="auth-section-label">Tu viñedo</div>', unsafe_allow_html=True)
         c3, c4 = st.columns(2)
         with c3:
-            st.markdown('<label class="auth-label">Estacion meteorologica</label>', unsafe_allow_html=True)
+            st.markdown('<label class="auth-label">Estación meteorológica</label>', unsafe_allow_html=True)
             stations = load_stations()
             station_ids = list(stations.keys())
             default_idx = station_ids.index("9995Y") if "9995Y" in station_ids else 0
@@ -426,27 +421,27 @@ def render_register() -> None:
             )
             station = selected_station
             ccaa = get_ccaa_from_station(station)
-            st.caption(f"Region detectada: {ccaa}")
+            st.caption(f"Región detectada: {ccaa}")
             st.markdown('<label class="auth-label">Variedad de uva</label>', unsafe_allow_html=True)
-            variety_opts = ["Usar la predominante de mi region"] + ['Airen', 'AlbarinBlanco', 'Albariño', 'Bobal', 'Garnacha', 'Godello', 'ListanBlancodeCanarias', 'Macabeo', 'MantoNegro', 'Mencia', 'Monastrell', 'Palomino', 'Pardina', 'PedroXimenez', 'Tempranillo', 'Verdejo']
+            variety_opts = ["Usar la predominante de mi región"] + ['Airen', 'AlbarinBlanco', 'Albariño', 'Bobal', 'Garnacha', 'Godello', 'ListanBlancodeCanarias', 'Macabeo', 'MantoNegro', 'Mencia', 'Monastrell', 'Palomino', 'Pardina', 'PedroXimenez', 'Tempranillo', 'Verdejo']
             variety_sel = st.selectbox(
                 "reg_var_h", options=variety_opts,
                 index=0,
                 key="reg_variety", label_visibility="collapsed"
             )
-            variety = "" if variety_sel == "Usar la predominante de mi region" else variety_sel
-            if variety_sel == "Usar la predominante de mi region":
-                st.caption("Se usara la variedad predominante de tu region")
+            variety = "" if variety_sel == "Usar la predominante de mi región" else variety_sel
+            if variety_sel == "Usar la predominante de mi región":
+                st.caption("Se usara la variedad predominante de tu región")
         with c4:
             st.markdown('<label class="auth-label">Tipo de suelo</label>', unsafe_allow_html=True)
-            soil_type_opts = ["Usar el predominante de mi region"] + ['arenoso', 'franco', 'arcilloso', 'pizarra', 'volcanico', 'granitico', 'aluvial', 'calizo']
+            soil_type_opts = ["Usar el predominante de mi región"] + ['arenoso', 'franco', 'arcilloso', 'pizarra', 'volcanico', 'granitico', 'aluvial', 'calizo']
             soil_sel = st.selectbox("reg_soil_h", key="reg_soil",
                                      options=soil_type_opts,
                                      format_func=lambda x: x.capitalize(),
                                      label_visibility="collapsed")
-            soil_type = "" if soil_sel == "Usar el predominante de mi region" else soil_sel
-            if soil_sel == "Usar el predominante de mi region":
-                st.caption("Se usara el suelo predominante de la variedad seleccionada")
+            soil_type = "" if soil_sel == "Usar el predominante de mi región" else soil_sel
+            if soil_sel == "Usar el predominante de mi región":
+                st.caption("Se usará el suelo predominante de la variedad seleccionada")
             st.markdown('<label class="auth-label">Objetivo de produccion</label>', unsafe_allow_html=True)
             objective = st.selectbox("reg_obj_h", key="reg_obj",
                                      options=["equilibrio", "produccion", "calidad"],
@@ -467,10 +462,10 @@ def render_register() -> None:
                 else:
                     st.error(msg)
             else:
-                st.warning("El correo y la contrasena son obligatorios.")
+                st.warning("El correo y la contraseña son obligatorios.")
 
         st.markdown("<hr class='auth-divider'>", unsafe_allow_html=True)
-        if st.button("Volver al inicio de sesion", key="btn_back_from_register"):
+        if st.button("Volver al inicio de sesión", key="btn_back_from_register"):
             st.session_state.auth_screen = "login"
             st.rerun()
 
@@ -495,11 +490,11 @@ def maybe_run_default_analysis(user: dict) -> None:
     try:
         from web.runner import run_analysis, save_analysis
     except Exception as e:
-        st.error("No se pudo cargar el motor de analisis.")
+        st.error("No se pudo cargar el motor de análisis.")
         logger.error("Error importando runner: %s", e)
         return
 
-    with st.spinner("Analizando tu vinedo..."):
+    with st.spinner("Analizando tu viñedo..."):
         try:
             result = run_analysis(
                 station=user["station"],
@@ -513,10 +508,10 @@ def maybe_run_default_analysis(user: dict) -> None:
             st.session_state.analysis_result = result
             save_analysis(user["id"], result)
         except Exception as e:
-            logger.error("Error en analisis inicial: %s", e)
+            logger.error("Error en análisis inicial: %s", e)
             st.error(
-                "No se pudieron obtener datos meteorologicos para el periodo seleccionado. "
-                "Prueba a ajustar las fechas en la pestana Configuracion."
+                "No se pudieron obtener datos meteorológicos para el periodo seleccionado. "
+                "Prueba a ajustar las fechas en la pestaña Configuración."
             )
             st.stop()
 
@@ -552,7 +547,7 @@ def tab_principal(result: dict) -> None:
 
     st.markdown("<div class='divider-vid'></div>", unsafe_allow_html=True)
 
-    st.markdown("#### Estado del vinedo")
+    st.markdown("#### Estado del viñedo")
     priority_map = {
         "critico": ("alerta-critica", "Critico"),
         "alto":    ("alerta-critica", "Alto"),
@@ -598,16 +593,16 @@ def tab_principal(result: dict) -> None:
 
     st.markdown("<div class='divider-vid'></div>", unsafe_allow_html=True)
 
-    st.markdown("#### Analisis recientes")
+    st.markdown("#### Análisis recientes")
     try:
         from web.runner import get_last_analyses
         rows = get_last_analyses(st.session_state.user["id"], limit=5)
     except Exception as e:
-        logger.error("Error cargando historico: %s", e)
-        st.error("No se pudo cargar el historico.")
+        logger.error("Error cargando histórico: %s", e)
+        st.error("No se pudo cargar el histórico.")
         return
     if not rows:
-        st.caption("Aun no hay analisis guardados.")
+        st.caption("Aun no hay análisis guardados.")
         return
     for row in rows:
         st.markdown(f"""
@@ -648,7 +643,7 @@ def tab_riesgos(result: dict) -> None:
         """, unsafe_allow_html=True)
         return
 
-    st.markdown(f"**{len(risks)} riesgo(s) detectado(s)** en el periodo de analisis.")
+    st.markdown(f"**{len(risks)} riesgo(s) detectado(s)** en el periodo de análisis.")
 
     for risk in risks:
         level = risk.get("level", "bajo")
@@ -738,7 +733,7 @@ def tab_plan_diario(result: dict) -> None:
             plan_text
         )
 
-    st.markdown("#### Plan de actuacion recomendado")
+    st.markdown("#### Plan de actuación recomendado")
     if plan_text:
         secciones = plan_text.split("\n\n")
         for seccion in secciones:
@@ -755,7 +750,7 @@ def tab_plan_diario(result: dict) -> None:
 
     if reasoning:
         st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
-        with st.expander("Justificacion de la recomendacion"):
+        with st.expander("Justificación de la recomendación"):
             st.markdown(f"""
             <div style="line-height:1.8; font-size:0.93rem; color:#2C2416;">
                 {reasoning}
@@ -771,9 +766,9 @@ def tab_audio(result: dict) -> None:
     col_left, col_right = st.columns([3, 2])
 
     with col_left:
-        st.markdown("#### Escuchar recomendacion")
+        st.markdown("#### Escuchar recomendación")
         texto_audio = st.radio(
-            "Que quieres escuchar?",
+            "¿Que quieres escuchar?",
             options=["Resumen ejecutivo", "Texto SMS"],
             horizontal=True,
         )
@@ -817,7 +812,7 @@ def tab_audio(result: dict) -> None:
 
 # ── Tab 5: Configuracion ──────────────────────────────────────────────────────
 def tab_configuracion(user: dict) -> dict:
-    st.markdown("#### Configuracion del analisis")
+    st.markdown("#### Configuración del análisis")
 
     today         = date.today()
     default_end   = today - timedelta(days=5)
@@ -826,7 +821,7 @@ def tab_configuracion(user: dict) -> dict:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.markdown("**Localizacion y cultivo**")
+        st.markdown("**Localización y cultivo**")
         stations = load_stations()
         station_ids = list(stations.keys())
         current_station = user.get("station", "9995Y")
@@ -836,18 +831,18 @@ def tab_configuracion(user: dict) -> dict:
             format_func=lambda x: stations.get(x, x),
         )
         ccaa = get_ccaa_from_station(station)
-        st.caption(f"Region detectada: {ccaa}")
-        var_opts = ["Usar la predominante de mi region"] + ['Airen', 'AlbarinBlanco', 'Albariño', 'Bobal', 'Garnacha', 'Godello', 'ListanBlancodeCanarias', 'Macabeo', 'MantoNegro', 'Mencia', 'Monastrell', 'Palomino', 'Pardina', 'PedroXimenez', 'Tempranillo', 'Verdejo']
+        st.caption(f"Región detectada: {ccaa}")
+        var_opts = ["Usar la predominante de mi región"] + ['Airen', 'AlbarinBlanco', 'Albariño', 'Bobal', 'Garnacha', 'Godello', 'ListanBlancodeCanarias', 'Macabeo', 'MantoNegro', 'Mencia', 'Monastrell', 'Palomino', 'Pardina', 'PedroXimenez', 'Tempranillo', 'Verdejo']
         current_var = user.get("variety", "")
         var_idx = var_opts.index(current_var) if current_var in var_opts else 0
         variety_sel_cfg = st.selectbox("Variedad de uva", options=var_opts, index=var_idx)
-        variety = "" if variety_sel_cfg == "Usar la predominante de mi region" else variety_sel_cfg
-        if variety_sel_cfg == "Usar la predominante de mi region":
-            st.caption("Se usara la variedad predominante de tu region")
+        variety = "" if variety_sel_cfg == "Usar la predominante de mi región" else variety_sel_cfg
+        if variety_sel_cfg == "Usar la predominante de mi región":
+            st.caption("Se usara la variedad predominante de tu región")
 
     with col2:
-        st.markdown("**Caracteristicas del vinedo**")
-        soil_opts_cfg = ["Usar el predominante de mi region"] + ['arenoso', 'franco', 'arcilloso', 'pizarra', 'volcanico', 'granitico', 'aluvial', 'calizo']
+        st.markdown("**Características del viñedo**")
+        soil_opts_cfg = ["Usar el predominante de mi región"] + ['arenoso', 'franco', 'arcilloso', 'pizarra', 'volcanico', 'granitico', 'aluvial', 'calizo']
         current_soil = user.get("soil_type", "")
         soil_idx = soil_opts_cfg.index(current_soil) if current_soil in soil_opts_cfg else 0
         soil_sel_cfg = st.selectbox(
@@ -855,9 +850,9 @@ def tab_configuracion(user: dict) -> dict:
             index=soil_idx,
             format_func=lambda x: x.capitalize()
         )
-        soil_type = "" if soil_sel_cfg == "Usar el predominante de mi region" else soil_sel_cfg
-        if soil_sel_cfg == "Usar el predominante de mi region":
-            st.caption("Se usara el suelo predominante de la variedad seleccionada")
+        soil_type = "" if soil_sel_cfg == "Usar el predominante de mi región" else soil_sel_cfg
+        if soil_sel_cfg == "Usar el predominante de mi región":
+            st.caption("Se usará el suelo predominante de la variedad seleccionada")
         obj_opts  = ["equilibrio", "produccion", "calidad"]
         objective = st.selectbox(
             "Objetivo de produccion", options=obj_opts,
@@ -870,7 +865,7 @@ def tab_configuracion(user: dict) -> dict:
             "Equilibrio: balance entre ambos."
         )
 
-    st.markdown("**Periodo de analisis**")
+    st.markdown("**Periodo de análisis**")
     col_d1, col_d2 = st.columns(2)
     with col_d1:
         start_date = st.date_input("Fecha de inicio", value=default_start)
@@ -881,7 +876,7 @@ def tab_configuracion(user: dict) -> dict:
     col_save, col_recalc, _ = st.columns([1, 1, 2])
 
     save_prefs = col_save.button("Guardar preferencias",  use_container_width=True)
-    recalc     = col_recalc.button("Recalcular analisis", use_container_width=True, type="primary")
+    recalc     = col_recalc.button("Recalcular análisis", use_container_width=True, type="primary")
 
     if save_prefs:
         update_user_preferences(
@@ -894,24 +889,24 @@ def tab_configuracion(user: dict) -> dict:
             "objective": objective,
         }
         st.session_state.analysis_result = None
-        st.success("Preferencias guardadas. El analisis se recalculara automaticamente.")
+        st.success("Preferencias guardadas. El análisis se recalculará automaticamente.")
         st.rerun()
 
     st.markdown("<div class='divider-vid'></div>", unsafe_allow_html=True)
-    st.markdown("#### Informacion de la cuenta")
+    st.markdown("#### Información de la cuenta")
     st.markdown(f"""
     <div style="background:#F5F0E8; border-radius:10px; padding:1rem 1.2rem;
                 border: 1px solid #E8E2D9;">
         <div style="font-size:0.9rem; color:#6B5E4E;">
             <strong>Email:</strong> {user.get('email','—')}<br>
-            <strong>Region:</strong> {user.get('ccaa','—')}<br>
+            <strong>Región:</strong> {user.get('ccaa','—')}<br>
             <strong>Variedad:</strong> {user.get('variety','—')}<br>
             <strong>Objetivo:</strong> {user.get('objective','equilibrio').capitalize()}
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    if st.button("Cerrar sesion", use_container_width=False):
+    if st.button("Cerrar sesión", use_container_width=False):
         st.session_state.user = None
         st.session_state.analysis_result = None
         st.rerun()
@@ -949,19 +944,19 @@ def main() -> None:
     ])
 
     with t1:
-        tab_principal(result) if result else st.info("Calculando el analisis inicial...")
+        tab_principal(result) if result else st.info("Calculando el análisis inicial...")
     with t2:
-        tab_riesgos(result)   if result else st.info("El analisis aun no esta disponible.")
+        tab_riesgos(result)   if result else st.info("El análisis aun no esta disponible.")
     with t3:
-        tab_plan_diario(result) if result else st.info("El analisis aun no esta disponible.")
+        tab_plan_diario(result) if result else st.info("El análisis aun no esta disponible.")
     with t4:
-        tab_audio(result)     if result else st.info("El analisis aun no esta disponible.")
+        tab_audio(result)     if result else st.info("El análisis aun no esta disponible.")
     with t5:
         prefs = tab_configuracion(user)
         if prefs["recalc"]:
             try:
                 from web.runner import run_analysis, save_analysis
-                with st.spinner("Recalculando analisis..."):
+                with st.spinner("Recalculando análisis..."):
                     new_result = run_analysis(
                         station=prefs["station"], ccaa=prefs["ccaa"],
                         variety=prefs["variety"],
@@ -971,13 +966,13 @@ def main() -> None:
                     )
                     st.session_state.analysis_result = new_result
                     save_analysis(user["id"], new_result)
-                    st.success("Analisis actualizado.")
+                    st.success("Análisis actualizado.")
                     st.rerun()
             except Exception as e:
-                logger.error("Error al recalcular analisis: %s", e)
+                logger.error("Error al recalcular análisis: %s", e)
                 st.error(
-                    "No se pudo completar el analisis. "
-                    "Verifica la estacion AEMET y el periodo de fechas."
+                    "No se pudo completar el análisis. "
+                    "Verifica la estación AEMET y el periodo de fechas."
                 )
 
 

@@ -5,13 +5,10 @@ from tools.crop_data import get_crop_data, get_variety_from_ccaa
 
 
 class ObservationAgent:
-    """Recopila datos de clima, suelo y cultivo y los guarda en el SharedState."""
-
+    
     def run(self, state: SharedState) -> SharedState:
 
-        # ── Datos meteorológicos ──────────────────────────────────────────────
         weather_raw = get_climate_summary(state.station, state.start_date, state.end_date)
-
         state.weather_data = (
             WeatherData(
                 temperature_max=weather_raw["temperature_max"],
@@ -26,6 +23,7 @@ class ObservationAgent:
             if weather_raw else None
         )
 
+
         soil_type = getattr(state, "soil_type", None)
         if soil_type:
             state.soil_multiplier = get_soil_multiplier(soil_type)
@@ -33,12 +31,11 @@ class ObservationAgent:
             soil = get_soil_from_ccaa(state.station)
             state.soil_multiplier = get_soil_multiplier(soil)
 
+
         variety = getattr(state, "selected_variety", None)
         if not variety:
             variety = get_variety_from_ccaa(state.station)
-
         crop_raw = get_crop_data(variety)
-
         state.crop_data = (
             CropData(
                 variety=crop_raw["variety"],

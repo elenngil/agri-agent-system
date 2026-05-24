@@ -144,6 +144,9 @@ INSTRUCCIONES:
     # ── Explicacion de riesgos ────────────────────────────────────────────────
 
     def _explain_risks(self, alerts, graph_contexts) -> list:
+        '''
+        
+        '''
         result = []
         for alert in alerts[:3]:
             ctx = graph_contexts.get(alert.risk_type)
@@ -162,9 +165,7 @@ INSTRUCCIONES:
             result.append(entry)
         return result
 
-    # ── SMS ───────────────────────────────────────────────────────────────────
 
-    # Traducciones para el SMS
     TRADUCCION_SMS = {
         "irrigation": "riego", "fungicide": "fungicida",
         "harvest_timing": "vendimia", "canopy_management": "deshojado",
