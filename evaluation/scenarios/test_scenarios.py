@@ -1,36 +1,5 @@
-"""
-test_scenarios.py
------------------
-15 escenarios de prueba con ground truth definido manualmente.
-
-Cada escenario representa una situación agroclimática real
-con las alertas esperadas y las acciones mínimas que el sistema
-debe recomendar para considerarse correcto.
-
-Se usan fechas históricas de 2024 para garantizar reproducibilidad
-total con la API de AEMET (datos ya disponibles y estables).
-
-Estructura de cada escenario:
-  - name:              descripción legible del caso
-  - station/ccaa:      localización real
-  - start/end_date:    periodo histórico con datos AEMET disponibles
-  - weather_override:  si no es None, sustituye los datos de AEMET
-                       por datos sintéticos controlados (para tests
-                       sin dependencia de la API)
-  - expected_alerts:   lista de risk_type que deben aparecer
-  - expected_actions:  lista de (type, intensity_min) donde
-                       intensity_min != "none"
-  - should_critic_approve: True si el crítico debe aprobar
-  - notes:             justificación agronómica del ground truth
-"""
-
 from datetime import date
 from models.shared_state import WeatherData, CropData
-
-# ── Cultivo de referencia ─────────────────────────────────────────────────────
-# Tempranillo — variedad más representativa de la viticultura española.
-# Usamos el mismo perfil en todos los escenarios para aislar
-# el efecto de las variables climáticas.
 
 TEMPRANILLO = CropData(
     variety="Tempranillo",
@@ -45,11 +14,9 @@ TEMPRANILLO = CropData(
     optimal_precip_mm=400.0,
 )
 
-# ── Escenarios ────────────────────────────────────────────────────────────────
 
 SCENARIOS = [
 
-    # ── GRUPO 1: Sin alertas (condiciones normales) ───────────────────────────
     {
         "id": "S01",
         "name": "Condiciones óptimas en La Rioja — verano suave",
@@ -63,8 +30,8 @@ SCENARIOS = [
             days_count=5
         ),
         "crop": TEMPRANILLO,
-        "expected_alerts": [],            # Sin alertas en condiciones ideales
-        "expected_actions": [],           # Sin acciones urgentes
+        "expected_alerts": [],            
+        "expected_actions": [],           
         "should_critic_approve": True,
         "notes": "Temperatura, humedad y precipitación dentro de rangos óptimos. "
                  "El sistema no debe generar alertas ni acciones urgentes."
@@ -108,7 +75,6 @@ SCENARIOS = [
                  "no deben generarse alertas críticas."
     },
 
-    # ── GRUPO 2: Riesgo de mildiu ─────────────────────────────────────────────
     {
         "id": "S04",
         "name": "Mildiu alto en floración — Galicia húmeda",
@@ -169,7 +135,6 @@ SCENARIOS = [
                 "puede no incluir fungicida — comportamiento correcto del sistema."
     },
 
-    # ── GRUPO 3: Estrés hídrico ───────────────────────────────────────────────
     {
         "id": "S07",
         "name": "Estrés hídrico moderado — verano seco La Rioja",
@@ -231,7 +196,6 @@ SCENARIOS = [
                  "a riego ligero o ninguno."
     },
 
-    # ── GRUPO 4: Riesgo de helada ─────────────────────────────────────────────
     {
         "id": "S10",
         "name": "Helada tardía en brotación — Castilla y León",
@@ -273,7 +237,6 @@ SCENARIOS = [
                  "como alerta de helada aunque sea leve."
     },
 
-    # ── GRUPO 5: Múltiples alertas simultáneas ────────────────────────────────
     {
         "id": "S12",
         "name": "Mildiu + estrés hídrico simultáneos — primavera tardía",

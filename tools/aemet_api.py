@@ -6,15 +6,9 @@ load_dotenv()
 BASE = "https://opendata.aemet.es/opendata/api"
 
 class AemetError(Exception):
-    """
-    Error específico de AEMET.
-    """
     pass
 
 def aemet_get(endpoint: str, params: dict | None = None, timeout: int = 30):
-    """
-    Realiza una solicitud a la API de AEMET y devuelve los datos JSON.
-    """
     api_key = os.getenv("AEMET_API_KEY")
     if not api_key:
         raise AemetError("AEMET_API_KEY no configurada en .env")

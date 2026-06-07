@@ -2,13 +2,6 @@ from models.shared_state import SharedState
 
 def predict_future_water_stress(state: SharedState) -> str:
 
-    """
-    Estima el estrés hídrico futuro.
-
-    Returns:
-        "Alto" | "Moderado" | "Bajo" | "Desconocido"
-    """
-
     cf  = state.climate_features
     wd  = state.weather_data
     sm  = state.soil_multiplier
@@ -38,13 +31,7 @@ def predict_future_water_stress(state: SharedState) -> str:
 
 
 def predict_irrigation_need(state: SharedState) -> str | None:
-    """
-    Estima la necesidad de riego combinando el estrés hídrico futuro
-    con los indicadores climáticos actuales.
 
-    Returns:
-        "Alta" | "Media" | "Baja" | None
-    """
     cf   = state.climate_features
     wd   = state.weather_data
     sm   = state.soil_multiplier

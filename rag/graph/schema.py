@@ -1,7 +1,5 @@
 from enum import Enum
 from dataclasses import dataclass
-from typing import Optional
-
 
 class NodeType(Enum):
     VARIABLE_CLIMATICA = "variable_climatica"
@@ -33,7 +31,6 @@ class RelationType(Enum):
     SE_DETECTA_POR = "se_detecta_por"
 
 
-# ✅ CLAVE (esto es lo importante)
 CAUSE_RELATIONS = {
     RelationType.CAUSA.value,
     RelationType.PROVOCA.value,

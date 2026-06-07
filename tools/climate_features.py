@@ -5,36 +5,27 @@ from models.shared_state import WeatherData, CropData
 
 def get_kc(month: int) -> float:
 
-    """
-    La función calcula el coeficiente del cultivo base (Kc), es decir, cuánta agua necesita el cultivo según la fase fenológica.
-    Se aproximan los valores a los encontrados en el documento oficial de la FAO 56, ajústandolos a las condiciones climaticas de España.
-    """
-
-    if month in [12, 1, 2]: # Reposo vegetativo: vid dormida, no hay hojas ni crecimiento activo
+    if month in [12, 1, 2]:
         return 0.30
 
-    elif month in [3, 4]: # Brotación: comienzan a salir las hojas
+    elif month in [3, 4]: 
         return 0.45
 
-    elif month in [5, 6]: # Crecimiento vegetativo / floración: los brotes se desarrollan, las hojas crecen y se forman las flores
+    elif month in [5, 6]: 
         return 0.75
 
-    elif month in [7, 8]: # Envero y maduración: momento en el que las uvas cambian de color, se llenan y maduran
+    elif month in [7, 8]: 
         return 0.65
 
-    elif month == 9: # Vendimia: recolección de las uvas, el crecimiento se detiene y el consumo de agua disminuye
+    elif month == 9: 
         return 0.55
 
-    else:  # 10, 11 Senescencia: las hojas amarillean y caen, el crecimiento se detiene y el consumo de agua es mínimo
+    else: 
         return 0.40
 
 
 def calculate_etc(weather_data: WeatherData, start_date: datetime) -> float:
 
-    """
-    La función calcula la evapotranspiración del cultivo (ETc) que es la cantidad de agua que una planta transpira durante un período determinado.
-    Para ello, se utiliza la fórmula simplificada de Hargreaves-Samani.
-    """
 
     tmin = weather_data.temperature_min
     tmax = weather_data.temperature_max
@@ -57,10 +48,6 @@ def calculate_etc(weather_data: WeatherData, start_date: datetime) -> float:
 
 def calculate_dha(weather_data: WeatherData, start_date: datetime) -> float:
 
-    """
-    La función calcula el deficit hídrico acumulado (dha) que es la diferencia entre lo que la vid necesita y lo que ha recibido de la lluvia.
-    """
-
     etc = calculate_etc(weather_data, start_date)
     precipitation = weather_data.precipitation
 
@@ -70,16 +57,6 @@ def calculate_dha(weather_data: WeatherData, start_date: datetime) -> float:
 # Indicadores de riesgo (consumidos por el RiskAgent)
 
 def calculate_frost_risk(weather_data: WeatherData, crop_data: CropData) -> dict:
-    """
-    La función calcula el riesgo de helada para un cultivo específico.
-    Para ello se tiene en cuenta la diferencia entre la temperatura mínima registrada y la temperatura mínima óptima para esa variedad de vid.
-
-    Devuelve un diccionario con:
-    - level: clasificación del riesgo (Nulo, Bajo, Moderado o Alto)
-    - score: puntuación numérica del riesgo
-    - value: valor de la temperatura mínima registrada
-    - threshold: la línea que no debería cruzarse (en este caso, la temperatura mínima óptima para el cultivo)
-    """
 
     tmin = weather_data.temperature_min
     optimal_tmin = crop_data.optimal_temp_min
@@ -115,9 +92,6 @@ def calculate_frost_risk(weather_data: WeatherData, crop_data: CropData) -> dict
 
 def calculate_mildiu_risk(weather_data: WeatherData) -> dict:
 
-    """
-    Evalúa el riesgo de mildiu a partir de humedad y precipitación.
-    """
     humidity = weather_data.humidity
     precipitation = weather_data.precipitation
 
@@ -145,10 +119,6 @@ def calculate_mildiu_risk(weather_data: WeatherData) -> dict:
 
 
 def calculate_heat_stress(weather_data: WeatherData, crop_data: CropData) -> dict:
-
-    """
-    Evalúa el riesgo de estrés térmico a partir de la temperatura máxima registrada y la temperatura máxima óptima para el cultivo.
-    """
     
     tmax = weather_data.temperature_max
     optimal_temp_max = crop_data.optimal_temp_max
@@ -177,9 +147,7 @@ def calculate_heat_stress(weather_data: WeatherData, crop_data: CropData) -> dic
 
 
 def strong_wind_risk(weather_data: WeatherData) -> dict:
-    """
-    Evalúa el riesgo de viento fuerte para el cultivo.
-    """
+
     wind_speed = weather_data.wind
 
     if wind_speed is None:

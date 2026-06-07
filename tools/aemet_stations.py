@@ -4,11 +4,6 @@ from functools import lru_cache
 
 @lru_cache(maxsize=1)
 def get_stations():
-
-    """
-    Descarga el inventario de estaciones de AEMET y lo devuelve como un DataFrame.
-    """
-
     data = aemet_get("valores/climatologicos/inventarioestaciones/todasestaciones")
     df = pd.DataFrame(data)[["indicativo", "nombre", "provincia"]]
     df = df.rename(columns={"indicativo": "id"})
@@ -16,11 +11,6 @@ def get_stations():
 
 
 def station_to_ccaa(station: str):
-
-    """
-    Dada una estación de AEMET, devuelve la comunidad autónoma a la que pertenece.
-    Se utiliza cuando el usuario no específica el tipo de suelo o la variedad de uva y se necesita inferir la comunidad autónoma a partir de la estación meteorológica.
-    """
 
     data = get_stations()
     row = data[data["id"] == station]

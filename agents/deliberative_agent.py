@@ -4,11 +4,7 @@ import random
 
 
 class DeliberativeAgent:
-
-    """
-    Genera escenarios de actuacion, calcula utilidad y selecciona los mejores.
-    """
-
+    
     ACTION_SPACE = {
         "irrigation": ["none", "light", "moderate", "intensive"],
         "fungicide": ["none", "preventive", "curative"],
@@ -62,19 +58,13 @@ class DeliberativeAgent:
         return state
 
     def _get_mildiu_level(self, state: SharedState) -> RiskLevel | None:
-        """
-        Devuelve el RiskLevel de mildiu activo o None si no hay alerta.
-        """
+
         for alert in state.alerts:
             if alert.risk_type == "mildiu_risk":
                 return alert.level if isinstance(alert.level, RiskLevel) else None
         return None
 
     def _generate_relevant_scenarios(self, state: SharedState) -> list[list[Action]]:
-
-        """
-        Genera escenarios relevantes basados en las alertas activas, los indicadores climaticos y las predicciones.
-        """
 
         relevant_actions = {}
         alert_types = {a.risk_type for a in state.alerts}
@@ -132,10 +122,6 @@ class DeliberativeAgent:
 
     def _calculate_utility(self, actions: list[Action], state: SharedState) -> tuple[float, dict]:
 
-        """
-        Calcula la utilidad de un escenario.
-        """
-
         breakdown = {}
 
         breakdown["quality"] = self._estimate_quality_score(actions, state)
@@ -158,10 +144,6 @@ class DeliberativeAgent:
         return max(0.0, min(1.0, utility)), breakdown
 
     def _estimate_quality_score(self, actions: list[Action], state: SharedState) -> float:
-
-        """
-        Estima la calidad del cultivo basada en las acciones y el estado actual.
-        """
 
         score = 0.7
         crop  = state.crop_data
@@ -193,10 +175,6 @@ class DeliberativeAgent:
 
     def _estimate_production_score(self, actions: list[Action], state: SharedState) -> float:
 
-        """
-        Estima la produccion basada en las acciones y el estado actual.
-        """
-
         score       = 0.75
         alert_types = {a.risk_type for a in state.alerts}
 
@@ -227,11 +205,6 @@ class DeliberativeAgent:
         return max(0.0, min(1.0, score))
 
     def _estimate_sustainability_score(self, actions: list[Action]) -> float:
-
-        """
-        Estima la sostenibilidad basada en las acciones tomadas.
-        """
-
         score = 0.85
 
         irrigation = self._get_action(actions, "irrigation")
@@ -249,11 +222,6 @@ class DeliberativeAgent:
         return max(0.0, min(1.0, score))
 
     def _calculate_residual_penalty(self, actions: list[Action], alerts: list) -> float:
-
-        """
-        Calcula una penalizacion basada en las alertas que no se abordan completamente con las acciones tomadas.
-        """
-
         penalty = 0.0
         irrigation = self._get_action(actions, "irrigation")
         fungicide = self._get_action(actions, "fungicide")

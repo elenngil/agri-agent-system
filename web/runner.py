@@ -5,7 +5,6 @@ import logging
 
 import json
 from datetime import date
-from pathlib import Path
 from typing import Any
 
 from dotenv import load_dotenv
@@ -21,7 +20,6 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 
-# Pesos de la funcion de utilidad segun objetivo del usuario
 OBJECTIVE_WEIGHTS = {
     "calidad": {
         "quality":        0.55,
@@ -80,7 +78,6 @@ def run_analysis(
     soil_type: str | None = None,
 ) -> dict[str, Any]:
 
-    # Seleccionar pesos segun el objetivo del usuario
     weights = OBJECTIVE_WEIGHTS.get(objective, OBJECTIVE_WEIGHTS["equilibrio"])
     logger.info("Objetivo de produccion: %s — pesos: %s", objective, weights)
 

@@ -11,7 +11,6 @@ from web.db import init_db
 
 @st.cache_data(show_spinner=False)
 def load_stations():
-    """Carga todas las estaciones AEMET y las devuelve como lista de opciones."""
     try:
         from tools.aemet_stations import get_stations
         df = get_stations()
@@ -25,7 +24,6 @@ def load_stations():
         return {"9995Y": "Pamplona / Noain - Navarra (9995Y)"}
 
 def get_ccaa_from_station(station_id: str) -> str:
-    """Devuelve la CCAA a partir del código de estación."""
     try:
         from tools.aemet_stations import station_to_ccaa
         return station_to_ccaa(station_id) or "Desconocida"
@@ -34,7 +32,6 @@ def get_ccaa_from_station(station_id: str) -> str:
 
 logger = logging.getLogger(__name__)
 
-# ── Configuracion de pagina ──────────────────────────────────────────────────
 st.set_page_config(
     page_title="AgroVid · Gestión Inteligente del Viñedo",
     page_icon="",
@@ -42,7 +39,6 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ── CSS global ───────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
@@ -220,14 +216,12 @@ h1, h2, h3 {
 """, unsafe_allow_html=True)
 
 
-# ── Estado de sesion ─────────────────────────────────────────────────────────
 def init_session() -> None:
     if "user"            not in st.session_state: st.session_state.user            = None
     if "analysis_result" not in st.session_state: st.session_state.analysis_result = None
     if "auth_screen"     not in st.session_state: st.session_state.auth_screen     = "login"
 
 
-# ── CSS auth ──────────────────────────────────────────────────────────────────
 AUTH_CSS = """
 <style>
 header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
@@ -302,7 +296,6 @@ def _left_panel_html() -> str:
     """
 
 
-# ── Login ─────────────────────────────────────────────────────────────────────
 def render_login() -> None:
     st.markdown(AUTH_CSS, unsafe_allow_html=True)
     col_img, col_form = st.columns([1, 1], gap="small")
@@ -347,7 +340,6 @@ def render_login() -> None:
             st.rerun()
 
 
-# ── Olvide contrasena ─────────────────────────────────────────────────────────
 def render_forgot_password() -> None:
     st.markdown(AUTH_CSS, unsafe_allow_html=True)
     col_img, col_form = st.columns([1, 1], gap="small")
@@ -382,7 +374,6 @@ def render_forgot_password() -> None:
             st.rerun()
 
 
-# ── Registro ──────────────────────────────────────────────────────────────────
 def render_register() -> None:
     st.markdown(AUTH_CSS, unsafe_allow_html=True)
     col_img, col_form = st.columns([1, 1], gap="small")
@@ -479,7 +470,6 @@ def render_auth() -> None:
     elif screen == "register":  render_register()
 
 
-# ── Analisis inicial automatico ──────────────────────────────────────────────
 def maybe_run_default_analysis(user: dict) -> None:
     if st.session_state.analysis_result is not None:
         return
@@ -516,7 +506,6 @@ def maybe_run_default_analysis(user: dict) -> None:
             st.stop()
 
 
-# ── Header ────────────────────────────────────────────────────────────────────
 def render_header(result: dict) -> None:
     meta = result.get("meta", {})
     obj  = meta.get("objective", "equilibrio").capitalize()
@@ -534,7 +523,6 @@ def render_header(result: dict) -> None:
     """, unsafe_allow_html=True)
 
 
-# ── Tab 1: Inicio ─────────────────────────────────────────────────────────────
 def tab_principal(result: dict) -> None:
     summary  = result.get("summary", "Sin resumen disponible.")
     risks    = result.get("risk_explanation", [])
@@ -625,7 +613,6 @@ def tab_principal(result: dict) -> None:
         """, unsafe_allow_html=True)
 
 
-# ── Tab 2: Riesgos ────────────────────────────────────────────────────────────
 def tab_riesgos(result: dict) -> None:
     risks = result.get("risk_explanation", [])
     priority_map = {
@@ -720,7 +707,6 @@ def tab_riesgos(result: dict) -> None:
                         st.markdown(f"- {texto.capitalize()}")
 
 
-# ── Tab 3: Plan diario ────────────────────────────────────────────────────────
 def tab_plan_diario(result: dict) -> None:
     import re
     plan_text = result.get("daily_plan_text", "")
@@ -758,7 +744,6 @@ def tab_plan_diario(result: dict) -> None:
             """, unsafe_allow_html=True)
 
 
-# ── Tab 4: Audio ──────────────────────────────────────────────────────────────
 def tab_audio(result: dict) -> None:
     summary  = result.get("summary", "")
     sms_text = result.get("sms_text", "")
@@ -810,7 +795,6 @@ def tab_audio(result: dict) -> None:
         """, unsafe_allow_html=True)
 
 
-# ── Tab 5: Configuracion ──────────────────────────────────────────────────────
 def tab_configuracion(user: dict) -> dict:
     st.markdown("#### Configuración del análisis")
 
@@ -919,7 +903,6 @@ def tab_configuracion(user: dict) -> dict:
     }
 
 
-# ── Main ──────────────────────────────────────────────────────────────────────
 def main() -> None:
     init_db()
     init_session()

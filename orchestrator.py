@@ -15,10 +15,6 @@ from output.writer import OutputWriter
 logger = logging.getLogger(__name__)
 
 class Orchestrator:
-    """
-    Supervisor que decide qué agentes ejecutar y en qué orden
-    según el estado del sistema. No es un pipeline fijo.
-    """
 
     def __init__(self, model, deliberative_weights: dict | None = None):
         self.observation   = ObservationAgent()
@@ -32,7 +28,6 @@ class Orchestrator:
         self.critic        = CriticAgent()
 
     def run(self, state: SharedState) -> SharedState:
-        # ── Fase 1: siempre se ejecuta ──────────────────────────
 
         t0 = time.perf_counter()
         state = self.observation.run(state)
@@ -54,7 +49,6 @@ class Orchestrator:
         state = self.risk.run(state)
         logger.info("Riesgos evaluados en %.3fs — %d alertas generadas", time.perf_counter() - t0, len(state.alerts))
 
-        # ── Fase 2: routing según nivel de riesgo ───────────────
         t_total = time.perf_counter()
 
         critical_alerts = [
@@ -69,7 +63,6 @@ class Orchestrator:
             logger.info("Sin alertas críticas — ruta estándar")
             state = self._run_standard_path(state)
 
-        # ── Fase 3: plan diario siempre ─────────────────────────
         t0 = time.perf_counter()
         state = self.daily_plan.run(state)
         logger.info("Plan diario generado en %.3fs", time.perf_counter() - t0)
@@ -84,23 +77,18 @@ class Orchestrator:
         Ruta cuando hay alertas críticas.
         Prioriza explicación inmediata sin deliberación completa.
         """
-        # Deliberación rápida con top_n reducido
         state = self.deliberative.run(state, top_n=1)
         logger.info("Deliberación rápida completada")
 
-        # Explicación directa sin pasar por crítico
-        # (en alertas críticas queremos velocidad)
         state = self.explanation.run(state)
         logger.info("Explicación urgente generada")
 
         return state
-
     def _run_standard_path(self, state: SharedState) -> SharedState:
         """
         Ruta estándar: deliberación completa + crítico + explicación.
         """
         
-        # El crítico verifica que la recomendación tiene sentido
         MAX_RETRIES = 2
         excluded: list[str] = []
         for attempt in range(MAX_RETRIES):
@@ -112,7 +100,6 @@ class Orchestrator:
             excluded = critique.get("problematic_actions", [])
             logger.warning("Intento %d rechazado: %s", attempt + 1, critique["reason"])
         else:
-            # Se agotaron los reintentos — acepta el último resultado con aviso
             logger.error("Crítico no aprobó tras %d intentos — usando último resultado", MAX_RETRIES)
 
         state = self.explanation.run(state)

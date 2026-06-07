@@ -1,14 +1,3 @@
-"""
-Construye el grafo de conocimiento agrícola.
-
-Este módulo puede:
-1. Construir el grafo desde definiciones explícitas (recomendado para TFG)
-2. Extraer relaciones de documentos markdown (más complejo)
-
-Para un TFG, la opción 1 es más defendible porque tienes control total
-sobre las relaciones y puedes citar fuentes específicas.
-"""
-
 import json
 import networkx as nx
 from pathlib import Path
@@ -17,7 +6,6 @@ from .schema import Node, Relation, NodeType, RelationType
 
 
 class KnowledgeGraphBuilder:
-    """Construye y gestiona el grafo de conocimiento."""
     
     def __init__(self):
         self.graph = nx.DiGraph()
@@ -25,7 +13,6 @@ class KnowledgeGraphBuilder:
         self.relations: List[Relation] = []
     
     def add_node(self, node: Node) -> None:
-        """Añade un nodo al grafo."""
         self.nodes[node.id] = node
         self.graph.add_node(
             node.id,
@@ -36,7 +23,6 @@ class KnowledgeGraphBuilder:
         )
     
     def add_relation(self, relation: Relation) -> None:
-        """Añade una relación al grafo."""
         if relation.source_id not in self.nodes:
             raise ValueError(f"Nodo origen '{relation.source_id}' no existe")
         if relation.target_id not in self.nodes:
@@ -53,7 +39,6 @@ class KnowledgeGraphBuilder:
         )
     
     def save(self, filepath: str | Path) -> None:
-        """Guarda el grafo en formato JSON."""
         data = {
             "nodes": [n.to_dict() for n in self.nodes.values()],
             "relations": [r.to_dict() for r in self.relations]
@@ -62,7 +47,6 @@ class KnowledgeGraphBuilder:
             json.dump(data, f, ensure_ascii=False, indent=2)
     
     def load(self, filepath: str | Path) -> None:
-        """Carga el grafo desde JSON."""
         with open(filepath, "r", encoding="utf-8") as f:
             data = json.load(f)
         
@@ -78,25 +62,8 @@ class KnowledgeGraphBuilder:
 
 
 def build_viticulture_graph() -> KnowledgeGraphBuilder:
-    """
-    Construye el grafo de conocimiento vitícola.
-    
-    Las relaciones están basadas en conocimiento agronómico estándar.
-    Cada relación incluye su fuente para justificación académica.
-    
-    Fuentes principales:
-    - FAO: Organización de las Naciones Unidas para la Alimentación
-    - MAPA: Ministerio de Agricultura, Pesca y Alimentación de España
-    - OIV: Organización Internacional de la Viña y el Vino
-    - Hidalgo (2002): Tratado de Viticultura General
-    - Reynier (2012): Manual de Viticultura
-    """
     
     builder = KnowledgeGraphBuilder()
-    
-    # ══════════════════════════════════════════════════════════════
-    # NODOS: Variables Climáticas
-    # ══════════════════════════════════════════════════════════════
     
     variables_climaticas = [
         Node(
@@ -145,11 +112,7 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
     
     for node in variables_climaticas:
         builder.add_node(node)
-    
-    # ══════════════════════════════════════════════════════════════
-    # NODOS: Riesgos
-    # ══════════════════════════════════════════════════════════════
-    
+
     riesgos = [
         Node(
             id="helada",
@@ -177,10 +140,6 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
     for node in riesgos:
         builder.add_node(node)
     
-    # ══════════════════════════════════════════════════════════════
-    # NODOS: Enfermedades
-    # ══════════════════════════════════════════════════════════════
-    
     enfermedades = [
         Node(
             id="mildiu",
@@ -207,10 +166,6 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
     
     for node in enfermedades:
         builder.add_node(node)
-    
-    # ══════════════════════════════════════════════════════════════
-    # NODOS: Componentes de la Vid
-    # ══════════════════════════════════════════════════════════════
     
     componentes = [
         Node(
@@ -259,11 +214,7 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
     
     for node in componentes:
         builder.add_node(node)
-    
-    # ══════════════════════════════════════════════════════════════
-    # NODOS: Fases Fenológicas
-    # ══════════════════════════════════════════════════════════════
-    
+
     fases = [
         Node(
             id="brotacion",
@@ -297,11 +248,7 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
     
     for node in fases:
         builder.add_node(node)
-    
-    # ══════════════════════════════════════════════════════════════
-    # NODOS: Acciones
-    # ══════════════════════════════════════════════════════════════
-    
+
     acciones = [
         Node(
             id="riego",
@@ -357,10 +304,6 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
     for node in acciones:
         builder.add_node(node)
     
-    # ══════════════════════════════════════════════════════════════
-    # RELACIONES: Clima → Riesgos
-    # ══════════════════════════════════════════════════════════════
-    
     relaciones_clima_riesgo = [
         Relation(
             source_id="temperatura_bajo_cero",
@@ -413,12 +356,7 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
     for rel in relaciones_clima_riesgo:
         builder.add_relation(rel)
     
-    # ══════════════════════════════════════════════════════════════
-    # RELACIONES: Riesgos → Efectos en la Vid
-    # ══════════════════════════════════════════════════════════════
-    
     relaciones_riesgo_efecto = [
-        # Helada
         Relation(
             source_id="helada",
             target_id="brotes",
@@ -435,7 +373,6 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
             source="Hidalgo (2002)"
         ),
         
-        # Estrés térmico
         Relation(
             source_id="estres_termico",
             target_id="hojas",
@@ -452,8 +389,7 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
             condition="Pérdida de acidez y aromas",
             source="Keller (2015)"
         ),
-        
-        # Estrés hídrico
+
         Relation(
             source_id="estres_hidrico",
             target_id="vigor",
@@ -478,7 +414,6 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
             source="FAO (2006)"
         ),
         
-        # Mildiu
         Relation(
             source_id="mildiu",
             target_id="hojas",
@@ -507,10 +442,7 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
     for rel in relaciones_riesgo_efecto:
         builder.add_relation(rel)
     
-    # ══════════════════════════════════════════════════════════════
-    # RELACIONES: Vulnerabilidad por Fase Fenológica
-    # ══════════════════════════════════════════════════════════════
-    
+
     relaciones_vulnerabilidad = [
         Relation(
             source_id="brotes",
@@ -556,13 +488,8 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
     
     for rel in relaciones_vulnerabilidad:
         builder.add_relation(rel)
-    
-    # ══════════════════════════════════════════════════════════════
-    # RELACIONES: Acciones → Mitigación de Riesgos
-    # ══════════════════════════════════════════════════════════════
-    
+
     relaciones_mitigacion = [
-        # Contra helada
         Relation(
             source_id="proteccion_heladas",
             target_id="helada",
@@ -572,7 +499,6 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
             source="Hidalgo (2002)"
         ),
         
-        # Contra estrés hídrico
         Relation(
             source_id="riego",
             target_id="estres_hidrico",
@@ -597,7 +523,6 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
             source="Keller (2015)"
         ),
         
-        # Contra mildiu
         Relation(
             source_id="tratamiento_fungicida",
             target_id="mildiu",
@@ -615,7 +540,6 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
             source="Reynier (2012)"
         ),
         
-        # Contra botrytis
         Relation(
             source_id="deshojado",
             target_id="botrytis",
@@ -633,7 +557,6 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
             source="Reynier (2012)"
         ),
         
-        # Contra estrés térmico
         Relation(
             source_id="riego",
             target_id="estres_termico",
@@ -651,7 +574,6 @@ def build_viticulture_graph() -> KnowledgeGraphBuilder:
 
 
 def main():
-    """Construye y guarda el grafo de conocimiento."""
     print("Construyendo grafo de conocimiento vitícola...")
     
     builder = build_viticulture_graph()
@@ -663,7 +585,6 @@ def main():
     print(f"  - Nodos: {len(builder.nodes)}")
     print(f"  - Relaciones: {len(builder.relations)}")
     
-    # Mostrar resumen por tipo
     from collections import Counter
     node_types = Counter(n.type.value for n in builder.nodes.values())
     rel_types = Counter(r.type.value for r in builder.relations)

@@ -1,10 +1,6 @@
 import pandas as pd
 from tools.aemet_stations import station_to_ccaa
 
-""" 
-Los multiplicadores de riego se han establecido en función de la capacidad de retención de agua de cada tipo de suelo. 
-Los valores se han basado en la revisión de documentos bibliográficos y estudios agronómicos.
-"""
 
 MULTIPLIERS = {
     "arenoso":   1.3,
@@ -18,10 +14,7 @@ MULTIPLIERS = {
 }
 
 def get_soil_from_ccaa(station: str) -> str:
-    """
-    Devuelve el tipo de suelo predominante de la región asociada a la estación meteorológica.
-    Se utiliza cuando el usuario no específica el tipo de suelo (valor por defecto).
-    """
+
     ccaa      = station_to_ccaa(station)
     grape_df  = pd.read_csv("data/ccaa_grape.csv",     index_col="ccaa")
     soil_df   = pd.read_csv("data/grape_profiles.csv", index_col="grape_variety")
@@ -31,8 +24,5 @@ def get_soil_from_ccaa(station: str) -> str:
 
 
 def get_soil_multiplier(soil_type: str) -> float:
-    """
-    Devuelve el multiplicador de riego para un tipo de suelo.
-    Si el tipo no está en el catálogo, devuelve 1.0 (franco por defecto).
-    """
+
     return MULTIPLIERS.get(soil_type.strip().lower(), 1.0)

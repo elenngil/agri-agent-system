@@ -29,7 +29,6 @@ class ExplanationAgent:
         state.explanation = explanation
         return state
 
-    # ── Helpers ───────────────────────────────────────────────────────────────
 
     def _level_to_text(self, level) -> str:
         return level.value if isinstance(level, RiskLevel) else str(level)
@@ -50,7 +49,6 @@ class ExplanationAgent:
         except Exception:
             return fallback
 
-    # ── Resumen ejecutivo ─────────────────────────────────────────────────────
 
     def _generate_summary(self, scenarios, alerts, graph_contexts, ccaa) -> str:
         graph_info = "\n\n".join(
@@ -87,8 +85,6 @@ INSTRUCCIONES:
 - Maximo 3 frases."""
 
         return self._call_llm(prompt, f"En {ccaa}, se recomienda revisar las condiciones del cultivo.")
-
-    # ── Justificacion de la recomendacion ────────────────────────────────────
 
     def _explain_recommendations(self, scenarios, alerts, graph_contexts, ccaa) -> str:
         if not scenarios:
@@ -141,7 +137,6 @@ INSTRUCCIONES:
             "La recomendacion ha sido seleccionada por maximizar la utilidad agronómica considerando los riesgos activos."
         )
 
-    # ── Explicacion de riesgos ────────────────────────────────────────────────
 
     def _explain_risks(self, alerts, graph_contexts) -> list:
         '''
@@ -211,7 +206,6 @@ INSTRUCCIONES:
         candidate = f"{base} Ver detalle: {dashboard_url}"
         return candidate if len(candidate) <= 160 else base[:157 - len(dashboard_url)] + f"... {dashboard_url}"
 
-    # ── Alternativas ──────────────────────────────────────────────────────────
 
     def _explain_alternatives(self, alternatives) -> list:
         result = []
@@ -227,8 +221,6 @@ INSTRUCCIONES:
                 "tradeoff": f"Alternativa {i+2} con utilidad {scenario.utility:.2f}.",
             })
         return result
-
-    # ── Fuentes ───────────────────────────────────────────────────────────────
 
     def _collect_sources(self, graph_contexts) -> list:
         sources = set()

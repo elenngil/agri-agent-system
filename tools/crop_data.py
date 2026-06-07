@@ -4,10 +4,6 @@ from tools.aemet_stations import station_to_ccaa
 
 def get_variety_from_ccaa(station: str) -> str:
 
-    """
-    Devuelve la variedad predominante de la región asociada a la estación meteorológica en el caso de que el usuario no la especifique (valor por defecto).
-    """
-
     ccaa  = station_to_ccaa(station)
     crops = pd.read_csv("data/ccaa_grape.csv", index_col="ccaa")
     return crops.loc[ccaa, "grape"]
@@ -15,9 +11,6 @@ def get_variety_from_ccaa(station: str) -> str:
 
 def get_crop_data(variety: str) -> dict:
 
-    """
-    Devuelve el perfil agronómico de una variedad concreta.
-    """
     
     crop_df = pd.read_csv("data/grape_profiles.csv", index_col="grape_variety")
 

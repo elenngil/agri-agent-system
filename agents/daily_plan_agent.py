@@ -10,23 +10,19 @@ from models.shared_state import (
 )
 
 
-# ─────────────────────────────────────────
-# Umbrales del sistema
-# ─────────────────────────────────────────
 THRESHOLDS = {
-    "heat_stress_temp":   32.0,   # °C — por encima → estrés térmico
-    "cold_stress_temp":   10.0,   # °C máx — por debajo → frío
-    "frost_risk_temp":     2.0,   # °C mín — por debajo → riesgo helada
-    "rain_threshold":     10.0,   # mm — por encima → reducir riego
-    "humidity_high":      80.0,   # % — por encima → riesgo mildiu
-    "humidity_low":       30.0,   # % — por debajo → estrés hídrico
-    "base_irrigation":    6.0,    # L/m² base diaria
-    "heat_bonus":         3.0,    # L/m² extra si hace calor
-    "cold_reduction":     2.0,    # L/m² menos si hace frío
-    "rain_reduction":     4.0,    # L/m² menos si ha llovido
+    "heat_stress_temp":   32.0,   
+    "cold_stress_temp":   10.0,   
+    "frost_risk_temp":     2.0,   
+    "rain_threshold":     10.0,   
+    "humidity_high":      80.0,   
+    "humidity_low":       30.0,   
+    "base_irrigation":    6.0,    
+    "heat_bonus":         3.0,    
+    "cold_reduction":     2.0,    
+    "rain_reduction":     4.0,    
 }
 
-# Fases del cultivo por mes (estimación simple sin datos fenológicos)
 CROP_PHASES = {
     1:  ("reposo",      "Evitar intervenciones. Proteger ante heladas."),
     2:  ("reposo",      "Preparar suelo y material vegetal para la campaña."),
@@ -67,7 +63,7 @@ class DailyPlanAgent:
     def _extract_weather(self, state: SharedState) -> dict:
         w = state.weather_data
 
-        def get(attr, default, label):
+        def get(attr, default):
             val = getattr(w, attr, None) if w else None
             if val is None:
                 return default, True
@@ -146,33 +142,28 @@ class DailyPlanAgent:
         t       = THRESHOLDS
         base    = t["base_irrigation"]
         reasons = []
-        assumed = list(w["assumed"])  # copia para no mutar
+        assumed = list(w["assumed"])
 
         adjusted = base
 
-        # Si hay ETc disponible, úsalo como base más precisa
         if w["etc"] is not None:
             adjusted = w["etc"]
             reasons.append(f"base ajustada por ETc ({w['etc']:.1f} L/m²)")
         else:
             reasons.append(f"base estándar de {base} L/m²")
 
-        # Calor → más riego
         if w["temp_max"] >= t["heat_stress_temp"]:
             adjusted += t["heat_bonus"]
             reasons.append(f"+{t['heat_bonus']} L/m² por calor extremo (>{t['heat_stress_temp']} °C)")
 
-        # Frío → menos riego
         elif w["temp_max"] <= t["cold_stress_temp"]:
             adjusted -= t["cold_reduction"]
             reasons.append(f"-{t['cold_reduction']} L/m² por temperatura baja (<{t['cold_stress_temp']} °C)")
 
-        # Lluvia → reducir riego
         if w["precipitation"] >= t["rain_threshold"]:
             adjusted -= t["rain_reduction"]
             reasons.append(f"-{t['rain_reduction']} L/m² por precipitación ({w['precipitation']:.1f} mm)")
 
-        # Aplicar soil_multiplier
         soil_mult = w["soil_mult"]
         if soil_mult != 1.0:
             adjusted *= soil_mult
@@ -188,18 +179,12 @@ class DailyPlanAgent:
             assumed_values=assumed,
         )
 
-    # ─────────────────────────────────────────
-    # 4. Estado del cultivo
-    # ─────────────────────────────────────────
-
     def _build_crop_status(self, state: SharedState) -> CropStatus:
-        # Intentar leer mes del periodo analizado
         month = None
         assumed = False
 
         if state.start_date:
             try:
-                # Acepta tanto datetime como string "YYYY-MM-DD"
                 if hasattr(state.start_date, "month"):
                     month = state.start_date.month
                 else:
@@ -213,7 +198,6 @@ class DailyPlanAgent:
 
         phase, recommendation = CROP_PHASES.get(month, ("desconocida", "Sin datos de fase disponibles."))
 
-        # Enriquecer si hay datos de cultivo
         if state.crop_data:
             variety = getattr(state.crop_data, "variety", None)
             if variety:
@@ -225,15 +209,11 @@ class DailyPlanAgent:
             assumed=assumed,
         )
 
-    # ─────────────────────────────────────────
-    # 5. Prevención proactiva
-    # ─────────────────────────────────────────
 
     def _build_prevention(self, w: dict, state: SharedState) -> list[PreventionItem]:
         items = []
         t = THRESHOLDS
 
-        # ── Riesgo helada futuro ──
         if w["temp_min"] <= t["frost_risk_temp"] + 3:
             items.append(PreventionItem(
                 risk="frost_risk",
@@ -242,7 +222,6 @@ class DailyPlanAgent:
                 action="Activar sistemas antihelada o protección de brotes si temperatura baja de 2 °C.",
             ))
 
-        # ── Estrés hídrico futuro ──
         if w["etc"] is not None and w["dha"] is not None and w["dha"] < w["etc"] * 0.6:
             items.append(PreventionItem(
                 risk="future_water_stress",
@@ -258,7 +237,6 @@ class DailyPlanAgent:
                 action="Humedad baja. Monitorizar tensión de suelo y anticipar riego.",
             ))
 
-        # ── Riesgo mildiu ──
         if w["humidity"] >= t["humidity_high"] and w["temp_max"] >= 15:
             items.append(PreventionItem(
                 risk="mildiu_risk",
@@ -267,7 +245,6 @@ class DailyPlanAgent:
                 action="Condiciones óptimas para mildiu. Revisar cobertura fungicida (cobre o sistémico).",
             ))
 
-        # ── Estrés térmico ──
         if w["temp_max"] >= t["heat_stress_temp"]:
             items.append(PreventionItem(
                 risk="heat_stress",
@@ -276,7 +253,6 @@ class DailyPlanAgent:
                 action="Evitar intervenciones agresivas (poda verde, tratamientos) en horas de máximo calor.",
             ))
 
-        # ── Alerta genérica si no hay nada ──
         if not items:
             items.append(PreventionItem(
                 risk="none",
@@ -287,9 +263,6 @@ class DailyPlanAgent:
 
         return items
 
-    # ─────────────────────────────────────────
-    # 6. Explicación en lenguaje natural
-    # ─────────────────────────────────────────
 
     def _build_explanation(
         self,

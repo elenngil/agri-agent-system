@@ -1,14 +1,3 @@
-"""
-run_pipeline.py
----------------
-Ejecuta el pipeline completo sobre los 15 escenarios de prueba
-con N seeds distintas y guarda los resultados en CSV.
-
-Uso:
-    python -m evaluation.runners.run_pipeline --skip-llm
-    python -m evaluation.runners.run_pipeline --seeds 3
-"""
-
 import csv
 import time
 import argparse
@@ -36,11 +25,6 @@ SEEDS = [42, 123, 456, 789, 1337]
 
 
 def build_state_from_scenario(scenario: dict) -> SharedState:
-    """
-    Construye un SharedState con weather_data, crop_data y soil_multiplier.
-    NO ejecuta InferenceAgent ni PredictionAgent aqui - eso lo hace run_agents()
-    con medicion de latencia.
-    """
     state = SharedState(
         station=scenario["station"],
         start_date=scenario["start_date"],
@@ -60,10 +44,6 @@ def build_state_from_scenario(scenario: dict) -> SharedState:
 
 
 def run_agents(state: SharedState, skip_llm: bool = False) -> tuple[dict, SharedState]:
-    """
-    Ejecuta todos los agentes en orden, midiendo latencia.
-    Los errores se acumulan pero no abortan el pipeline.
-    """
     tiempos = {}
     errores = []
 
@@ -76,7 +56,6 @@ def run_agents(state: SharedState, skip_llm: bool = False) -> tuple[dict, Shared
         print(f"\n    WARN InferenceAgent: {e}")
     tiempos["inference"] = round(time.perf_counter() - t0, 3)
 
-    # 2. PredictionAgent — faltaba este, causaba ValueError en DeliberativeAgent
     t0 = time.perf_counter()
     try:
         state = PredictionAgent().run(state)
@@ -85,7 +64,6 @@ def run_agents(state: SharedState, skip_llm: bool = False) -> tuple[dict, Shared
         print(f"\n    WARN PredictionAgent: {e}")
     tiempos["prediction"] = round(time.perf_counter() - t0, 3)
 
-    # 3. RiskAgent
     t0 = time.perf_counter()
     try:
         state = RiskAgent().run(state)
@@ -94,13 +72,11 @@ def run_agents(state: SharedState, skip_llm: bool = False) -> tuple[dict, Shared
         print(f"\n    WARN RiskAgent: {e}")
     tiempos["risk"] = round(time.perf_counter() - t0, 3)
 
-    # Routing
     critical = [a for a in state.alerts
                 if a.level in (RiskLevel.HIGH, RiskLevel.CRITICAL)]
     ruta  = "urgente" if critical else "estandar"
     top_n = 1 if ruta == "urgente" else 3
 
-    # 4. DeliberativeAgent
     t0 = time.perf_counter()
     try:
         state = DeliberativeAgent().run(state, top_n=top_n)
@@ -109,7 +85,6 @@ def run_agents(state: SharedState, skip_llm: bool = False) -> tuple[dict, Shared
         print(f"\n    WARN DeliberativeAgent: {e}")
     tiempos["deliberative"] = round(time.perf_counter() - t0, 3)
 
-    # 5. CriticAgent (solo ruta estandar y si hay escenarios)
     critic_rechazos = 0
     tiempos["critic"] = 0.0
     if ruta == "estandar" and state.scenarios:
@@ -130,7 +105,6 @@ def run_agents(state: SharedState, skip_llm: bool = False) -> tuple[dict, Shared
             print(f"\n    WARN CriticAgent: {e}")
         tiempos["critic"] = round(time.perf_counter() - t0, 3)
 
-    # 6. ExplanationAgent (opcional)
     tiempos["explanation"] = 0.0
     if not skip_llm:
         try:
@@ -150,7 +124,6 @@ def run_agents(state: SharedState, skip_llm: bool = False) -> tuple[dict, Shared
             errores.append(f"ExplanationAgent: {e}")
             print(f"\n    WARN ExplanationAgent: {e}")
 
-    # 7. DailyPlanAgent
     t0 = time.perf_counter()
     try:
         state = DailyPlanAgent().run(state)

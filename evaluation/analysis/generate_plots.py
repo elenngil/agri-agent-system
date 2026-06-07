@@ -1,13 +1,3 @@
-"""
-generate_plots.py
------------------
-Genera los 5 graficos del TFG a partir de los CSV de resultados.
-Paleta tierra: verdes oliva, marrones, ocres y crema.
-
-Uso:
-    python evaluation/analysis/generate_plots.py
-"""
-
 import sys
 from pathlib import Path
 
@@ -24,7 +14,6 @@ RESULTS_DIR = Path(__file__).parent.parent / "results"
 OUTPUT_DIR  = Path(__file__).parent.parent / "outputs"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
-# Paleta tierra
 VERDE_OSCURO = "#3B6011"
 VERDE_MEDIO  = "#5A7830"
 TIERRA       = "#8B5E3C"
@@ -197,22 +186,18 @@ def plot_ablation_table():
     tabla.set_fontsize(9.5)
     tabla.scale(1.0, 1.9)
 
-    # Cabecera
     for j in range(len(df_res.columns)):
         tabla[0, j].set_facecolor(VERDE_OSCURO)
         tabla[0, j].set_text_props(color="white", fontweight="bold")
 
-    # Fila referencia (completo) en crema
     for j in range(len(df_res.columns)):
         tabla[1, j].set_facecolor("#E8DFC0")
 
-    # Filas con violaciones en marron claro
     for i, row in enumerate(resumen):
         if row["Violaciones"] > 0:
             for j in range(len(df_res.columns)):
                 tabla[i + 1, j].set_facecolor("#F5D5C0")
 
-    # Filas con GT Pass < 80% en amarillo claro
     for i, row in enumerate(resumen):
         if row["GT Pass (%)"] < 80 and row["Violaciones"] == 0 and i > 0:
             for j in range(len(df_res.columns)):

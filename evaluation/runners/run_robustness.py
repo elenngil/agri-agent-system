@@ -1,22 +1,3 @@
-"""
-run_robustness.py
------------------
-Análisis de robustez del DeliberativeAgent mediante el parámetro temperature.
-
-Qué hace:
-  Ejecuta el DeliberativeAgent 100 veces sobre el mismo escenario
-  con distintos niveles de ruido gaussiano (temperature) y mide
-  si la recomendación final cambia o se mantiene estable.
-
-Por qué importa:
-  Un sistema robusto debe producir la misma recomendación aunque
-  los scores internos varíen ligeramente. Si una pequeña perturbación
-  cambia la recomendación, el sistema es frágil.
-
-Uso:
-    python evaluation/runners/run_robustness.py
-"""
-
 import csv
 import random
 import statistics
@@ -37,8 +18,6 @@ from evaluation.runners.run_pipeline import build_state_from_scenario
 RESULTS_DIR = Path(__file__).parent.parent / "results"
 RESULTS_DIR.mkdir(exist_ok=True)
 
-# Escenarios representativos para el análisis de robustez
-# (uno por grupo: normal, mildiu, hídrico, helada, múltiple)
 ROBUSTNESS_SCENARIOS = ["S01", "S04", "S07", "S10", "S12"]
 
 TEMPERATURES = [0.0, 0.03, 0.05, 0.10]
@@ -65,13 +44,10 @@ def run_robustness_analysis() -> None:
             acciones_top = []
 
             for i in range(N_ITERATIONS):
-                # Fijar seed para reproducibilidad de cada iteración
                 random.seed(i * 1000 + int(temp * 1000))
 
-                # Crear agente con temperatura configurada
                 agent = DeliberativeAgent(temperature=temp)
 
-                # Copia superficial del estado (no modificamos el base)
                 import copy
                 state_copy = copy.deepcopy(state_base)
 
@@ -83,7 +59,6 @@ def run_robustness_analysis() -> None:
 
                 if state_copy.scenarios:
                     utilidades.append(state_copy.scenarios[0].utility)
-                    # Guardamos la acción de mayor peso del mejor escenario
                     best_action = max(
                         state_copy.scenarios[0].actions,
                         key=lambda a: a.cost,
@@ -98,8 +73,6 @@ def run_robustness_analysis() -> None:
                 minimo = min(utilidades)
                 maximo = max(utilidades)
 
-                # Tasa de cambio de recomendación:
-                # cuántas veces la acción top es distinta a la moda
                 if acciones_top:
                     from collections import Counter
                     moda = Counter(acciones_top).most_common(1)[0][0]

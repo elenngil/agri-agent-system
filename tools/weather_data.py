@@ -3,8 +3,6 @@ from tools.aemet_api import aemet_get
 
 
 def to_float(x):
-
-    '''Convierte un valor a float'''
     
     if x is None:
         return None
@@ -20,18 +18,7 @@ def to_float(x):
 
 
 def get_climate_summary(station: str, start_date: date, end_date: date) -> dict:
-    """
-    Obtiene un resumen climático para una estación meteorológica en un rango de fechas.
 
-    Args:
-        station: ID de la estación meteorológica.
-        start_date: Fecha inicial del rango.
-        end_date: Fecha final del rango.
-
-    Returns:
-        Un diccionario con temperatura máxima, mínima y media, precipitación acumulada,
-        humedad media, viento máximo y presión, o None si no hay datos disponibles.
-    """
     start = start_date.strftime("%Y-%m-%dT00:00:00UTC")
     end = end_date.strftime("%Y-%m-%dT23:59:59UTC")
 

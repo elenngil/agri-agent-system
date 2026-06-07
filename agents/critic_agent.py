@@ -62,7 +62,6 @@ class CriticAgent:
                         "rule_id":             rule["id"],
                     }
             except Exception:
-                # Si la regla falla por datos incompletos no bloqueamos
                 continue
 
         return {

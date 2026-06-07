@@ -1,9 +1,3 @@
-"""
-rag_metrics.py
---------------
-Evalua el sistema Graph RAG del ExplanationAgent.
-"""
-
 import sys
 from pathlib import Path
 

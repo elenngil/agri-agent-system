@@ -1,10 +1,3 @@
-"""
-Módulo de consultas al grafo de conocimiento.
-
-Proporciona funciones para extraer información estructurada
-dado un riesgo, variable climática o consulta general.
-"""
-
 import json
 import networkx as nx
 from pathlib import Path
@@ -21,28 +14,17 @@ from .schema import (
 
 @dataclass
 class GraphContext:
-    """Contexto estructurado extraído del grafo."""
     risk_id: str
     risk_label: str
     risk_description: str
     
-    # Qué lo causa
     causes: List[dict]
-    
-    # Qué efectos tiene
     effects: List[dict]
-    
-    # En qué fases es más peligroso
     vulnerable_phases: List[dict]
-    
-    # Qué acciones lo mitigan
     mitigations: List[dict]
-    
-    # Fuentes bibliográficas
     sources: List[str]
     
     def to_prompt_context(self) -> str:
-        """Convierte el contexto a texto para usar en prompts de LLM."""
         lines = [f"## Información sobre: {self.risk_label}\n"]
         
         if self.risk_description:
@@ -82,7 +64,6 @@ class GraphContext:
 
 
 class GraphRetriever:
-    """Recupera información del grafo de conocimiento."""
     
     def __init__(self, graph_path: Optional[str | Path] = None):
         if graph_path is None:
@@ -110,17 +91,6 @@ class GraphRetriever:
             )
     
     def get_context_for_risk(self, risk_key: str) -> Optional[GraphContext]:
-        """
-        Obtiene contexto completo para un riesgo del sistema.
-        
-        Args:
-            risk_key: Clave del riesgo como viene del RiskAgent
-                     (ej: "frost_risk", "mildiu_risk")
-        
-        Returns:
-            GraphContext con toda la información relacionada
-        """
-        # Mapear clave del sistema a nodo del grafo
         node_id = RISK_TO_NODE_MAPPING.get(risk_key)
         if not node_id or node_id not in self.graph:
             return None
@@ -131,7 +101,6 @@ class GraphRetriever:
         if node_data.get("source"):
             sources.append(node_data["source"])
         
-        # Obtener causas (qué apunta hacia este riesgo)
         causes = []
         for predecessor in self.graph.predecessors(node_id):
             edge = self.graph.edges[predecessor, node_id]
@@ -148,7 +117,6 @@ class GraphRetriever:
                 if edge.get("source_ref"):
                     sources.append(edge["source_ref"])
         
-        # Obtener efectos (hacia dónde apunta este riesgo)
         effects = []
         for successor in self.graph.successors(node_id):
             edge = self.graph.edges[node_id, successor]
@@ -165,7 +133,6 @@ class GraphRetriever:
                 if edge.get("source_ref"):
                     sources.append(edge["source_ref"])
         
-        # Obtener fases vulnerables
         vulnerable_phases = []
         for successor in self.graph.successors(node_id):
             edge = self.graph.edges[node_id, successor]
@@ -180,7 +147,6 @@ class GraphRetriever:
                 if edge.get("source_ref"):
                     sources.append(edge["source_ref"])
         
-        # Obtener acciones que mitigan
         mitigations = []
         for predecessor in self.graph.predecessors(node_id):
             edge = self.graph.edges[predecessor, node_id]
@@ -197,7 +163,6 @@ class GraphRetriever:
                 if edge.get("source_ref"):
                     sources.append(edge["source_ref"])
         
-        # Ordenar por peso (relevancia)
         causes.sort(key=lambda x: x["weight"], reverse=True)
         effects.sort(key=lambda x: x["weight"], reverse=True)
         mitigations.sort(key=lambda x: x["weight"], reverse=True)
@@ -214,26 +179,18 @@ class GraphRetriever:
         )
     
     def get_actions_for_risk(self, risk_key: str) -> List[dict]:
-        """
-        Obtiene solo las acciones recomendadas para un riesgo.
-        Útil para el DeliberativeAgent.
-        """
         context = self.get_context_for_risk(risk_key)
         if not context:
             return []
         return context.mitigations
     
     def get_related_risks(self, risk_key: str) -> List[str]:
-        """
-        Obtiene riesgos relacionados (comparten causas o efectos).
-        """
         node_id = RISK_TO_NODE_MAPPING.get(risk_key)
         if not node_id:
             return []
         
         related = set()
         
-        # Riesgos que comparten causas
         for predecessor in self.graph.predecessors(node_id):
             for other in self.graph.successors(predecessor):
                 other_data = self.graph.nodes.get(other, {})
@@ -243,10 +200,6 @@ class GraphRetriever:
         return list(related)
     
     def explain_causal_chain(self, risk_key: str) -> str:
-        """
-        Genera una explicación de la cadena causal para un riesgo.
-        Útil para el ExplanationAgent.
-        """
         context = self.get_context_for_risk(risk_key)
         if not context:
             return f"No se encontró información para el riesgo: {risk_key}"
@@ -254,7 +207,6 @@ class GraphRetriever:
         return context.to_prompt_context()
 
 
-# Singleton para reutilizar
 _retriever_instance: Optional[GraphRetriever] = None
 
 def get_graph_retriever() -> GraphRetriever:

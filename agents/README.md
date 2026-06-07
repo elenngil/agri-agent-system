@@ -1,7 +1,9 @@
-This folder will contain all system agents:
-- Observation Agent
-- Validation Agent
-- Inference Agent
-- Prediction Agent
-- Planning Agent
-- Explanation Agent
+Contiene todos los agentes del sistema:
+- ObservationAgent
+- InferenceAgent
+- PredictionAgent
+- RiskAgent
+- DeliberativeAgent
+- CriticAgent
+- ExplanationAgent
+- DailyPlanAgent
