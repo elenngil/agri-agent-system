@@ -725,3 +725,85 @@ AttributeError: 'ExplanationAgent' object has no attribute 'chroma_retriever'. D
 18:13:55 [INFO] orchestrator — Explicación generada
 18:13:55 [INFO] orchestrator — Plan diario generado en 0.000s
 18:13:55 [INFO] orchestrator — Pipeline completado en 9.025s
+20:16:03 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+20:16:05 [INFO] orchestrator — Observación completada en 1.146s
+20:16:05 [INFO] orchestrator — Inferencia completada en 0.000s
+20:16:05 [INFO] orchestrator — Predicción completada en 0.000s
+20:16:05 [INFO] orchestrator — Riesgos evaluados en 0.000s — 1 alertas generadas
+20:16:05 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+20:16:05 [INFO] orchestrator — Deliberación aprobada (intento 1)
+20:16:15 [INFO] orchestrator — Explicación generada
+20:16:15 [ERROR] __main__ — Error en análisis inicial: DailyPlanAgent._extract_weather.<locals>.get() takes 2 positional arguments but 3 were given
+20:17:26 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+20:17:27 [INFO] orchestrator — Observación completada en 0.870s
+20:17:27 [INFO] orchestrator — Inferencia completada en 0.000s
+20:17:27 [INFO] orchestrator — Predicción completada en 0.000s
+20:17:27 [INFO] orchestrator — Riesgos evaluados en 0.000s — 1 alertas generadas
+20:17:27 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+20:17:27 [INFO] orchestrator — Deliberación aprobada (intento 1)
+20:17:35 [INFO] orchestrator — Explicación generada
+20:17:35 [ERROR] __main__ — Error en análisis inicial: DailyPlanAgent._extract_weather.<locals>.get() takes 2 positional arguments but 3 were given
+20:19:49 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+20:19:50 [ERROR] __main__ — Error en análisis inicial: Error de conexión con AEMET: 429 Client Error: Too Many Requests for url: https://opendata.aemet.es/opendata/api/valores/climatologicos/diarios/datos/fechaini/2026-05-25T00:00:00UTC/fechafin/2026-05-30T23:59:59UTC/estacion/9995Y?api_key=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlLmdpbGN1bmNoaWxsb3NAZ21haWwuY29tIiwianRpIjoiN2Y1MGU2MWYtOTc4MS00MjBlLWJlMzktMGQ1YjMzNzBhNjMxIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE3NzI0NzAyNzEsInVzZXJJZCI6IjdmNTBlNjFmLTk3ODEtNDIwZS1iZTM5LTBkNWIzMzcwYTYzMSIsInJvbGUiOiIifQ.ExIAJEPJVOCtAEsw_WkbmtL-eHlfkvX3KlId5-4Rij0
+20:20:23 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+20:20:24 [INFO] orchestrator — Observación completada en 0.792s
+20:20:24 [INFO] orchestrator — Inferencia completada en 0.000s
+20:20:24 [INFO] orchestrator — Predicción completada en 0.000s
+20:20:24 [INFO] orchestrator — Riesgos evaluados en 0.000s — 1 alertas generadas
+20:20:24 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+20:20:24 [INFO] orchestrator — Deliberación aprobada (intento 1)
+20:20:35 [INFO] orchestrator — Explicación generada
+20:20:35 [INFO] orchestrator — Plan diario generado en 0.000s
+20:20:35 [INFO] orchestrator — Pipeline completado en 10.745s
+20:31:06 [INFO] web.runner — Objetivo de produccion: calidad — pesos: {'quality': 0.55, 'production': 0.25, 'cost': 0.12, 'sustainability': 0.08}
+20:31:07 [INFO] orchestrator — Observación completada en 1.059s
+20:31:07 [INFO] orchestrator — Inferencia completada en 0.000s
+20:31:07 [INFO] orchestrator — Predicción completada en 0.000s
+20:31:07 [INFO] orchestrator — Riesgos evaluados en 0.000s — 1 alertas generadas
+20:31:07 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+20:31:07 [INFO] orchestrator — Deliberación aprobada (intento 1)
+20:31:49 [INFO] orchestrator — Explicación generada
+20:31:49 [INFO] orchestrator — Plan diario generado en 0.000s
+20:31:49 [INFO] orchestrator — Pipeline completado en 42.082s
+20:47:45 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+20:47:45 [ERROR] __main__ — Error en análisis inicial: Error de conexión con AEMET: 429 Client Error: Too Many Requests for url: https://opendata.aemet.es/opendata/api/valores/climatologicos/diarios/datos/fechaini/2026-05-25T00:00:00UTC/fechafin/2026-05-30T23:59:59UTC/estacion/9995Y?api_key=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlLmdpbGN1bmNoaWxsb3NAZ21haWwuY29tIiwianRpIjoiN2Y1MGU2MWYtOTc4MS00MjBlLWJlMzktMGQ1YjMzNzBhNjMxIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE3NzI0NzAyNzEsInVzZXJJZCI6IjdmNTBlNjFmLTk3ODEtNDIwZS1iZTM5LTBkNWIzMzcwYTYzMSIsInJvbGUiOiIifQ.ExIAJEPJVOCtAEsw_WkbmtL-eHlfkvX3KlId5-4Rij0
+20:48:12 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+20:48:13 [INFO] orchestrator — Observación completada en 1.017s
+20:48:13 [INFO] orchestrator — Inferencia completada en 0.000s
+20:48:13 [INFO] orchestrator — Predicción completada en 0.000s
+20:48:13 [INFO] orchestrator — Riesgos evaluados en 0.000s — 1 alertas generadas
+20:48:13 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+20:48:13 [INFO] orchestrator — Deliberación aprobada (intento 1)
+20:48:45 [INFO] orchestrator — Explicación generada
+20:48:45 [INFO] orchestrator — Plan diario generado en 0.000s
+20:48:45 [INFO] orchestrator — Pipeline completado en 31.301s
+20:49:25 [INFO] web.runner — Objetivo de produccion: calidad — pesos: {'quality': 0.55, 'production': 0.25, 'cost': 0.12, 'sustainability': 0.08}
+20:49:26 [INFO] orchestrator — Observación completada en 1.049s
+20:49:26 [INFO] orchestrator — Inferencia completada en 0.000s
+20:49:26 [INFO] orchestrator — Predicción completada en 0.000s
+20:49:26 [INFO] orchestrator — Riesgos evaluados en 0.000s — 1 alertas generadas
+20:49:26 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+20:49:26 [INFO] orchestrator — Deliberación aprobada (intento 1)
+20:50:23 [INFO] orchestrator — Explicación generada
+20:50:23 [INFO] orchestrator — Plan diario generado en 0.000s
+20:50:23 [INFO] orchestrator — Pipeline completado en 57.452s
+21:10:01 [INFO] web.runner — Objetivo de produccion: equilibrio — pesos: {'quality': 0.4, 'production': 0.35, 'cost': 0.15, 'sustainability': 0.1}
+21:10:02 [INFO] orchestrator — Observación completada en 1.047s
+21:10:02 [INFO] orchestrator — Inferencia completada en 0.000s
+21:10:02 [INFO] orchestrator — Predicción completada en 0.000s
+21:10:02 [INFO] orchestrator — Riesgos evaluados en 0.000s — 1 alertas generadas
+21:10:02 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+21:10:02 [INFO] orchestrator — Deliberación aprobada (intento 1)
+21:10:11 [INFO] orchestrator — Explicación generada
+21:10:11 [INFO] orchestrator — Plan diario generado en 0.000s
+21:10:11 [INFO] orchestrator — Pipeline completado en 9.604s
+21:11:10 [INFO] web.runner — Objetivo de produccion: calidad — pesos: {'quality': 0.55, 'production': 0.25, 'cost': 0.12, 'sustainability': 0.08}
+21:11:12 [INFO] orchestrator — Observación completada en 1.100s
+21:11:12 [INFO] orchestrator — Inferencia completada en 0.000s
+21:11:12 [INFO] orchestrator — Predicción completada en 0.000s
+21:11:12 [INFO] orchestrator — Riesgos evaluados en 0.000s — 1 alertas generadas
+21:11:12 [INFO] orchestrator — Sin alertas críticas — ruta estándar
+21:11:12 [INFO] orchestrator — Deliberación aprobada (intento 1)
+21:11:21 [INFO] orchestrator — Explicación generada
+21:11:21 [INFO] orchestrator — Plan diario generado en 0.000s
+21:11:21 [INFO] orchestrator — Pipeline completado en 9.287s

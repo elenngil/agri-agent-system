@@ -62,17 +62,19 @@ class DailyPlanAgent:
 
     def _extract_weather(self, state: SharedState) -> dict:
         w = state.weather_data
+        assumed_list = []
 
-        def get(attr, default):
+        def get(attr, default, label):
             val = getattr(w, attr, None) if w else None
             if val is None:
-                return default, True
-            return val, False
+                assumed_list.append(label)
+                return default
+            return val
 
-        temp_min,   a1 = get("temperature_min", 12.0, "temperatura mínima (asumida 12 °C)")
-        temp_max,   a2 = get("temperature_max", 24.0, "temperatura máxima (asumida 24 °C)")
-        precip,     a3 = get("precipitation",    0.0, "precipitación (asumida 0 mm)")
-        humidity,   a4 = get("humidity",        55.0, "humedad (asumida 55 %)")
+        temp_min  = get("temperature_min", 12.0, "temperatura mínima (asumida 12 °C)")
+        temp_max  = get("temperature_max", 24.0, "temperatura máxima (asumida 24 °C)")
+        precip    = get("precipitation",    0.0, "precipitación (asumida 0 mm)")
+        humidity  = get("humidity",        55.0, "humedad (asumida 55 %)")
 
         soil_mult = state.soil_multiplier or 1.0
 
@@ -82,24 +84,15 @@ class DailyPlanAgent:
             etc = getattr(state.climate_features, "etc", None)
             dha = getattr(state.climate_features, "dha", None)
 
-        assumed_list = [
-            label for label, flag in [
-                ("temperatura mínima (asumida 12 °C)", a1),
-                ("temperatura máxima (asumida 24 °C)", a2),
-                ("precipitación (asumida 0 mm)",       a3),
-                ("humedad (asumida 55 %)",             a4),
-            ] if flag
-        ]
-
         return {
-            "temp_min":     temp_min,
-            "temp_max":     temp_max,
+            "temp_min":      temp_min,
+            "temp_max":      temp_max,
             "precipitation": precip,
-            "humidity":     humidity,
-            "soil_mult":    soil_mult,
-            "etc":          etc,
-            "dha":          dha,
-            "assumed":      assumed_list,
+            "humidity":      humidity,
+            "soil_mult":     soil_mult,
+            "etc":           etc,
+            "dha":           dha,
+            "assumed":       assumed_list,
         }
 
 
@@ -318,8 +311,4 @@ class DailyPlanAgent:
             f"{climate.condition} | "
             f"{warn_text}"
         )
-
-        dashboard_url = os.getenv("DASHBOARD_URL", "http://localhost:8501")
-        candidate = f"{sms} | {dashboard_url}"
-
-        return candidate if len(candidate) <= 160 else sms[:160]
+        return sms[:160]

@@ -9,12 +9,59 @@ import streamlit as st
 from web.auth import login_user, register_user, update_user_preferences
 from web.db import init_db
 
+
+TRADUCCIONES = {
+    "frost_risk": "Riesgo de helada",
+    "heat_stress": "Estrés térmico",
+    "mildiu_risk": "Riesgo de mildiu",
+    "strong_wind_risk": "Riesgo de viento fuerte",
+    "future_water_stress": "Estrés hídrico futuro",
+    "irrigation_need": "Necesidad de riego",
+    "irrigation": "riego",
+    "fungicide": "tratamiento fungicida",
+    "harvest_timing": "calendario de vendimia",
+    "canopy_management": "manejo del dosel",
+    "defoliation": "deshojado",
+    "light": "ligero",
+    "moderate": "moderado",
+    "intensive": "intensivo",
+    "preventive": "preventivo",
+    "curative": "curativo",
+    "early": "anticipado",
+    "delayed": "retrasado",
+    "normal": "normal",
+    "heavy_defoliation": "deshojado intenso",
+    "light_defoliation": "deshojado ligero",
+    "heavy defoliation": "deshojado intenso",
+    "light defoliation": "deshojado ligero",
+    "none": "ninguno",
+}
+
+
+def traducir(texto) -> str:
+    if texto is None:
+        return ""
+    t = str(texto)
+    if t in TRADUCCIONES:
+        return TRADUCCIONES[t]
+    limpio = t.replace("_", " ")
+    for en, es in sorted(TRADUCCIONES.items(), key=lambda kv: -len(kv[0])):
+        en_norm = en.replace("_", " ")
+        limpio = limpio.replace(en_norm, es)
+    return limpio
+
+
+def traducir_titulo(texto) -> str:
+    out = traducir(texto)
+    return out[:1].upper() + out[1:] if out else out
+
+
 @st.cache_data(show_spinner=False)
 def load_stations():
     try:
         from tools.aemet_stations import get_stations
         df = get_stations()
-        
+
         opciones = {
             row["id"]: f"{row['nombre'].title()} - {row['provincia'].title()} ({row['id']})"
             for _, row in df.iterrows()
@@ -23,12 +70,14 @@ def load_stations():
     except Exception:
         return {"9995Y": "Pamplona / Noain - Navarra (9995Y)"}
 
+
 def get_ccaa_from_station(station_id: str) -> str:
     try:
         from tools.aemet_stations import station_to_ccaa
         return station_to_ccaa(station_id) or "Desconocida"
     except Exception:
         return "Desconocida"
+
 
 logger = logging.getLogger(__name__)
 
@@ -209,6 +258,47 @@ h1, h2, h3 {
     border-radius: 10px;
     padding: 0.8rem 1rem;
     margin-bottom: 0.5rem;
+}
+
+.chip {
+    display: inline-block;
+    background-color: var(--verde-vid);
+    color: white;
+    border-radius: 16px;
+    padding: 0.25rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin: 0.2rem 0.3rem 0.2rem 0;
+}
+.chip-suave {
+    display: inline-block;
+    background-color: var(--crema);
+    color: var(--texto-suave);
+    border: 1px solid var(--gris-suave);
+    border-radius: 16px;
+    padding: 0.2rem 0.7rem;
+    font-size: 0.75rem;
+    margin: 0.15rem 0.3rem 0.15rem 0;
+}
+.detalle-item {
+    margin-bottom: 0.6rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+.detalle-cond {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--texto-suave);
+    font-style: italic;
+    margin-top: 0.1rem;
+}
+.bloque-detalle-titulo {
+    font-weight: 600;
+    color: var(--verde-vid);
+    font-size: 0.9rem;
+    margin: 0.8rem 0 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
 .stSpinner > div { border-top-color: var(--verde-vid) !important; }
@@ -552,7 +642,7 @@ def tab_principal(result: dict) -> None:
                 st.markdown(f"""
                 <div class="{css_class}">
                     <div style="font-weight:600; font-size:0.92rem; margin-bottom:0.3rem;">
-                        {risk.get('type','Riesgo').replace('_',' ').capitalize()}
+                        {traducir_titulo(risk.get('type','Riesgo'))}
                     </div>
                     <div style="font-size:0.82rem; color:#4A3728;">
                         Nivel: <strong>{label}</strong>
@@ -638,7 +728,7 @@ def tab_riesgos(result: dict) -> None:
         css_class, label = priority_map.get(str(level).lower(), ("alerta-baja", "Bajo"))
 
         with st.expander(
-            f"{risk.get('type','Riesgo').replace('_',' ').capitalize()} — nivel {label}",
+            f"{traducir_titulo(risk.get('type','Riesgo'))} — nivel {label}",
             expanded=(str(level).lower() in ("alto", "critico"))
         ):
             col_info, col_detalle = st.columns([1, 2])
@@ -655,56 +745,68 @@ def tab_riesgos(result: dict) -> None:
             with col_detalle:
                 causes = risk.get("causes", [])
                 if causes:
-                    st.markdown("**Causas:**")
+                    st.markdown('<div class="bloque-detalle-titulo">Causas</div>', unsafe_allow_html=True)
                     for c in causes[:3]:
-                        cond    = f" ({c.get('condition','')})" if isinstance(c, dict) and c.get("condition") else ""
-                        label_c = c.get('label','—') if isinstance(c, dict) else str(c)
-                        st.markdown(f"- {label_c}{cond}")
+                        if isinstance(c, dict):
+                            label_c = traducir(c.get('label', '—'))
+                            cond    = c.get("condition")
+                            cond_html = f"<span class='detalle-cond'>{cond}</span>" if cond else ""
+                            st.markdown(f"<div class='detalle-item'>• {label_c}{cond_html}</div>", unsafe_allow_html=True)
+                        else:
+                            st.markdown(f"<div class='detalle-item'>• {traducir(c)}</div>", unsafe_allow_html=True)
 
                 effects = risk.get("effects", [])
                 if effects:
-                    st.markdown("**Efectos sobre la vid:**")
+                    st.markdown('<div class="bloque-detalle-titulo">Efectos sobre la vid</div>', unsafe_allow_html=True)
                     for e in effects[:3]:
                         if isinstance(e, dict):
-                            relacion = e.get('relation', 'afecta a')
-                            label_e  = e.get('label', '—')
-                            st.markdown(f"- {relacion.capitalize()} {label_e.lower()}")
+                            relacion = traducir(e.get('relation', 'afecta a'))
+                            label_e  = traducir(e.get('label', '—'))
+                            cond     = e.get("condition")
+                            cond_html = f"<span class='detalle-cond'>{cond}</span>" if cond else ""
+                            st.markdown(f"<div class='detalle-item'>• {relacion.capitalize()} {label_e.lower()}{cond_html}</div>", unsafe_allow_html=True)
                         else:
-                            st.markdown(f"- {str(e)}")
+                            st.markdown(f"<div class='detalle-item'>• {traducir(e)}</div>", unsafe_allow_html=True)
 
                 actions = risk.get("recommended_actions", [])
                 if actions:
-                    st.markdown("**Acciones recomendadas:**")
-                    for a in actions[:2]:
-                        cond    = f" ({a.get('condition','')})" if isinstance(a, dict) and a.get("condition") else ""
-                        label_a = a.get('label','—') if isinstance(a, dict) else str(a)
-                        st.markdown(f"- {label_a}{cond}")
+                    st.markdown('<div class="bloque-detalle-titulo">Acciones recomendadas</div>', unsafe_allow_html=True)
+                    for a in actions[:3]:
+                        if isinstance(a, dict):
+                            label_a = traducir(a.get('label', '—'))
+                            cond    = a.get("condition")
+                            cond_html = f"<span class='detalle-cond'>{cond}</span>" if cond else ""
+                            st.markdown(f"<div class='detalle-item'>• {label_a}{cond_html}</div>", unsafe_allow_html=True)
+                        else:
+                            st.markdown(f"<div class='detalle-item'>• {traducir(a)}</div>", unsafe_allow_html=True)
 
     alternatives = result.get("alternatives", [])
     if alternatives:
         st.markdown("<div class='divider-vid'></div>", unsafe_allow_html=True)
         st.markdown("#### Escenarios alternativos evaluados")
+        st.caption("Otras combinaciones de acciones que el sistema ha evaluado y puntuado.")
         alt_cols = st.columns(len(alternatives[:2]))
         for i, alt in enumerate(alternatives[:2]):
             utility   = alt.get("utility")
             util_text = f"{utility:.2f}" if isinstance(utility, (int, float)) else "—"
             with alt_cols[i]:
                 with st.container(border=True):
-                    st.markdown(f"**Opcion {i+1}** · Utilidad: `{util_text}`")
+                    st.markdown(
+                        f"<div style='font-weight:600; font-size:0.95rem; margin-bottom:0.2rem;'>"
+                        f"Opción {i+1}</div>"
+                        f"<div style='font-size:0.8rem; color:#6B5E4E; margin-bottom:0.6rem;'>"
+                        f"Utilidad estimada: <strong>{util_text}</strong></div>",
+                        unsafe_allow_html=True
+                    )
                     acciones = alt.get("actions", [])
-                    traduccion = {
-                        "light": "ligero", "moderate": "moderado", "intensive": "intensivo",
-                        "preventive": "preventivo", "curative": "curativo",
-                        "early": "anticipado", "delayed": "retrasado", "normal": "normal",
-                        "light defoliation": "deshojado ligero", "heavy defoliation": "deshojado intenso",
-                        "none": "ninguno", "irrigation": "riego", "fungicide": "fungicida",
-                        "harvest timing": "calendario vendimia", "canopy management": "manejo dosel",
-                    }
-                    for a in acciones:
-                        texto = str(a).replace("_", " ")
-                        for en, es in traduccion.items():
-                            texto = texto.replace(en, es)
-                        st.markdown(f"- {texto.capitalize()}")
+                    if acciones:
+                        chips = "".join(
+                            f"<span class='chip'>{traducir(a).capitalize()}</span>"
+                            for a in acciones
+                        )
+                        st.markdown(f"<div>{chips}</div>", unsafe_allow_html=True)
+                    else:
+                        st.markdown("<div style='font-size:0.85rem; color:#6B5E4E;'>Sin acciones adicionales.</div>", unsafe_allow_html=True)
 
 
 def tab_plan_diario(result: dict) -> None:
@@ -736,7 +838,7 @@ def tab_plan_diario(result: dict) -> None:
 
     if reasoning:
         st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
-        with st.expander("Justificación de la recomendación"):
+        with st.expander("Justificación de la recomendación", expanded=True):
             st.markdown(f"""
             <div style="line-height:1.8; font-size:0.93rem; color:#2C2416;">
                 {reasoning}
@@ -927,13 +1029,25 @@ def main() -> None:
     ])
 
     with t1:
-        tab_principal(result) if result else st.info("Calculando el análisis inicial...")
+        if result:
+            tab_principal(result)
+        else:
+            st.info("Calculando el análisis inicial...")
     with t2:
-        tab_riesgos(result)   if result else st.info("El análisis aun no esta disponible.")
+        if result:
+            tab_riesgos(result)
+        else:
+            st.info("El análisis aun no esta disponible.")
     with t3:
-        tab_plan_diario(result) if result else st.info("El análisis aun no esta disponible.")
+        if result:
+            tab_plan_diario(result)
+        else:
+            st.info("El análisis aun no esta disponible.")
     with t4:
-        tab_audio(result)     if result else st.info("El análisis aun no esta disponible.")
+        if result:
+            tab_audio(result)
+        else:
+            st.info("El análisis aun no esta disponible.")
     with t5:
         prefs = tab_configuracion(user)
         if prefs["recalc"]:

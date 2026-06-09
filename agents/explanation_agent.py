@@ -179,32 +179,36 @@ INSTRUCCIONES:
     }
 
     def _generate_sms(self, scenarios, alerts, ccaa) -> str:
-        dashboard_url = os.getenv("DASHBOARD_URL", "http://localhost:8501")
-
         if not alerts:
-            base = f"AgroVid | {ccaa} | Sin alertas activas. Condiciones favorables para el vinedo."
-        else:
-            main_alert = alerts[0]
-            level_text = self._level_to_text(main_alert.level).upper()
-            risk_text  = self.TRADUCCION_SMS.get(
-                main_alert.risk_type,
-                main_alert.risk_type.replace("_", " ")
-            ).capitalize()
+            return f"AgroVid | {ccaa} | Sin alertas activas. Condiciones favorables para el vinedo. Mantener seguimiento rutinario."
 
-            action_text = ""
-            if scenarios and scenarios[0].actions:
-                main_action = next(
-                    (a for a in scenarios[0].actions if a.intensity != "none"), None
-                )
-                if main_action:
-                    tipo      = self.TRADUCCION_SMS.get(main_action.type, main_action.type)
-                    intensidad = self.TRADUCCION_SMS.get(main_action.intensity, main_action.intensity)
-                    action_text = f" Accion: {tipo} {intensidad}."
+        main_alert = alerts[0]
+        level_text = self._level_to_text(main_alert.level).upper()
+        risk_text  = self.TRADUCCION_SMS.get(
+            main_alert.risk_type,
+            main_alert.risk_type.replace("_", " ")
+        ).capitalize()
 
-            base = f"AgroVid | {ccaa} | Alerta: {risk_text} nivel {level_text}.{action_text}"
+        valor_text = ""
+        if getattr(main_alert, "value", None) is not None:
+            valor_text = f" ({main_alert.value})"
 
-        candidate = f"{base} Ver detalle: {dashboard_url}"
-        return candidate if len(candidate) <= 160 else base[:157 - len(dashboard_url)] + f"... {dashboard_url}"
+        action_text = ""
+        if scenarios and scenarios[0].actions:
+            main_action = next(
+                (a for a in scenarios[0].actions if a.intensity != "none"), None
+            )
+            if main_action:
+                tipo       = self.TRADUCCION_SMS.get(main_action.type, main_action.type)
+                intensidad = self.TRADUCCION_SMS.get(main_action.intensity, main_action.intensity)
+                action_text = f" Accion: {tipo} {intensidad}."
+
+        base = f"AgroVid | {ccaa} | Alerta: {risk_text} nivel {level_text}{valor_text}.{action_text}"
+
+        if len(base) <= 157:
+            base += " Revisa el detalle en la app."
+
+        return base[:160]
 
 
     def _explain_alternatives(self, alternatives) -> list:
