@@ -4,7 +4,7 @@ import random
 
 
 class DeliberativeAgent:
-    
+
     ACTION_SPACE = {
         "irrigation": ["none", "light", "moderate", "intensive"],
         "fungicide": ["none", "preventive", "curative"],
@@ -31,7 +31,7 @@ class DeliberativeAgent:
         }
         self.temperature = temperature
 
-    def run(self, state: SharedState, top_n: int = 3, excluded_actions: list[tuple[str, str]] | None = None) -> SharedState:
+    def run(self, state: SharedState, top_n: int = 3, excluded_actions: list[tuple[str, str]] | None = None, urgent: bool = False) -> SharedState:
         if state.climate_features is None:
             raise ValueError("Los indicadores climaticos no estan disponibles en SharedState")
         if state.predictions is None:
@@ -39,7 +39,7 @@ class DeliberativeAgent:
         if state.crop_data is None:
             raise ValueError("Los datos de cultivo no estan disponibles en SharedState")
 
-        candidate_scenarios = self._generate_relevant_scenarios(state)
+        candidate_scenarios = self._generate_relevant_scenarios(state, urgent=urgent)
 
         if excluded_actions:
             excluded_set = set(excluded_actions)
@@ -64,7 +64,7 @@ class DeliberativeAgent:
                 return alert.level if isinstance(alert.level, RiskLevel) else None
         return None
 
-    def _generate_relevant_scenarios(self, state: SharedState) -> list[list[Action]]:
+    def _generate_relevant_scenarios(self, state: SharedState, urgent: bool = False) -> list[list[Action]]:
 
         relevant_actions = {}
         alert_types = {a.risk_type for a in state.alerts}
@@ -104,6 +104,9 @@ class DeliberativeAgent:
         else:
             relevant_actions["canopy_management"] = ["none"]
 
+        if urgent:
+            relevant_actions = self._prune_for_urgency(relevant_actions, alert_types, state)
+
         keys = list(relevant_actions.keys())
         scenarios = []
 
@@ -119,6 +122,40 @@ class DeliberativeAgent:
             scenarios.append(actions)
 
         return scenarios
+
+    def _prune_for_urgency(self, relevant_actions: dict, alert_types: set, state: SharedState) -> dict:
+        """
+        Poda del espacio de acciones para la ruta urgente: se evaluan solo
+        las palancas directamente ligadas a las alertas criticas activas,
+        y cada palanca se reduce a 'none' + su intensidad de respuesta mas
+        directa. El resto de dimensiones se fijan a su valor neutro.
+        Esto reduce drasticamente el numero de escenarios a puntuar, dando
+        una respuesta inmediata sin recorrer el espacio combinatorio completo.
+        """
+        pruned = {
+            "irrigation": ["none"],
+            "fungicide": ["none"],
+            "harvest_timing": ["normal"],
+            "canopy_management": ["none"],
+        }
+
+        if "future_water_stress" in alert_types or "irrigation_need" in alert_types:
+            pruned["irrigation"] = ["none", "moderate"]
+
+        if "mildiu_risk" in alert_types:
+            mildiu_level = self._get_mildiu_level(state)
+            if mildiu_level in (RiskLevel.HIGH, RiskLevel.CRITICAL):
+                pruned["fungicide"] = ["none", "preventive", "curative"]
+            else:
+                pruned["fungicide"] = ["none", "preventive"]
+
+        if "frost_risk" in alert_types:
+            pruned["harvest_timing"] = ["normal", "early"]
+
+        if "heat_stress" in alert_types:
+            pruned["canopy_management"] = ["none", "light_defoliation"]
+
+        return pruned
 
     def _calculate_utility(self, actions: list[Action], state: SharedState) -> tuple[float, dict]:
 

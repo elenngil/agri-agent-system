@@ -1,21 +1,21 @@
 {
   "station": "9995Y",
-  "start_date": "2026-05-28",
-  "end_date": "2026-06-02",
+  "start_date": "2026-05-27",
+  "end_date": "2026-06-01",
   "ccaa": "Navarra",
   "selected_variety": "Tempranillo",
   "weather_data": {
     "temperature_max": 32.9,
-    "temperature_min": 13.3,
-    "temperature_mean": 18.483333333333334,
-    "precipitation": 0.8,
-    "humidity": 78.0,
-    "wind": 2.8,
+    "temperature_min": 13.4,
+    "temperature_mean": 19.833333333333332,
+    "precipitation": 0.6000000000000001,
+    "humidity": 72.83333333333333,
+    "wind": 2.2,
     "pressure": null,
     "days_count": 6
   },
-  "soil_type": null,
-  "soil_multiplier": 0.7,
+  "soil_type": "arenoso",
+  "soil_multiplier": 1.3,
   "crop_data": {
     "variety": "Tempranillo",
     "color": "red",
@@ -29,12 +29,12 @@
     "optimal_precip_mm": 500.0
   },
   "climate_features": {
-    "etc": 1.66,
-    "dha": 0.8599999999999999,
+    "etc": 1.72,
+    "dha": 1.1199999999999999,
     "frost_risk": {
       "level": "Nulo",
       "score": 0.0,
-      "value": 13.3,
+      "value": 13.4,
       "threshold": 11.0
     },
     "heat_stress": {
@@ -46,13 +46,13 @@
     "mildiu_risk": {
       "level": "Bajo",
       "score": 0.2,
-      "value": 78.0,
+      "value": 72.83333333333333,
       "threshold": 85
     },
     "strong_wind_risk": {
       "level": "Bajo",
       "score": 0.2,
-      "value": 2.8,
+      "value": 2.2,
       "threshold": 50
     }
   },
@@ -66,49 +66,18 @@
       "level": {
         "_value_": "medio",
         "_name_": "MEDIUM",
-        "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x0000023225EA07D0>)>, '__module__': 'models.shared_state', '__firstlineno__': 48, '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFEE6B54BF0>, '_use_args_': False, '_member_names_': ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], '_member_map_': {'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>}, '_value2member_map_': {'bajo': <RiskLevel.LOW: 'bajo'>, 'medio': <RiskLevel.MEDIUM: 'medio'>, 'alto': <RiskLevel.HIGH: 'alto'>, 'crítico': <RiskLevel.CRITICAL: 'crítico'>}, '_hashable_values_': ['bajo', 'medio', 'alto', 'crítico'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, '__doc__': None, 'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>, '__new__': <function Enum.__new__ at 0x0000023225EA05C0>}",
+        "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x00000207EA1407D0>)>, '__module__': 'models.shared_state', '__firstlineno__': 48, '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFEE6B54BF0>, '_use_args_': False, '_member_names_': ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], '_member_map_': {'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>}, '_value2member_map_': {'bajo': <RiskLevel.LOW: 'bajo'>, 'medio': <RiskLevel.MEDIUM: 'medio'>, 'alto': <RiskLevel.HIGH: 'alto'>, 'crítico': <RiskLevel.CRITICAL: 'crítico'>}, '_hashable_values_': ['bajo', 'medio', 'alto', 'crítico'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, '__doc__': None, 'LOW': <RiskLevel.LOW: 'bajo'>, 'MEDIUM': <RiskLevel.MEDIUM: 'medio'>, 'HIGH': <RiskLevel.HIGH: 'alto'>, 'CRITICAL': <RiskLevel.CRITICAL: 'crítico'>, '__new__': <function Enum.__new__ at 0x00000207EA1405C0>}",
         "_sort_order_": 1
       },
       "value": 32.9,
       "threshold": 34.0,
       "penalty": 0.5,
       "ccaa": "Navarra",
-      "valid_until": "2026-06-02",
+      "valid_until": "2026-06-01",
       "message": "Estres termico medio: temperatura maxima observada 32.9°C frente al umbral 34.0°C."
     }
   ],
   "scenarios": [
-    {
-      "actions": [
-        {
-          "type": "irrigation",
-          "intensity": "light",
-          "cost": 0.05
-        },
-        {
-          "type": "fungicide",
-          "intensity": "none",
-          "cost": 0.0
-        },
-        {
-          "type": "harvest_timing",
-          "intensity": "delayed",
-          "cost": 0.05
-        },
-        {
-          "type": "canopy_management",
-          "intensity": "light_defoliation",
-          "cost": 0.05
-        }
-      ],
-      "utility": 0.6601,
-      "breakdown": {
-        "quality": 0.86,
-        "production": 0.75,
-        "cost": 0.7,
-        "sustainability": 0.82
-      }
-    },
     {
       "actions": [
         {
@@ -132,7 +101,7 @@
           "cost": 0.05
         }
       ],
-      "utility": 0.6556,
+      "utility": 0.6465,
       "breakdown": {
         "quality": 0.83,
         "production": 0.75,
@@ -159,21 +128,52 @@
         },
         {
           "type": "canopy_management",
+          "intensity": "light_defoliation",
+          "cost": 0.05
+        }
+      ],
+      "utility": 0.6435,
+      "breakdown": {
+        "quality": 0.86,
+        "production": 0.75,
+        "cost": 0.7,
+        "sustainability": 0.82
+      }
+    },
+    {
+      "actions": [
+        {
+          "type": "irrigation",
+          "intensity": "light",
+          "cost": 0.05
+        },
+        {
+          "type": "fungicide",
+          "intensity": "none",
+          "cost": 0.0
+        },
+        {
+          "type": "harvest_timing",
+          "intensity": "normal",
+          "cost": 0.0
+        },
+        {
+          "type": "canopy_management",
           "intensity": "none",
           "cost": 0.0
         }
       ],
-      "utility": 0.6446,
+      "utility": 0.6415,
       "breakdown": {
-        "quality": 0.8099999999999999,
+        "quality": 0.7799999999999999,
         "production": 0.75,
-        "cost": 0.8,
+        "cost": 0.9,
         "sustainability": 0.82
       }
     }
   ],
   "explanation": {
-    "summary": "En Navarra, el riesgo de estrés térmico es medio. Se recomienda realizar riegos ligeros para mantener la turgencia de las hojas y evitar quemaduras. Un ligero deshojado y un ajuste en el momento de la cosecha también pueden ayudar a mitigar los efectos del calor.",
+    "summary": "En Navarra, la vid está bajo un riesgo medio de estrés térmico. Se recomienda aplicar riegos leves para mantener la turgencia de las hojas y prevenir quemaduras. Mantén la poda de hojas ligera y el momento de la cosecha normal.",
     "risk_explanation": [
       {
         "type": "heat_stress",
@@ -218,46 +218,46 @@
         "vulnerable_phases": []
       }
     ],
-    "recommendation_reasoning": "La irrigación ligera es recomendada para combatir el estrés térmico, ya que el riego refrescante mantiene la turgencia de las plantas y reduce la temperatura del suelo y las hojas. La cosecha retrasada permite que la uva alcance una mayor maduración y complejidad, compensando la pérdida de acidez y aromas causada por el estrés térmico. La poda suave de hojas mejora la ventilación y la circulación de aire, lo que reduce la exposición directa del racimo a las altas temperaturas. Estas acciones equilibran la calidad y producción de la uva, con un impacto moderado en los costos y una alta sostenibilidad.",
+    "recommendation_reasoning": "La irrigación ligera es necesaria para defender la planta del estrés térmico, manteniendo la turgencia y reduciendo el deterioro de la uva. La poda ligera del dosel ayuda a mejorar la ventilación y la circulación del aire, mitigando el impacto del calor en las hojas y racimos. La cosecha en tiempo normal garantiza una maduración adecuada, preservando la calidad y evitando pérdidas en la producción. Estas acciones equilibran la calidad de la uva, la sostenibilidad y los costos operativos, ofreciendo una solución eficiente y efectiva.",
     "alternatives": [
       {
-        "utility": 0.656,
+        "utility": 0.643,
         "actions": [
           "irrigation light",
-          "harvest timing normal",
+          "harvest timing delayed",
           "canopy management light_defoliation"
         ],
-        "tradeoff": "Alternativa 2 con utilidad 0.66."
+        "tradeoff": "Alternativa 2 con utilidad 0.64."
       },
       {
-        "utility": 0.645,
+        "utility": 0.641,
         "actions": [
           "irrigation light",
-          "harvest timing delayed"
+          "harvest timing normal"
         ],
         "tradeoff": "Alternativa 3 con utilidad 0.64."
       }
     ],
     "sms_text": "AgroVid | Navarra | Alerta: Estres termico nivel MEDIO (32.9). Accion: riego ligero. Revisa el detalle en la app.",
     "sources": [
-      "Keller, M. (2015). The Science of Grapevines",
-      "Keller (2015)"
+      "Keller (2015)",
+      "Keller, M. (2015). The Science of Grapevines"
     ]
   },
   "daily_plan": {
     "irrigation": {
       "base_liters": 6.0,
-      "adjusted_liters": 3.3,
-      "adjustment_reason": "base ajustada por ETc (1.7 L/m²); +3.0 L/m² por calor extremo (>32.0 °C); ×0.70 por tipo de suelo",
-      "soil_multiplier": 0.7,
+      "adjusted_liters": 6.1,
+      "adjustment_reason": "base ajustada por ETc (1.7 L/m²); +3.0 L/m² por calor extremo (>32.0 °C); ×1.30 por tipo de suelo",
+      "soil_multiplier": 1.3,
       "assumed_values": []
     },
     "climate": {
       "condition": "estrés térmico",
-      "temp_min": 13.3,
+      "temp_min": 13.4,
       "temp_max": 32.9,
-      "precipitation": 0.8,
-      "humidity": 78.0,
+      "precipitation": 0.6000000000000001,
+      "humidity": 72.83333333333333,
       "interpretation": "Temperatura máxima de 32.9 °C supera el umbral de 32.0 °C. Riesgo de quemadura en racimos y aceleración de maduración."
     },
     "crop_status": {
@@ -267,19 +267,13 @@
     },
     "prevention": [
       {
-        "risk": "future_water_stress",
-        "label": "Estrés hídrico futuro",
-        "priority": "alta",
-        "action": "El balance hídrico es deficitario. Aumentar frecuencia de riego preventivo."
-      },
-      {
         "risk": "heat_stress",
         "label": "Estrés térmico",
         "priority": "media",
         "action": "Evitar intervenciones agresivas (poda verde, tratamientos) en horas de máximo calor."
       }
     ],
-    "explanation": "Plan de manejo para Navarra — 2026-05-28 a 2026-06-02.\n\nClima: Temperatura máxima de 32.9 °C supera el umbral de 32.0 °C. Riesgo de quemadura en racimos y aceleración de maduración.\n\nRiego: se recomiendan 3.3 L/m² (base ajustada por ETc (1.7 L/m²); +3.0 L/m² por calor extremo (>32.0 °C); ×0.70 por tipo de suelo).\n\nCultivo en fase de crecimiento. [Tempranillo] Aplicar tratamientos preventivos si hay humedad alta.\n\nPrevención: Atención prioritaria: Estrés hídrico futuro. Vigilar también: Estrés térmico.",
-    "sms": "AgroVid | Navarra | Riego: 3.3 L/m2 | estrés térmico | Alerta: Estrés hídrico futuro"
+    "explanation": "Plan de manejo para Navarra — 2026-05-27 a 2026-06-01.\n\nClima: Temperatura máxima de 32.9 °C supera el umbral de 32.0 °C. Riesgo de quemadura en racimos y aceleración de maduración.\n\nRiego: se recomiendan 6.1 L/m² (base ajustada por ETc (1.7 L/m²); +3.0 L/m² por calor extremo (>32.0 °C); ×1.30 por tipo de suelo).\n\nCultivo en fase de crecimiento. [Tempranillo] Aplicar tratamientos preventivos si hay humedad alta.\n\nPrevención: Vigilar también: Estrés térmico.",
+    "sms": "AgroVid | Navarra | Riego: 6.1 L/m2 | estrés térmico | Alerta: Estrés térmico"
   }
 }
